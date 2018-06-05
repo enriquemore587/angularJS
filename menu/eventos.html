@@ -1,0 +1,224 @@
+<div class="container" ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
+  <h5 class="letersLength" style="color: #FF3800"> Loading . . . .</h5>
+  <div class="progress">
+    <div class="indeterminate"></div>
+  </div>
+</div>
+<div ng-show="!vm.esperar">
+  <br>
+  <div class="center">
+    <a ng-click="alll();" style="background: #FF3800;" data-position="right" data-tooltip="NUEVO EVENTO" class="tooltipped btn-floating btn-large modal-trigger"
+      href="#modal_event">
+      <i class="material-icons">add</i>
+    </a>
+  </div>
+  <div class="container" style="position: relative;">
+    <label>Buscar evento</label>
+    <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off" ng-blur="buscar=''">
+    <div class="switch" style="position: absolute; top: 0; right: 0;">
+      <label>
+        Show All
+        <input type="checkbox" ng-model="vm.verTodosEventos" ng-true-value="true" ng-false-value="false" class="deep-orange lighten-5">
+        <span class="lever deep-orange accent-3"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="card col s12 m6 l4 gris" ng-class="{event_style: x.status == true, NoEvento: x.status == false}" ng-repeat="x in vm.eventos | filter: buscar"
+        ng-if="x.status || vm.verTodosEventos">
+        <br>
+
+        <a class="activator naranja" href>{{x.nameEvent}}
+          <i class="material-icons right">more_vert</i>
+        </a>
+        <div class="card-content eventos">
+          <p style="color: white;">
+            <i class="tiny material-icons">room</i> {{x.placeEvent}}
+          </p>
+          <p style="color: white;">
+            <i class="tiny material-icons">date_range</i> {{+x.dateEvent | date: 'MMM/dd/yyyy'}}
+          </p>
+          <p style="color: white;">
+            <i class="tiny material-icons">attach_money</i> {{x.costEvent}}
+          </p>
+          <p style="color: white;">
+            <i class="tiny material-icons">group</i> {{x.cupoEvent}}
+          </p>
+        </div>
+        <div ng-if="x.status" class="card-reveal gris">
+          <a class="card-title naranja" style="font-size: 1em">{{x.nameEvent}}
+            <i class="material-icons right">close</i>
+          </a>
+          <div class="card-action center">
+            <div style="margin-top: 40px;">
+              <a style="margin-right: 9px !important;" ng-click="vm.editEvent(x);" class="modal-trigger" href="#modal_event" title="EDITAR DATOS DE EVENTO">
+                <i class="material-icons Ncolor" style="color: white"> edit</i>
+              </a>
+              <a style="margin-right: 9px !important;" ng-click="vm.check(x);" href="" title="PUNTOS DE RECOLECCION Y ENTREGA">
+                <i class="material-icons Ncolor" style="color:white">location_on</i>
+              </a>
+              <a style="margin-right: 9px !important;" class="Asap-Bold" href ng-click="vm.checkIn(x);" title="CHECK IN">
+                <i class="material-icons Ncolor" style="color:white">system_update_alt</i>
+              </a>
+              <a style="margin-right: 9px !important;" class="Asap-Bold" href ng-click="vm.callCOut(x)">
+                <i class="material-icons Ncolor" style="color:white">open_in_new</i>
+              </a>
+              <a style="margin-right: 9px !important;" class="Asap-Bold" href ng-click="vm.pagos(x);" title="PAGOS">
+                <i class="material-icons Ncolor" style="color:white">attach_money
+                </i>
+              </a>
+              <a style="margin-right: 9px !important;" class="Asap-Bold" href ng-click="vm.deleteEvento(x, $index, false);" title="ELIMINAR">
+                <i class="material-icons Ncolor" style="color:white">delete
+                </i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div ng-if="!x.status" class="card-reveal gris">
+          <a class="card-title naranja" style="font-size: 1em">{{x.nameEvent}}
+            <i class="material-icons right">close</i>
+          </a>
+          <div class="card-action center">
+            <div style="margin-top: 40px;">
+              <a style="margin-right: 9px !important; color: #FF3800; text-decoration: underline;" class="Asap-Bold" href ng-click="vm.deleteEvento(x, $index, true);"
+                title="ELIMINAR">
+                Habilitar
+                <!--i class="material-icons Ncolor" style="color:white">check
+                </i-->
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Structure -->
+    <div id="modal_event" class="modal modalG bottom-sheet">
+      <div style="height: 90% !important;overflow: auto;">
+        <form name="formEvent" role="form" class="container" novalidate>
+          <div class="row">
+            <div class="col s12">
+              <div input-field>
+                <label for="nombreEvento">* Nombre</label>
+                <input id="nombreEvento" name="nombreEvento" type="text" class="validate" ng-model="vm.nameEvent" placeholder="Nombre del evento"
+                  autocomplete="off" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class=" col s12">
+              <input-field>
+                <label class="Asap-BoldItalic">* Lugar</label>
+                <input id="placeEvent" name="placeEvent" type="text" class="validate" placeholder="Lugar del evento" ng-model="vm.placeEvent"
+                  autocomplete="off" required>
+              </input-field>
+            </div>
+          </div>
+          <div class="row">
+            <div input-field class="col s6">
+              <label class="Asap-BoldItalic">* Fecha</label>
+              <input id="dateEvent" name="dateEvent" type="text" class="datepicker" placeholder="Fecha de evento" ng-model="vm.dateEvent"
+                autocomplete="off" required>
+            </div>
+            <div input-field class="col s6">
+              <label class="Asap-BoldItalic" for="urlEvent">* Url</label>
+              <input id="urlEvent" name="urlEvent" type="text" placeholder="Url de evento" class="validate" ng-model="vm.urlEvent" autocomplete="off"
+                required>
+            </div>
+          </div>
+          <div class="row">
+            <div input-field class="col s6">
+              <label class="Asap-BoldItalic">* Lugares</label>
+              <input id="cupoEvent" name="cupoEvent" onkeypress="return justNumbers(event);" class="validate" type="text" pattern="\d*"
+                placeholder="Cupo de personas" ng-model="vm.cupoEvent" autocomplete="off" required>
+            </div>
+            <div input-field class="col s6">
+              <label class="Asap-BoldItalic" for="costEvent">* Precio</label>
+              <input id="costEvent" name="costEvent" type="text" onkeypress="return justNumbers(event);" class="validate" placeholder="Precio"
+                ng-model="vm.costEvent" autocomplete="off" required>
+            </div>
+          </div>
+          <div class="row">
+            <div input-field class="col s12">
+              <label class="Asap-BoldItalic">* Descripción</label>
+              <textarea id="description" name="description" class="Asap-BoldItalic materialize-textarea validate" placeholder="Descripcion"
+                ng-model="vm.description" autocomplete="off" required></textarea>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div input-field class="col s12">
+              <label class="Asap-BoldItalic">* Términos & condiciones</label>
+              <textarea id="terminos" name="terminos" class="Asap-BoldItalic materialize-textarea validate" placeholder="Terminos" ng-model="vm.terminos"
+                autocomplete="off" required></textarea>
+            </div>
+          </div>
+          <div class="right">
+            <a class="btn modal-close" style="background: #FF3800; margin-right: 10px" ng-click="vm.clearEvent();">
+              Cancelar
+            </a>
+            <a type="submit" ng-disabled="!formEvent.$valid" class=" btn modal-close modal-trigger modal-close green darken-3" href="#confirm" ng-click="vm.confirmacion = true;">
+              Guardar
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+      <div class="modal-content">
+        <h6>¿Está usted seguro de realizar esta acción?</h6>
+      </div>
+      <div class="modal-footer">
+        <a style="background: #FF3800;" class="btn modal-trigger modal-close" href="#modal_event">
+          No
+        </a>
+        <a class="modal-action modal-close btn grey lighten-3" style="color: black;" ng-click="vm.formEvent();">
+          Si
+        </a>
+      </div>
+    </div>
+  </div>
+  <script>
+    $('.timepicker').pickatime({
+      default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+      fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
+      twelvehour: false, // Use AM/PM or 24-hour format
+      donetext: 'OK', // text for done-button
+      cleartext: 'Limpiar', // text for clear-button
+      canceltext: 'Cancelar', // Text for cancel-button
+      autoclose: false, // automatic close timepicker
+      ampmclickable: true, // make AM PM clickable
+      aftershow: function () { } //Function for after opening timepicker
+    });
+
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: 'Hoy',
+      clear: 'Limpiar',
+      close: 'Ok',
+      format: 'mm/dd/yyyy',
+      formatSubmit: 'mm/dd/yyyy',
+      closeOnSelect: false // Close upon selecting a date,
+    });
+
+    $('.modal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+
+        console.log(modal, trigger);
+      },
+      complete: function () { } // Callback for Modal close
+    });
+    $('.tooltipped').tooltip({
+      delay: 50
+    });
+  </script>

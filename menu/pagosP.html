@@ -1,0 +1,320 @@
+<div ng-controller="pagosPController as vm" class="container">
+  <div  ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
+    <h5 class="letersLength" style="color: #FF3800"> SALVANDO CAMBIOS . . . .</h5>
+    <div class="progress">
+        <div class="indeterminate"></div>
+    </div>
+  </div>
+  <div class="lblanco blanco" ng-show="!vm.esperar">
+      <div style="color: #FF3800;">
+          <h2 class="center">{{ vm.nombrePaquete }}</h2>
+      </div>
+      <div>
+        <label>Buscar</label>
+        <input type="search" ng-model="buscar">
+      </div>
+      <div ng-repeat="item in vm.data | filter: buscar" style="padding: 20px;">
+          <div class="row" ng-show="3 != item.status_service">
+              <h5 class="naranja">Cliente: {{item.name_user}}
+                  <span class="badge">
+                      <a href ng-click="vm.setImage(item);" style="color: #FF3800;">
+                          <i class="material-icons Bcolor">directions_bike</i>
+                      </a>
+                  </span>
+              </h5>
+              <p>Dirrección: {{item.address}}</p>
+              <p>Fecha de registro: {{item.registration_date | date: 'dd/MM/yyyy'}}</p>
+              <p>Fecha de servcio: {{item.service_date}}
+                  <span>
+                      <a ng-show="item.status_service == 1 && item.status_service != 2 " href="#modal_confirmar" ng-click="vm.itemEdit = item;"
+                          class="Asap-Bold modal-trigger" title="EDITAR FECHA Y HORA">
+                          <i class="material-icons Tiny Bcolor" style="color:#FF3800">edit</i>
+                      </a>
+                  </span>
+              </p>
+              <p>Costo del paquete: {{item.cost_pack | currency}}</p>
+              <div>
+                  <a ng-show="item.status!=3" ng-click="vm.temp = item;" class="Asap-Bold modal-trigger" href="#modal_pagos" title="PAGAR">
+                      <i class="material-icons Tiny " style="color:#fff">attach_money</i>
+                  </a>
+                  <a ng-show="item.status==3" ng-click="vm.temp = item;" class="Asap-Bold" title="PAGADO">
+                      <i class="material-icons Tiny" style="color:green;">attach_money</i>
+                  </a>
+                  <a ng-show="item.status_service == 1" ng-click="vm.itemFecha = item;" class="Asap-Bold modal-trigger" href="#confirmacionFecha"
+                      title="CONFIRMAR CITA">
+                      <i class="material-icons Tiny" style="color:#fff">done</i>
+                  </a>
+                  <a ng-show="item.status_service == 2 && item.status!=3" class="Asap-Bold" title="FAVOR DE PRIMERO REGISTRAR PAGO">
+                      <i class="material-icons Tiny">done_all</i>
+                  </a>
+                  <a ng-show="item.status_service == 2 && item.status==3" ng-click="vm.Term['id_service'] = item.id_service;" class="Asap-Bold modal-trigger"
+                      href="#modal_realizar" title="REALIZAR SERVICIO">
+                      <i class="material-icons Tiny" style="color:green;">done_all</i>
+                  </a>
+              </div>
+          </div>
+      </div>
+
+  </div>
+  <div id="modal_pagos" class="modal modal-fixed-footer modalPagoP" style="max-height: 100% !important;">
+        <div class="modal-content">
+            <form name="formPagoP" role="form">
+                <div class="row">
+                    <label class="Asap-BoldItalic">Tipo de pago</label>
+                    <select id="tipoPago" ng-model="vm.opcion">
+                        <option value="" disabled selected>Seleccionar tipo de pago</option>
+                        <option value="2">Transferencia Bancaria o Deposito Bancario</option>
+                        <option value="3">Efectivo</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div input-field class="col s6">
+                        <label class="Asap-BoldItalic">Referencia</label>
+                        <input id="referencia" name="referencia" type="text" placeholder="Referencia" ng-model="vm.pago.reference_number">
+                    </div>
+                    <div input-field class="col s6">
+                        <label class="Asap-BoldItalic">Monto</label>
+                        <input id="monto" name="monto" onkeypress="return justNumbers(event);" type="text" placeholder="Monto" ng-model="vm.pago.amount">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a class="btn modal-close" style="background: #FF3800;">
+                Cancelar
+            </a>
+            <a type="submit" class="btn modal-close modal-trigger modal-close green darken-3" href="#confirm">
+                GUARDAR
+            </a>
+        </div>
+    </div>
+    <!-- Modal Structure -->
+    <div id="modal_confirmar" class="modal modal-fixed-footer" style="width: 100% !important ; height: 100% !important;">
+        <div class="modal-content">
+            <form name="formConfirm" role="form">
+                <div class="row">
+                    <div input-field class="col s12">
+                        <label class="Asap-BoldItalic">Fecha</label>
+                        <input id="dateEvent" name="dateEvent" date='dd-MM-yyyy' type="text" class="datepicker" ng-model="vm.dia">
+                    </div>
+                </div>
+                <div class="row">
+                    <div input-field class="col s12">
+                        <label>Hora</label>
+                        <input type="text" class="timepicker" ng-model="vm.hora">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a class="btn modal-close" style="background: #FF3800;">
+                Cancelar
+            </a>
+            <a type="submit" class="btn modal-close modal-trigger modal-close green darken-3" href="#confirm2">
+                CONFIRMAR
+            </a>
+        </div>
+    </div>
+    <!-- Modal Structure -->
+    <div id="modal_bike" class="modal modal-fixed-footer" style="width: 100% !important; height: 20% !important;">
+        <div class="modal-content">
+            <div class="row center">
+                <div class="col s4">
+                    <!--label> Foto frontal</label-->
+                    <img data-ng-src="{{vm.objCI.photo_front_bike}}" style="width: 150px; height: 150px;" data-err-src="img.jpg" />
+                </div>
+                <div class="col s4">
+                        <!--label> Foto lateral</label-->
+                    <img data-ng-src="{{vm.objCI.photo_side_bike}}" style="width: 150px; height: 150px;" data-err-src="img.jpg" />
+                </div>
+                <div class="col s4">
+                        <!--label> Foto número de serie</label-->
+                    <img data-ng-src="{{vm.objCI.photo_serial_num}}" style="width: 150px; height: 150px;" data-err-src="img.jpg" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <label class="letersLength" style="color: #FF3800;">
+                        <strong>Año de produccion: </strong> {{vm.objCI.year_production}}</label>
+                </div>
+                <div class="col s6">
+                    <label class="letersLength" style="color: #FF3800;">
+                        <strong>Tipo de bicicleta: </strong> {{vm.objCI.des_type_bike}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <label class="letersLength" style="color: #FF3800;">
+                        <strong>Pedales: </strong> {{vm.objCI.des_pedal_bike}}</label>
+                </div>
+                <div class="col s6">
+                    <label class="letersLength" style="color: #FF3800;">
+                        <strong>Modelo: </strong> {{vm.objCI.model_bike}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <label class="letersLength" style="color: #FF3800;">
+                        <strong>Color de bicicleta: </strong> {{vm.objCI.color_bike}}</label>
+                </div>
+                <div class="col s6">
+                    <label class="letersLength" style="color: #FF3800;">
+                        <strong>Descripción: </strong> {{vm.objCI.des_type_bike}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <label class="letersLength" style="color: #FF3800;">
+                        <strong>Componentes: </strong> {{vm.objCI.des_component_bike}}</label>
+                </div>
+                <div class="col s6">
+                    <label class="letersLength" style="color: #FF3800;">
+                        <strong>Modelo de grupo: </strong> {{vm.objCI.group_model_bike}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn modal-close" style="background: #FF3800;">
+                CERRAR
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Modal Structure -->
+    <div id="modal_confirmar" class="modal modal-fixed-footer" style="width: 100% !important ; height: 50% !important ;">
+        <div class="modal-content">
+            <form name="formConfirm" role="form">
+                <div class="row">
+                    <div input-field class="col s12">
+                        <label class="Asap-BoldItalic">Fecha</label>
+                        <input id="dateEvent" name="dateEvent" type="text" class="datepicker" ng-model="vm.dia">
+                    </div>
+                </div>
+                <div class="row">
+                    <div input-field class="col s12">
+                        <label>Inicio</label>
+                        <input type="text" class="timepicker" ng-model="vm.hora">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a class="btn modal-close" style="background: #FF3800;">
+                Cancelar
+            </a>
+            <a type="submit" class="btn modal-close modal-trigger modal-close grey lighten-3" href="#confirm2"
+                style="color: black;">
+                CONFIRMAR
+            </a>
+        </div>
+    </div>
+
+    <div id="modal_realizar" class="modal modalG modal-fixed-footer">
+        <div class="modal-content">
+            <form name="formConfirm" role="form">
+                <div>
+                    <label for="comentarios">Comentarios</label>
+                    <textarea id="comentarios" class="materialize-textarea" ng-model="vm.comentarios" placeholder="Comentarios. . . . . . ."></textarea>
+                </div>
+                <div class="container center">
+                    <p class="range-field">
+                        <input type="range" id="test5" min="0" max="5" ng-model="vm.calificacion" />
+                    </p>
+                    <label for="test5" class="">Calificacion</label>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a class="btn modal-close" style="background: #FF3800;">
+                Cancelar
+            </a>
+            <a type="submit" class="btn modal-close modal-trigger modal-close" href="#confirm3" style="background: #FF3800;">
+                CONFIRMAR
+            </a>
+        </div>
+    </div>
+
+
+    <div id="confirm3" class="modal modalSiNo modal-fixed-footer">
+        <div class="modal-content">
+            <h6>¿Está usted seguro de realizar esta acción?</h6>
+        </div>
+        <div class="modal-footer">
+            <a style="background: #FF3800;" class="btn modal-close">
+                No
+            </a>
+            <a class="modal-action modal-close btn grey lighten-3" style="color: #1a1a19;" ng-click="vm.realizado();">Si</a>
+        </div>
+    </div>
+
+    <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+        <div class="modal-content">
+            <h6>¿Está usted seguro de realizar esta acción?</h6>
+        </div>
+        <div class="modal-footer">
+            <a style="background: #FF3800;" class="Asap-Bold waves-effect waves-light btn modal-close modal-trigger" href="#modal_pagos">
+                No
+            </a>
+            <a class="modal-action modal-close btn grey lighten-3" style="color: #1a1a19;" ng-click="vm.send();">Si</a>
+        </div>
+    </div>
+    <div id="confirm2" class="modal modalSiNo modal-fixed-footer">
+        <div class="modal-content">
+            <h6>Se confirmara la fecha del dia {{vm.dia}} a las {{vm.hora}} ?</h6>
+        </div>
+        <div class="modal-footer">
+            <a style="background: #FF3800;" class="btn modal-close">
+                No
+            </a>
+            <a class="modal-action modal-close btn grey lighten-3" style="color: #1a1a19;" ng-click="vm.editarFecha();">Si</a>
+        </div>
+    </div>
+
+    <div id="confirmacionFecha" class="modal modalSiNo modal-fixed-footer">
+        <div class="modal-content">
+            <h6>{{vm.itemFecha.service_date | date:"dd/MM/yyyy 'Hora: ' h:mma"}} es la fecha correcta?</h6>
+        </div>
+        <div class="modal-footer">
+            <a style="background: #FF3800;" class="btn modal-close">
+                No
+            </a>
+            <a class="modal-action modal-close btn grey lighten-3" style="color: #1a1a19;" ng-click="vm.confirmo();">Si</a>
+        </div>
+    </div>
+</div>
+<script>
+    $('.modal').modal({
+        dismissible: false, // Modal can be dismissed by clicking outside of the modal
+        opacity: .5, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        startingTop: '4%', // Starting top style attribute
+        endingTop: '10%', // Ending top style attribute
+        ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+        },
+        complete: function () { } // Callback for Modal close
+    }
+    );
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15, // Creates a dropdown of 15 years to control year,
+        today: 'Hoy',
+        clear: 'Limpiar',
+        close: 'Ok',
+        format: 'mm/dd/yyyy',
+        closeOnSelect: false // Close upon selecting a date,
+    });
+    //format: 'yyyy-mm-dd',
+    $('.timepicker').pickatime({
+        default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+        fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+        twelvehour: false, // Use AM/PM or 24-hour format
+        donetext: 'OK', // text for done-button
+        cleartext: 'Limpiar', // text for clear-button
+        canceltext: 'Cancelar', // Text for cancel-button
+        autoclose: false, // automatic close timepicker
+        ampmclickable: true, // make AM PM clickable
+        aftershow: function () { } //Function for after opening timepicker
+    });
+</script>

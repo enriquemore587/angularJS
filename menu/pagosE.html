@@ -1,0 +1,89 @@
+<div ng-controller="pagosController as vm">
+    <div class="container" ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
+        <h5 class="letersLength" style="color: #FF3800"> Loading . . . .</h5>
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+    </div>
+    <div class="container blanco" ng-show="!vm.esperar">
+        <div style="color: #FF3800;">
+            <h4 class="center">{{ vm.nombreEvento }}</h4>
+        </div>
+        <div class=" lblanco">
+            <label>Buscar</label>
+            <input type="search" ng-model="buscar" ng-blur="buscar=''">
+        </div>
+        <div ng-repeat="item in vm.data | orderBy:'status' | filter: buscar" style="padding: 25px;">
+            <div class="row lblanco" style="width: 100%; border-bottom: 1px ridge #FF3800; height: 130px;">
+                <div>
+                    <h5>{{item.name_user | uppercase}}
+                        <span class="badge">
+                            <a ng-show="item.status != 3" ng-click="vm.asignarPago(item)" class="Asap-Bold modal-trigger" href="#modal_pagos" title="PAGAR">
+                                <i class="material-icons Tiny" style="color:#1a1a19">payment</i>
+                            </a>
+                            <i title="PAGADO" ng-show="item.status == 3" class="material-icons Tiny" style="color: green;">done_all</i>
+                        </span>
+                    </h5>
+                </div>
+                <div>
+                    <p>
+                        <strong>Registro:</strong>
+                        {{item.registration_date | date:"MM/dd/yyyy" }}
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <strong>Costo de Evento:</strong>
+                        {{item.cost_event | currency}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Structure -->
+        <div id="modal_pagos" class="modal modalG modal-fixed-footer">
+            <div class="modal-content">
+                <form name="formEvent" role="form">
+                    <div class="row">
+                        <label class="Asap-BoldItalic">Tipo de pago</label>
+                        <select id="tipoPago" ng-model="vm.obj.payment_type" convert-to-number>
+                            <option ng-repeat="option in vm.pagosOpc" ng-value="{{option.id}}">{{option.name}}</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div input-field class="col s12">
+                            <label class="Asap-BoldItalic">Referencia</label>
+                            <input id="referencia" name="referencia" type="text" placeholder="Referencia" ng-model="vm.obj.reference_number">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div input-field class="col s12">
+                            <label class="Asap-BoldItalic">Monto</label>
+                            <input disabled id="monto" name="monto" type="text" onkeypress="return justNumbers(event);" placeholder="Monto" ng-model="vm.obj.amount">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="right">
+                    <a class="btn modal-trigger modal-close" style="background: #FF3800;">
+                        Cancelar
+                    </a>
+                    <a type="submit" class="btn modal-close modal-trigger modal-close green darken-3" href="#confirm">
+                        GUARDAR
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+            <div class="modal-content">
+                <h6>¿Está usted seguro de realizar este pago?</h6>
+            </div>
+            <div class="modal-footer">
+                <a style="background: #FF3800;" class="btn  modal-trigger modal-close" href="#modal_pagos">
+                    No
+                </a>
+                <a class="modal-action modal-close btn grey lighten-3" style="color: black;" ng-click="vm.saveUpdate();">Si</a>
+            </div>
+        </div>
+    </div>
+</div>

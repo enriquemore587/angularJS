@@ -1,0 +1,222 @@
+
+img.pequeña{
+    width: 50px; height: 50px;
+}
+
+img.mediana{
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Ncolor:hover{
+    color: #FF3800 !important;
+}
+
+.Bcolor:hover{
+    color: #FFF !important;
+}
+
+.Black_color:hover{
+    color: #000 !important;
+}
+
+div.blanco{
+  background: #1a1a19;
+  /*opacity: 0.7;*/
+}
+.gris{
+    background: #1a1a19 !important;
+    opacity: 0.9;
+}
+
+bg-workSpace {
+  background: #fff;
+}
+img.grande{
+    margin-top: 30%;
+    width: 80%; height: 80%;
+}
+.eventos {
+   margin-left: -16px;
+   margin-top: 5px;
+}
+btn.nara{
+  background: #FF3800;
+}
+.lblanco{
+    color: #fff !important;
+}
+
+tbody.check {
+    width: 200px; height: 100px; overflow: auto;
+}
+div.week{
+    max-height: 210px; border-style: solid; border-color: black;
+}
+div.Noweek{
+    max-height: 210px; border-style: solid; border-color: #FF3800;
+}
+div.event_style {
+    height: 250px; border-style: solid; border-color: white;
+}
+
+div.rodadas_style {
+    height: 120px; border-style: solid; border-color: #1a1a19; background-color: #FF3800;
+}
+div.rodadas_style_disable {
+    height: 120px; border-style: solid; border-color: #FF3800;
+}
+img.bici{
+    
+    
+}
+
+div.rodadas_style_child {
+    height: 155px; border-style: solid; border-color: #1a1a19; background-color: #FF3800;
+}
+div.rodadas_style_child_disable {
+    height: 155px; border-style: solid; border-color: #FF3800;
+}
+
+div.NoEvento {
+    height: 250px; border-style: solid; border-color: #FF3800;
+}
+body{
+    background: #000;
+  /*background-image: url("../image/fondo.jpg");
+  opacity: 0.9;
+  background-repeat: repeat-y;*/
+}
+
+#mapPackage{
+    height: 80vh;
+    width: 100%;
+    box-shadow: 3px 3px 10px gray;
+}
+#____mapWeek{
+    height: 400px;
+    width: 100% !important;
+    box-shadow: 3px 3px 10px gray;
+}
+
+#mapWeek{
+    height: 87vh !important;
+    width: 100% !important;
+    box-shadow: 3px 3px 10px gray;
+    position: absolute;
+    top: 0 !important;
+}
+
+#map{
+    height:500px;
+    width: 100%;
+    box-shadow: 3px 3px 10px gray;
+}
+#mapUsers{
+    height: 200px;
+    width: 400px;
+    margin-right: 30px;
+    box-shadow: 3px 3px 10px gray;
+}
+.naranja{
+  color: #FF3800;
+}
+
+label{
+  color: #FF3800 !important;
+}
+.labels {
+  color: black;
+  /*background-color: red;*/
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: underline;
+  text-align: center;
+  width: 100px;
+  white-space: nowrap;
+}
+.bO{
+  color: #FF3800;
+}
+
+div.modalComplete{
+    max-height: 100% !important;
+}
+
+
+/*ok*/
+.letersLength {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.nav-wrapper {
+    background-color: #1a1a19;
+
+}
+
+.picker__date-display {
+    background-color: #1a1a19;
+}
+.picker__weekday-display {
+background-color:#1a1a19;
+}
+.picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
+background-color:#FF3800;
+}
+.modalG { width: 100% !important ; height: 100% !important ; max-height: 100% !important;}
+.modalSiNo { width: 50% !important ; height: 25% !important ; }
+.modalPagoP { width: 100% !important ; height: 50% !important ; }
+@font-face{
+    font-family:"Asap-Bold";
+    /*src:url(../fonts/ASAP/Asap-Bold.otf) format("opentype");*/
+    src:url(Asap-Bold.otf) format("opentype");
+}
+@font-face{
+    font-family:"Asap-BoldItalic";
+    /*src:url(../fonts/ASAP/Asap-BoldItalic.otf) format("opentype");*/
+    src:url(Asap-BoldItalic.otf) format("opentype");
+}
+
+@font-face{
+    font-family:"Asap-Italic";
+    /*src:url(../fonts/ASAP/Asap-Italic.otf) format("opentype");*/
+    src:url(Asap-Italic.otf) format("opentype");
+}
+
+@font-face{
+    font-family:"Asap-Medium";
+    /*src:url(../fonts/ASAP/Asap-Medium.otf) format("opentype");*/
+    src:url(Asap-Medium.otf) format("opentype");
+}
+
+@font-face{
+    font-family:"Asap-MediumItalic";
+    /*src:url(../fonts/ASAP/Asap-MediumItalic.otf) format("opentype");*/
+    src:url(Asap-MediumItalic.otf) format("opentype");
+}
+
+@font-face{
+    font-family:"Asap-Regular";
+    /*src:url(../fonts/ASAP/Asap-Regular.otf) format("opentype");*/
+    src:url(Asap-Regular.otf) format("opentype");
+}
+
+/*              RODLEY GROTESK               */
+
+@font-face{
+    font-family:"RidleyGroteskDemo-Italic";
+    src:url(../fonts/RODLEY_GROTESK/RidleyGroteskDemo-Italic.otf) format("opentype");
+}
+
+@font-face{
+    font-family:"RidleyGroteskDemo-Regular";
+    src:url(../fonts/RODLEY_GROTESK/RidleyGroteskDemo-Regular.otf) format("opentype");
+}
+
+.ng-invalid.ng-dirty {border-color: #FA787E;}
+.ng-valid.ng-dirty {border-color: #78FA89;}

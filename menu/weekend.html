@@ -1,0 +1,335 @@
+<div ng-controller="weekendController as vm">
+  <audio src="/noohwi/components/sound/alert.mp3" id="sound"></audio>
+  <div>
+    <br>
+    <div class="center">
+      <a style="background: #FF3800;" data-position="right" data-tooltip="NUEVO WEEKEND RIDE" ng-click="vm.creatingNew();" class="tooltipped btn-floating btn-large modal-trigger"
+        href="#modal_newWeekend">
+        <i class="material-icons">add</i>
+      </a>
+    </div>
+    <br>
+    <div class="container" style="position: relative;">
+      <label>Buscar weekend ride</label>
+      <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off" ng-blur="buscar=''">
+      <div class="switch" style="position: absolute; top: 0; right: 0;">
+        <label>
+          Show all
+          <input type="checkbox" ng-model="vm.verTodosWeek" ng-true-value="true" ng-false-value="false" class="deep-orange lighten-5">
+          <span class="lever deep-orange accent-3"></span>
+        </label>
+      </div>
+    </div>
+    <div class="container row">
+      <div class="card col s12 m6 l4 gris" ng-repeat="x in vm.weeks | filter: buscar" ng-if="x.active || vm.verTodosWeek" style="padding: 15px !important;" ng-class="{week: x.active == true, Noweek: x.active == false}">
+        <a class="activator naranja" href>{{x.name}}
+          <i class="material-icons right">more_vert</i>
+        </a>
+        <div class="card-content">
+          <p class="letersLength" style="color: white;margin-left: -22px !important;">
+            {{x.place}}
+          </p>
+          <p class="letersLength" style="color: white;margin-left: -22px !important;">
+            {{x.date | date:"MMM/dd/yyyy 'Hora: ' h:mma"}}
+          </p>
+          <p class="letersLength" style="color: white;margin-left: -22px !important;">
+            {{x.description}}
+          </p>
+          <p class="letersLength" style="color: white;margin-left: -22px !important;">
+            {{x.terms}}
+          </p>
+          <p class="letersLength" style="color: white;margin-left: -22px !important;">
+            {{x.amount | currency}}
+          </p>
+          <p class="letersLength" style="color: #FF3800;margin-left: -22px !important;">
+            {{ x.count_cof }}
+          </p>
+        </div>
+        <div ng-if="x.active" class="card-reveal gris">
+          <a class="card-title naranja" style="font-size: 15px">{{x.name}}
+            <i class="material-icons right">close</i>
+          </a>
+          <div class="card-action center">
+            <div style="margin-top: 40px;">
+              <a style="margin-right: 9px !important;" class="Asap-Bold" href ng-click="vm.deleteWeekend(x, false)">
+                <i class="material-icons Ncolor" style="color:white">delete</i>
+              </a>
+              <a style="margin-right: 9px !important;" class="Asap-Bold modal-trigger" href="#modal_newWeekend" ng-click="vm.edit(x)">
+                <i class="material-icons Ncolor" style="color:white">edit
+                </i>
+              </a>
+              <a style="margin-right: 9px !important;" class="Asap-Bold modal-trigger" href="#modal_tracking" ng-click="vm.tracking(x)">
+                <i class="material-icons Ncolor" style="color:white">directions_bike
+                </i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div ng-if="!x.active" class="card-reveal gris">
+          <a class="card-title naranja" style="font-size: 15px">{{x.name}}
+            <i class="material-icons right">close</i>
+          </a>
+          <div class="card-action center">
+            <div style="margin-top: 40px;">
+              <a style="margin-right: 9px !important; text-decoration: underline; color: #FF3800;" class="Asap-Bold" href ng-click="vm.deleteWeekend(x, true)">
+                Habilitar
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal_tracking" class="modal modalG bottom-sheet">
+      <nav class="nav-extended">
+        <div class="nav-wrapper">
+          <div class="row hide-on-med-and-down" style="position: absolute; top: 0; width: 30%; left: 37.5%; visibility: hidden;">
+            <div style="margin-top: 3px;">
+              <div class="row">
+                <div id="med" class="col s5 m5 l5" style="height: 60px; border-style: solid; color: #FF3800;">
+                  <a href style="color: #FF3800; font-size: 12px;">
+                    <i class="material-icons right">loupe</i> Médica
+                  </a>
+                </div>
+                <div class="col s1 m1 l1"></div>
+                <div id="mec" class="col s5 m5 l5" style="height: 60px; border-style: solid; color: #FF3800;">
+                  <a href style="color: #FF3800; font-size: 12px;">
+                    <i class="material-icons left">build</i> Mécanica
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a class="brand-logo left" style="font-size: 15px">{{ vm.nameTracking }}</a>
+          <ul class="right hide-on-med-and-down">
+            <li ng-show="!vm.ride.active">
+              <form>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input autocomplete="off" placeholder="Número de emergencia" ng-change="vm.isOk()" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 12px;"
+                      id="numm" type="text" class="validate">
+                  </div>
+                </div>
+              </form>
+            </li>
+            <li ng-show="!vm.ride.active && vm.NOk != false">
+              <a id="iniciar" class="Ncolor" ng-click="vm.activeTracking();">
+                <i class="material-icons left">directions_bike</i>Iniciar
+              </a>
+            </li>
+            <li ng-show="vm.ride.active && !vm.confirmacion">
+              <a ng-click="vm.pregCerrarTrack(true);">
+                <i class="material-icons left">stop</i>Parar</a>
+            </li>
+            <li ng-show="vm.ride.active && !vm.confirmacion">
+              <a ng-click="vm.centrar(true);">
+                <i class="material-icons left">center_focus_weak</i>Centrar</a>
+            </li>
+            <li ng-show="!vm.confirmacion">
+              <a class="modal-close Ncolor">
+                <i class="material-icons left">close</i>
+              </a>
+            </li>
+          </ul>
+          <ul class="right hide-on-large-only">
+            <li ng-show="!vm.ride.active">
+              <form>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input autocomplete="off" placeholder="Número de emergencia" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 10px;"
+                      type="text" class="validate" ng-change="vm.isOk()">
+                  </div>
+                </div>
+              </form>
+            </li>
+            <li ng-show="vm.ride.active && !vm.confirmacion && !vm.confirmacion">
+              <a ng-click="vm.pregCerrarTrack(true);">
+                <i class="material-icons Tiny">stop</i>
+              </a>
+            </li>
+            <li ng-show="!vm.ride.active &&  vm.NOk != false">
+              <a ng-click="vm.activeTracking();">
+                <i class="material-icons Tiny">directions_bike</i>
+              </a>
+            </li>
+            <li ng-show="vm.ride.active && !vm.confirmacion && !vm.confirmacion">
+              <a ng-click="vm.centrar(true);">
+                <i class="material-icons Tiny">center_focus_weak</i>
+              </a>
+            </li>
+            <li ng-show="!vm.confirmacion">
+              <a ng-click="vm.centrar(true);" class="modal-close">
+                <i class="material-icons Tiny">close</i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="modal-content">
+        <div ng-show="vm.esperarTracking" style="margin: 20vh auto 0px auto !important;">
+          <h5 class="letersLength" style="color: #FF3800"> Loading tracking . . . .</h5>
+          <div class="progress">
+            <div class="indeterminate"></div>
+          </div>
+        </div>
+        <div class="row" ng-show="!vm.esperarTracking" style="position: relative;">
+          <div id="mapWeek"></div>
+          <div ng-show="vm.ride.active && !vm.confirmacion" style="overflow: auto; background: #1a1a19; opacity:0.9; width: 20%; height: 87vh; position: absolute; top: 0;">
+            <ul>
+              <li ng-repeat="x in vm.participantes">
+                <a href ng-click="vm.verUser(x);" style="font-size:12px; color: #FF3800; margin-left: 10px;" class="valign-wrapper">
+                  <i ng-show="x.ec" class="material-icons Tiny deep-orange-text ">build</i>
+                  <i ng-show="x.ed" class="material-icons Tiny deep-orange-text">loupe</i>
+                  <i ng-show="!x.ed && !x.ec" class="material-icons Medium green-text">directions_bike</i>
+                  <span style="font-size: 10px;">&nbsp;&nbsp;{{ x.un }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="modal_newWeekend" class="modal modalG bottom-sheet">
+      <div class="row">
+        <div class="col s6 m6 l6" style="height: 90; overflow: auto !important; margin-top: 25px;">
+          <form class="container" name="formWeekend" role="form" novalidate>
+            <div class="row">
+              <div input-field class="col s12">
+                <label>* Nombre de Weekend Ride</label>
+                <input name="nameWeekend" class="validate" type="text" ng-model="vm.weekObj.name" autocomplete="off" required>
+              </div>
+            </div>
+            <div class="row">
+              <div input-field class="col s12">
+                <label for="place">* Lugar</label>
+                <input id="place" name="place" type="text" class="validate" ng-model="vm.weekObj.place" autocomplete="off" required>
+              </div>
+            </div>
+            <div class="row">
+              <div input-field class="col s4">
+                <label>* Hora</label>
+                <input type="text" class="timepicker" ng-model="vm.hora" autocomplete="off" autocomplete="off" required>
+              </div>
+              <div input-field class="col s4">
+                <label for="date">* Fecha</label>
+                <input id="date" name="date" type="text" class="datepicker" autocomplete="off" ng-model="vm.fecha">
+              </div>
+              <div input-field class="col s4">
+                <label>* Precio</label>
+                <input id="amount" onkeypress="return justNumbers(event);" name="amount" type="text" class="validate" autocomplete="off"
+                  ng-model="vm.weekObj.amount" required>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div input-field class="col s12">
+                <label for="nameWeek">* Descripción </label>
+                <textarea ng-model="vm.weekObj.description" autocomplete="off" required class="materialize-textarea"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div input-field class="col s12">
+                <label for="terms">* Términos</label>
+                <textarea ng-model="vm.weekObj.terms" autocomplete="off" required class="materialize-textarea"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col s6 m6 l6">
+          <div class="row">
+            <div class="col s3 naranja" style="margin-top: 20px;">
+              Lista de Usuarios
+            </div>
+            <div class="col s9" style="margin-top: 20px;">
+              <label>Buscar usuario</label>
+              <input type="search" autocomplete="off" ng-model="buscarU"  ng-blur="buscarU=''">
+            </div>
+          </div>
+          <div style="height: 70vh; overflow: auto !important;">
+            <table class="highlight responsive-table">
+              <thead>
+                <th></th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Estatus</th>
+              </thead>
+              <tbody>
+                <tr style="height: 120px;" ng-repeat="item in vm.weekObj.user | filter: buscarU">
+                  <td>
+                    <i ng-show="item.status==2" class="material-icons" style="color: green;">event_available</i>
+                    <i ng-show="item.status==1" class="material-icons" style="color: #FF3800;">event_note</i>
+                    <i ng-show="item.status==0" class="material-icons" style="color: #1a1a19;">event_busy</i>
+                  </td>
+                  <td> {{item.user_name}}</td>
+                  <td>
+                    <div class="input-field" ng-show="item.status == 1">
+                      <input id="icon_prefix" type="text" class="validate" onkeypress="return justNumbers(event);" style="width: 100px;" ng-model="item.amount"
+                        autocomplete="off">
+                    </div>
+                    <p ng-show="item.status == 2 || item.status == 0">
+                      <label style="color: #FF3800"> {{ item.amount | currency }} </label>
+                    </p>
+                  </td>
+                  <td class="center">
+                    <a ng-show="item.status==0" ng-click="vm.ver(item);" class="btn" style="width: 200px; background-color: Transparent; color: #1a1a19; border: solid; border-color: #1a1a19; border-width: thin;">
+                      Invitar
+                    </a>
+                    <a class="btn" ng-show="item.status==1" ng-click="vm.ver(item);" style="width: 200px; background-color: Transparent; color: #FF3800; border: solid; border-color: #FF3800; border-width: thin;">
+                      Quitar
+                    </a>
+                    <p ng-show="item.status==2" style="color: green;">
+                      CONFIRMADO
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <a type="submit" ng-disabled="!formWeekend.$valid" ng-click="vm.confirmacion=true;" class="modal-action modal-close btn green darken-3 modal-trigger"
+              style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;" href="#confirm">
+              GUARDAR
+            </a>
+            <a style="background: #FF3800; width: 120px; font-size: 12px;  float: right; margin-right: 5px;" ng-click="vm.clearData()"
+              class="btn modal-close">
+              CERRAR
+            </a>
+            <a class="btn" ng-click="vm.update_list()" style="background-color: Transparent; color: #FF3800; border: solid; border-color: #FF3800; border-width: thin; width: 150px; font-size: 12px;  float: right; margin-right: 5px;">
+              <i class="material-icons right Tiny">autorenew</i>Update
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+      <div class="modal-content">
+        <h6>¿Está usted seguro de guardar este Weekend ride?</h6>
+      </div>
+      <div class="modal-footer">
+        <a style="background: #FF3800;" class="btn modal-close modal-trigger" href="#modal_newWeekend">
+          No
+        </a>
+        <a class="modal-close btn grey lighten-3" ng-click="vm.save();">Si</a>
+      </div>
+    </div>
+    <div id="inicioEvent" class="modal modalSiNo modal-fixed-footer">
+      <div class="modal-content container">
+        <label for="icon_telephone">Telephone</label>
+        <input id="icon_telephone" onkeypress="return justNumbers(event);" type="tel" class="validate" ng-model="vm.ride.emergency_number">
+      </div>
+      <div class="modal-footer">
+        <a style="background: #FF3800;" class="btn modal-close">
+          Cancelar
+        </a>
+        <a ng-show="vm.ride.emergency_number" class="modal-action modal-close btn grey lighten-3" ng-click="vm.activeTracking();"
+          style="color: black;">
+          Activar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

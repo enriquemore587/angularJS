@@ -1,0 +1,335 @@
+<div ng-controller="usuariosController as vm">
+  <br>
+
+  <div class="container " ng-show="vm.ver">
+    <br>
+    <div class="col s11">
+      <div class="card horizontal lblanco" style="margin-left: 20px; margin-right: 20px; padding: 20px;background: #1a1a19">
+
+        <div class="card-image">
+          <img style="max-width: 200px; max-height: 250px !important" ng-show="vm.userVisible.photo" ng-src="{{vm.userVisible.photo}}"
+            class="circle">
+        </div>
+        <div class="card-stacked">
+          <div class="card-content">
+            <a class="btn-floating" ng-click="vm.hideDetail()" style="background: #FF3800; position: fixed; top: 150px; right: 15%;">
+              <i class="material-icons ">close</i>
+            </a>
+
+            <h5 class="header naranja">
+              <strong></strong>{{ vm.userVisible.name | uppercase}}</h5>
+            <p>
+              <i class="material-icons" style="margin-right: 10px;">person</i>{{ vm.userVisible.mail | uppercase}}</p>
+            <p>
+              <i class="material-icons" style="margin-right: 10px;">phone</i>{{ vm.userVisible.phone | uppercase}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="card lblanco" style="margin-left: 20px; margin-right: 20px; padding: 20px;background: #1a1a19">
+      <h5 class="header naranja">Bicicletas registradas</h5>
+      <div class="card-tabs">
+        <ul class="tabs tabs-fixed-width">
+          <li class="tab blanco lblanco" ng-repeat="item in vm.userVisible.bikes">
+            <a href ng-click="vm.showBici(item)" style="color: #FF3800">{{item.brand_bike}}</a>
+          </li>
+        </ul>
+      </div>
+      <ul class="collection blanco lblanco" ng-show="vm.biciVisible">
+        <li>
+          <div class="row center">
+            <div class="col s12 m12 ">
+              <p>
+                FRONTAL
+              </p>
+              <img ng-src="{{ vm.biciVisible.photo_front_bike }}">
+            </div>
+            <div class="col s12 m12 ">
+              <p>
+                LATERAL
+              </p>
+              <img  ng-src="{{ vm.biciVisible.photo_side_bike }}">
+            </div>
+            <div class="col s12 m12 ">
+              <p>
+                SERIAL
+              </p>
+              <img ng-src="{{vm.biciVisible.photo_serial_num}}">
+            </div>
+          </div>
+          <div class="row" style="padding: 50px;">
+            <table class="centered">
+              <thead>
+                DESCRIPCIÓN GENERAL
+                <hr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <label>MARCA</label>
+                    <p>{{ vm.biciVisible.brand_bike | uppercase}}</p>
+                  </td>
+                  <td>
+                    <label>GRUPO</label>
+                    <p>{{ vm.biciVisible.group_model_bike | uppercase}}</p>
+                  </td>
+                  <td>
+                    <label>AÑO DE PRODUCCIÓN</label>
+                    <p>{{ vm.biciVisible.year_production | uppercase}}</p>
+                  </td>
+
+                  <td>
+                    <label>DESCRIPCIÓN</label>
+                    <p>{{ vm.biciVisible.des_type_bike | uppercase}}</p>
+                  </td>
+
+                  <td>
+                    <label>COLOR</label>
+                    <p>{{ vm.biciVisible.color_bike | uppercase}}</p>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <label>PEDAL</label>
+                    <p>{{ vm.biciVisible.des_pedal_bike | uppercase}}</p>
+                  </td>
+
+                  <td>
+                    <label>NÚMERO SERIAL</label>
+                    <p>{{ vm.biciVisible.serial_number_bike | uppercase}}</p>
+                  </td>
+
+                  <td>
+                    <label>COMPONENTE</label>
+                    <p>{{ vm.biciVisible.des_component_bike | uppercase}}</p>
+                  </td>
+
+                  <td>
+                    <label>LLANTA</label>
+                    <p>{{ vm.biciVisible.wheel_bike | uppercase}}</p>
+                  </td>
+                  <td>
+                    <label>RIN</label>
+                    <p>{{ vm.biciVisible.tire_bike | uppercase}}</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <a href ng-click="vm.biciVisible=null;" class="secondary-content naranja">
+            <i class="material-icons">close</i>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="card lblanco" style="margin-left: 20px; margin-right: 20px; padding: 20px;background: #1a1a19">
+      <h5 class="header naranja">Direcciones registradas</h5>
+      <div class="card-tabs">
+        <ul class="tabs tabs-fixed-width">
+          <li class="tab" ng-repeat="item in vm.userVisible.address">
+            <a href ng-click="vm.showAddress(item)" style="color: #FF3800">{{ item.street }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="collection" ng-show="vm.addressVisible">
+        <div class="row" style="padding: 15px;">
+          <a href ng-click="vm.addressVisible=null;" class="secondary-content naranja">
+            <i class="material-icons">close</i>
+          </a>
+          <div class="col s12 m12 l12">
+            <address>
+              {{ vm.addressVisible.street }} {{ vm.addressVisible.number_ext}} {{ vm.addressVisible.number_int && vm.addressVisible.number_int
+              != 'undefined' ? 'interior ' +vm.addressVisible.number_int : '' }}
+            </address>
+            <address>
+              {{ vm.addressVisible.colony}}
+            </address>
+            <address>
+              {{ vm.addressVisible.municipality}}
+            </address>
+            <address>
+              C.P. {{ vm.addressVisible.state}}
+            </address>
+            <address>
+              C.P. {{ vm.addressVisible.cp}}
+            </address>
+            <p>
+              <address>REFERENCIA ADICIONAL {{ vm.addressVisible.additional_reference | uppercase}}</address>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="row card lblanco" style="margin-left: 20px; margin-right: 20px; padding: 20px;background: #1a1a19">
+      <h5 class="header naranja">Servicios Comprados</h5>
+      <div class="col s12 m12 l4">
+        <!--div style="box-shadow: 1px 1px 3px gray;background: #1a1a19"-->
+        <div style="background: #1a1a19">
+          <div class="center card-content">
+            <span class="white-text text-darken-4">Bike Transportation Services</span>
+            <h1 class="naranja">{{ vm.userVisible.events }}</h1>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m12 l4">
+        <div style="background: #1a1a19">
+          <div class="center card-content">
+            <span class=" white-text text-darken-4">Mobile Services</span>
+            <h1 class="naranja">{{ vm.userVisible.packages }}</h1>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m12 l4">
+        <div style="background: #1a1a19">
+          <div class="center card-content">
+            <span class="white-text text-darken-4">Weekend Rides</span>
+            <h1 class="naranja">{{ vm.userVisible.weekend_rides }}</h1>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="container" ng-show="!vm.ver">
+    <div>
+      <label>Buscar usuario</label>
+      <input type="search" ng-model="buscar" style="color: #fff"  ng-blur="buscar=''">
+    </div>
+    <ul class="collection" dir-paginate="item in vm.listaUsers | filter: buscar |itemsPerPage:100">
+      <li class="collection-item avatar" style="min-height: 50px !important;">
+        <div class="row" style="margin-top: 20px;">
+          <div class="col s12 m4 l4">{{ item.name | uppercase }}</div>
+          <div class="col s12 m4 l4">{{item.phone}}</div>
+          <div class="col s12 m4 l4">{{item.mail}}</div>
+        </div>
+        <a ng-click="vm.showDetail(item.id_user)" href class="secondary-content">
+          <i ng-click="" class="material-icons naranja">more_vert</i>
+        </a>
+      </li>
+    </ul>
+    <div class="center blanco">
+      <dir-pagination-controls max-size="2" direction-links="true" boundary-links="true">
+      </dir-pagination-controls>
+    </div>
+  </div>
+
+  <!-- Modal Structure -->
+  <div id="modal_newUser" class="modal">
+    <div class="modal-content">
+      <form name="formNewUser" role="form" novalidate>
+        <div input-field class="row">
+          <div class="col s4">
+            <label class="Asap-BoldItalic">Nombre de usuario</label>
+            <input required id="user_name" name="user_name" type="text" class="validate" placeholder="Enrique 27" ng-model="vm.usuario.user_name">
+          </div>
+          <div class="col s4">
+            <label class="Asap-BoldItalic">Constraseña</label>
+            <input required id="pass" name="pass" type="password" class="validate" ng-model="vm.usuario.password">
+          </div>
+          <div class="col s4">
+            <label class="Asap-BoldItalic">Correo electronico</label>
+            <input required id="mail" name="mail" type="text" class="validate" ng-model="vm.usuario.mail">
+          </div>
+        </div>
+        <div imput-field class="row">
+          <div input-field class="col s4">
+            <label class="Asap-BoldItalic">Nombre completo</label>
+            <input required id="name" name="name" type="text" class="validate" ng-model="vm.usuario.name">
+          </div>
+          <div input-field class="col s4">
+            <label class="Asap-BoldItalic">Apellido paterno</label>
+            <input required id="last_name" name="last_name" type="text" class="validate" ng-model="vm.usuario.last_name">
+          </div>
+          <div input-field class="col s4">
+            <label class="Asap-BoldItalic">Apellido materno</label>
+            <input required id="mother_last_name" name="mother_last_name" type="text" class="validate" ng-model="vm.usuario.mother_last_name">
+          </div>
+        </div>
+        <div imput-field class="row">
+          <div input-field class="col s5">
+            <label class="Asap-BoldItalic">Fecha de nacimiento</label>
+            <input id="birthdate" name="birthdate" type="text" class="datepicker" placeholder="Fecha de evento" ng-model="vm.usuario.birthdate">
+          </div>
+          <div input-field class="col s5">
+            <label class="Asap-BoldItalic">Telefono</label>
+            <input required id="phone" name="phone" type="text" class="validate" ng-model="vm.usuario.phone">
+          </div>
+          <div input-field class="col s2">
+            <label class="Asap-BoldItalic">Sexo</label>
+            <select ng-model="vm.usuario.sex">
+              <option value="" disabled selected>SEXO</option>
+              <option value="h">HOMBRE</option>
+              <option value="m">MUJER</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a class="btn modal-close" style="background: #FF3800;">
+        Cancelar
+      </a>
+      <a type="submit" class="btn modal-close Asap-Bold modal-trigger modal-close green darken-3" href="#confirm">
+        GUARDAR
+      </a>
+    </div>
+  </div>
+  <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+    <div class="modal-content">
+      <h6>¿Está usted seguro de guardar este nuevo usuario?</h6>
+    </div>
+    <div class="modal-footer">
+      <a style="background: #FF3800;" class="btn  modal-trigger modal-close" href="modal_newUser">
+        No
+      </a>
+      <a class="modal-action modal-close btn grey lighten-3" style="color: black;" ng-click="vm.newUser();">Si</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.tabs').tabs();
+  $('.carousel').carousel();
+  $('select').material_select();
+  $('.dropdown-button').dropdown({
+    inDuration: 300,
+    outDuration: 225,
+    constrainWidth: false, // Does not change width of dropdown to that of the activator
+    hover: true, // Activate on hover
+    gutter: 0, // Spacing from edge
+    belowOrigin: false, // Displays dropdown below the button
+    alignment: 'left', // Displays dropdown with edge aligned to the left of button
+    stopPropagation: false // Stops event propagation
+  });
+  $('.modal').modal({
+    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+    opacity: .5, // Opacity of modal background
+    inDuration: 300, // Transition in duration
+    outDuration: 200, // Transition out duration
+    startingTop: '4%', // Starting top style attribute
+    endingTop: '10%', // Ending top style attribute
+    ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+    },
+    complete: function () { } // Callback for Modal close
+  });
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15, // Creates a dropdown of 15 years to control year,
+    today: 'Hoy',
+    clear: 'Limpiar',
+    close: 'Ok',
+    format: 'mm/dd/yyyy',
+    formatSubmit: 'mm/dd/yyyy',
+    closeOnSelect: false // Close upon selecting a date,
+  });
+  $('.tooltipped').tooltip({
+    delay: 50
+  });
+</script>

@@ -1,0 +1,33 @@
+<div ng-controller="passController as vm" class="container">
+  <br>
+  <div class="row blanco">
+    <form class="col s12 m12 l12">
+      <div class="row">
+        <div class="input-field col s12">
+          <label style="color: #FF3800">* Escribe tu contraseña</label>
+          <input type="password" ng-model="vm.pass" class="validate naranja" autocomplete="off">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <label style="color: #FF3800">* Nueva contraseña</label>
+          <input type="password" ng-model="vm.pass1" class="validate naranja" autocomplete="off">
+          <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass1.length < 8"  data-success="right">La contraseña debe contener 8 caracteres como minimo
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <label style="color: #FF3800">* Confirmar nueva contraseña</label>
+          <input type="password" ng-model="vm.pass2" class="validate naranja" autocomplete="off">
+          <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass1 && vm.pass2 && vm.pass1 != vm.pass2"  data-success="right">No coincide.</span>
+          <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass2.length < 8"  data-success="right">La contraseña debe contener 8 caracteres como minimo</span>
+        </div>
+      </div>
+    </form>
+
+    <div class="center">
+      <a class="btn-flat lblanco" style="background-color: #FF3800; margin-bottom: 10px !important;" ng-disabled="!(vm.pass1 && vm.pass2 && vm.pass1 == vm.pass2)"
+        ng-click="vm.cambiar()">Cambiar contraseña</a>
+    </div>
+  </div>
+</div>

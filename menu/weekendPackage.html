@@ -1,0 +1,161 @@
+<div ng-controller="PackcageWRController as vm" class="container">
+    <div class="container" ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
+        <h5 class="letersLength" style="color: #FF3800"> Loading . . . .</h5>
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+    </div>
+    <div class="row" ng-show="!vm.esperar">
+        <div class="center" style="margin-top: 25px;">
+            <a ng-click="vm.new();" style="background: #FF3800;" data-position="right" data-tooltip="NUEVO EVENTO" class="tooltipped btn-floating btn-large">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+        <div style="position: relative;">
+            <label>Buscar</label>
+            <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off" ng-blur="buscar=''">
+            <div class="switch" style="position: absolute; top: 0; right: 0;">
+                <label>
+                    Show All
+                    <input type="checkbox" ng-model="vm.verTodosEventos" ng-true-value="true" ng-false-value="false" class="deep-orange lighten-5">
+                    <span class="lever deep-orange accent-3"></span>
+                </label>
+            </div>
+        </div>
+        <div class="card col s12 m6 l4 gris" ng-class="{event_style: x.active == true, NoEvento: x.active == false}" ng-repeat="x in vm.items | filter: buscar"
+            ng-if="x.active || vm.verTodosEventos" style="padding: 15px;">
+            <a class="activator naranja" style="margin-left: 10px;" href>{{x.name}}
+                <i class="material-icons right">more_vert</i>
+            </a>
+            <div class="card-content eventos">
+                <p style="color: white;" class="letersLength">
+                    <!--i class="tiny material-icons">description</i-->{{x.description}}
+                </p>
+                <p style="color: white;" class="letersLength">
+                    <!--i class="tiny material-icons">announcement</i-->{{x.terms}}
+                </p>
+                <p style="color: white;" class="letersLength">
+                    <!--i class="tiny material-icons">attach_money</i-->{{x.cost | currency}}
+                </p>
+                <p style="color: white;" class="letersLength" ng-show="x.amount > 1">
+                    <!--i class="tiny material-icons">confirmation_number</i-->{{x.amount}} Usuarios confirmados
+                </p>
+                <p style="color: white;" class="letersLength" ng-show="x.amount == 1">
+                    <!--i class="tiny material-icons">confirmation_number</i-->{{x.amount}} Usuario confirmado
+                </p>
+            </div>
+            <div ng-if="x.active" class="card-reveal gris">
+                <a class="card-title naranja" style="font-size: 1em">{{x.name}}
+                    <i class="material-icons right">close</i>
+                </a>
+                <div class="card-action center">
+                    <div style="margin-top: 40px;">
+                        <a style="margin-right: 9px !important;" ng-click="vm.editWP(x);" class="modal-trigger" href="#modal_new" title="EDITAR DATOS">
+                            <i class="material-icons Ncolor" style="color: white"> edit</i>
+                        </a>
+                        <a style="margin-right: 9px !important;" class="Asap-Bold" href ng-click="vm.deleteWeekend(x, false)" title="ELIMINAR">
+                            <i class="material-icons Ncolor" style="color:white">delete
+                            </i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="!x.active" class="card-reveal gris">
+                <a class="card-title naranja" style="font-size: 1em">{{x.name}}
+                    <i class="material-icons right">close</i>
+                </a>
+                <div class="card-action center">
+                    <div style="margin-top: 40px;">
+                        <a style="margin-right: 9px !important; color: #FF3800; text-decoration: underline;" class="Asap-Bold" href ng-click="vm.deleteWeekend(x, true)"
+                            title="ELIMINAR">
+                            Habilitar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Comienza modal-->
+        <div id="modal_new" class="modal modalG bottom-sheet">
+            <div class="col s6 m6 l6" style="margin-top: 25px;">
+                <form class="container" name="formWeekend" role="form" novalidate>
+                    <div class="row">
+                        <div input-field class="col s12">
+                            <label>* Nombre del paquete</label>
+                            <input name="name" class="validate" type="text" ng-model="vm.packWRObj.name" autocomplete="off" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div input-field class="col s12">
+                            <label>* Precio</label>
+                            <input id="cost" name="cost" type="number" class="validate" min="1" autocomplete="off" ng-model="vm.packWRObj.cost" required>
+                            <label ng-show="!formWeekend.cost.$valid">*EL PRECIO DEBE SER MAYOR 0 PESOS</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div input-field class="col s12">
+                            <label for="amount">* Cantidad de WR's</label>
+                            <input id="amount" name="amount" type="text" onkeypress="return justNumbers(event);" class="validate" ng-model="vm.packWRObj.amount"
+                                autocomplete="off" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div input-field class="col s12">
+                            <label for="nameWeek">* Descripción </label>
+                            <textarea ng-model="vm.packWRObj.description" autocomplete="off" required class="materialize-textarea"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div input-field class="col s12">
+                            <label for="terms">* Términos & condiciones</label>
+                            <textarea ng-model="vm.packWRObj.terms" autocomplete="off" required class="materialize-textarea"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col s6 m6 l6">
+                <div class="row">
+                    <div class="col s3 naranja left" style="margin-top: 20px;">
+                        <label>Lista de Usuarios</label>
+                    </div>
+                    <div class="col s2 naranja" style="margin-top: 9px;">
+                        <p class="right" style="font-size: 12px;">Buscar</p>
+                    </div>
+                    <div class="col s7" style="margin-top: 10px;">
+                        <input type="search" autocomplete="off" ng-model="buscarU"  ng-blur="buscarU=''">
+                    </div>
+                </div>
+
+                <div style="height: 70vh; overflow: auto;">
+                    <div class="row right" style="height: 80px; border: solid; border-color: #1a1a19; border-width: 0.3px; margin-right: 20px; width: 80%;" ng-repeat="item in vm.usuarios | filter: buscarU">
+                        <div class="col s7 m7">
+                            <p style="color: #FF3800;">{{item.user_name}}</p>
+                        </div>
+                        <div class="col s5 m5 center">
+                            <a ng-show="item.status==0" ng-click="vm.ver(item);" class="btn" style=" font-size: 12px; background-color: Transparent; color: #FF3800; border: solid; border-color: #FF3800; border-width: thin; margin-top: 5%;">
+                                <i class="material-icons right Tiny">play_circle_filled</i> Invitar
+                            </a>
+                            <a class="btn" ng-show="item.status==1" ng-click="vm.ver(item);" style=" font-size: 12px; background-color: Transparent; color: green; border: solid; border-color: green; border-width: thin; margin-top: 5%;">
+                                <i class="material-icons right Tiny">done</i>Quitar
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a type="submit" ng-disabled="!formWeekend.$valid" ng-click="vm.saveUpdatePWR();" class="btn green darken-3" style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;">
+                    GUARDAR
+                </a>
+                <a style="background: #FF3800; width: 120px; font-size: 12px;  float: right; margin-right: 5px;" ng-click="vm.buscar1='';"
+                    class="btn modal-close">
+                    CERRAR
+                </a>
+                <!--a class="btn" ng-click="vm.update_list()" style="background-color: Transparent; color: #FF3800; border: solid; border-color: #FF3800; border-width: thin; width: 150px;  font-size: 12px;  float: right; margin-right: 5px;">
+                    <i class="material-icons right Tiny">autorenew</i>Update
+                </a-->
+            </div>
+        </div>
+        <!--Termina modal-->
+    </div>
+</div>

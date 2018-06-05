@@ -1,0 +1,156 @@
+<div ng-controller="checkInController as vm">
+  <div class="container" ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
+    <h5 class="letersLength" style="color: #FF3800"> Loading . . . .</h5>
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+  </div>
+  <div ng-show="!vm.esperar" class="lblanco">
+    <div class="container" style="color: #FF3800;">
+      <h4 class="center">{{ vm.nombreEvento }}</h4>
+    </div>
+    <div class="container">
+      <br>
+      <div ng-show="!vm.ver" input-field class="row blanco">
+        <div class="row" ng-repeat="option in vm.data">
+          <div class="col s9">
+            <div style="padding: 15px;">
+              <h4>
+                {{option.name}}
+              </h4>
+              <h6>
+                {{option.mail}}
+              </h6>
+              <h6>
+                {{option.phone}}
+              </h6>
+            </div>
+          </div>
+          <div class="col s2">
+            <a class="btn" ng-click="vm.selectUsuario(option.id);" style="background: #FF3800; margin-top: 15px;">
+              RECOLECTAR
+            </a>
+          </div>
+          <div class="col s1"></div>
+        </div>
+      </div>
+      <div ng-show="vm.ver" style="padding: 35px;">
+          <div class="blanco">
+            <div>
+              <div style="padding: 15px;">
+                <label for="puntoo">Punto de Check-in</label>
+                <select ng-model="vm.id_checkin" required>
+                  <option value="" disabled selected>Seleccionar punto de recoleccion</option>
+                  <option ng-repeat="option in vm.places" value="{{option.id}}">{{option.direccion}}</option>
+                </select>
+              </div>
+              <br>
+              <!---->
+              <div class="row center" style="padding: 15px;">
+                <table class="centered">
+                  <thead>
+                    DESCRIPCIÓN GENERAL
+                    <hr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label>MARCA</label>
+                        <p>{{ vm.objCheckIn.brand_bike | uppercase}}</p>
+                      </td>
+                      <td>
+                        <label>GRUPO</label>
+                        <p>{{ vm.objCheckIn.group_model_bike | uppercase}}</p>
+                      </td>
+                      <td>
+                        <label>AÑO DE PRODUCCIÓN</label>
+                        <p>{{ vm.objCheckIn.year_production | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>DESCRIPCIÓN</label>
+                        <p>{{ vm.objCheckIn.des_type_bike | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>COLOR</label>
+                        <p>{{ vm.objCheckIn.color_bike | uppercase}}</p>
+                      </td>
+                    </tr>
+    
+                    <tr>
+                      <td>
+                        <label>PEDAL</label>
+                        <p>{{ vm.objCheckIn.des_pedal_bike | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>NÚMERO SERIAL</label>
+                        <p>{{ vm.objCheckIn.serial_number_bike | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>COMPONENTE</label>
+                        <p>{{ vm.objCheckIn.des_component_bike | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>LLANTA</label>
+                        <p>{{ vm.objCheckIn.wheel_bike | uppercase}}</p>
+                      </td>
+                      <td>
+                        <label>RIN</label>
+                        <p>{{ vm.objCheckIn.tire_bike | uppercase}}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!---->
+              <div class="row">
+                <div class="col s12 m12  center">
+                  <p class="center">
+                    Frontal
+                  </p>
+                  <img class="bici" ng-src="{{ vm.thumbnail1.dataUrl }}"  />
+                </div>
+                <div class="col s12 m12 center">
+                  <p class="center">
+                    Lateral
+                  </p>
+                  <img class="bici" ng-src="{{ vm.thumbnail2.dataUrl }}" />
+                </div>
+                <div class="col s12 m12 center">
+                  <p class="center">
+                    N. Serie
+                  </p>
+                  <img class="bici" ng-src="{{ vm.thumbnail3.dataUrl }}" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s6 m6 l6 file-field right" style="margin-top: 180px;">
+                  <a ng-disabled="vm.id_checkin == -1 || vm.id_checkin == undefined" style="color: black; margin: 10px;" class=" btn green darken-3 modal-trigger " href="#confirm">
+                    Guardar
+                  </a>
+                  <a style="background: #FF3800; margin: 10px;" class=" btn" ng-click="vm.ver = false;">
+                    Cancelar
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+      <div class="modal-content">
+        <h6 style="color: black;">¿Está usted seguro de realizar esta acción?</h6>
+      </div>
+      <div class="modal-footer">
+        <a style="background: #FF3800;" class=" waves-light btn modal-close">
+          No
+        </a>
+        <a class="modal-action modal-close btn grey lighten-3" style="color: black;" ng-click="vm.formChecIn();">Si</a>
+      </div>
+    </div>
+  </div>
+</div>

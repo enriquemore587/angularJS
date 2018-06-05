@@ -1,0 +1,206 @@
+<div ng-controller="checkOutController2 as vm">
+    <div class="container" style="color: #FF3800;">
+        <h2 class="center">{{ vm.nombreEvento }}</h2>
+    </div>
+    <div class="blanco container lblanco">
+        <div class="row" ng-show="!vm.ver">
+            <div ng-repeat="option in vm.usuarios" style="padding: 10px; height: 200px;" ng-init="option.ok = false">
+                <div input-field class="col s8">
+                    <h5>
+                        {{ option.name }}
+                    </h5>
+                    <h6>
+                        Email: {{ option.mail }}
+                    </h6>
+                    <h6>
+                        Telefono: {{option.phone}}
+                    </h6>
+                </div>
+                <div class="col s4">
+                    <label for="entregaa">Punto de entrega</label>
+                    <select id="entregaa" ng-model="vm.eventColaction" ng-change="option.ok = true">
+                        <option disabled selected>Seleccionar punto de entrega</option>
+                        <option ng-repeat="option in option.collectionsPoints" value="{{option.id_collpoint}}">{{option.address}}</option>
+                    </select>
+                    <a ng-show="option.ok" class="btn" ng-click="vm.selectUsuario(option);" style="background: #FF3800">
+                        Entregar bicicleta
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="vm.ver" style="padding: 30px;">
+            <div>
+                <div class="row center">
+                    <div class="col s12">
+                        <img data-ng-src="{{vm.objCI.photo_front_bike}}"  data-err-src="img.jpg" />
+                        <h6 class="naranja">
+                            <strong>Frontal</strong>
+                        </h6>
+                    </div>
+                    <div class="col s12">
+                        <img data-ng-src="{{vm.objCI.photo_side_bike}}" data-err-src="img.jpg" />
+                        <h6 class="naranja">
+                            <strong>Lateral</strong>
+                        </h6>
+
+                    </div>
+                    <div class="col s12">
+                        <img data-ng-src="{{vm.objCI.photo_serial_num}}" data-err-src="img.jpg" />
+                        <h6 class="naranja">
+                            <strong>N. Serie</strong>
+                        </h6>
+                    </div>
+                </div>
+                <!---->
+              <div class="row center" style="padding: 15px;">
+                <table class="centered">
+                  <thead>
+                    DESCRIPCIÓN GENERAL
+                    <hr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label>MARCA</label>
+                        <p>{{ vm.objCI.brand_bike | uppercase}}</p>
+                      </td>
+                      <td>
+                        <label>GRUPO</label>
+                        <p>{{ vm.objCI.group_model_bike | uppercase}}</p>
+                      </td>
+                      <td>
+                        <label>AÑO DE PRODUCCIÓN</label>
+                        <p>{{ vm.objCI.year_production | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>DESCRIPCIÓN</label>
+                        <p>{{ vm.objCI.des_type_bike | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>COLOR</label>
+                        <p>{{ vm.objCI.color_bike | uppercase}}</p>
+                      </td>
+                    </tr>
+    
+                    <tr>
+                      <td>
+                        <label>PEDAL</label>
+                        <p>{{ vm.objCI.des_pedal_bike | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>NÚMERO SERIAL</label>
+                        <p>{{ vm.objCI.serial_number_bike | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>COMPONENTE</label>
+                        <p>{{ vm.objCI.des_component_bike | uppercase}}</p>
+                      </td>
+    
+                      <td>
+                        <label>LLANTA</label>
+                        <p>{{ vm.objCI.wheel_bike | uppercase}}</p>
+                      </td>
+                      <td>
+                        <label>RIN</label>
+                        <p>{{ vm.objCI.tire_bike | uppercase}}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!---->
+                <!--div style="padding: 15px;">
+                    <div class="row">
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Recolección: </strong> {{vm.objCI.address}}</h6>
+                        </div>
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Costo del evento: </strong> {{vm.objCI.amount | currency}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Año de produccion: </strong> {{vm.objCI.year_production}}</h6>
+                        </div>
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Tipo de bicicleta: </strong> {{vm.objCI.des_type_bike}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Pedales: </strong> {{vm.objCI.des_pedal_bike}}</h6>
+                        </div>
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Modelo: </strong> {{vm.objCI.model_bike}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Color de bicicleta: </strong> {{vm.objCI.color_bike}}</h6>
+                        </div>
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Serial de la bbicicleta: </strong> {{vm.objCI.serial_number_bike}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Componentes: </strong> {{vm.objCI.des_component_bike}}</h6>
+                        </div>
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Modelo de grupo: </strong> {{vm.objCI.group_model_bike}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Marca: </strong> {{vm.objCI.brand_bike}}</h6>
+                        </div>
+                        <div class="col s6">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Llanta: </strong> {{vm.objCI.wheel_bike}}</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <h6 class="letersLength">
+                                <strong class="naranja">Rin: </strong> {{vm.objCI.tire_bike}}</h6>
+                        </div>
+                    </div>
+                </div-->
+            </div>
+            <div class="right">
+                <a class="btn" ng-click="vm.ver = false;vm.eventColaction = null;" style="background: #FF3800">
+                    Cancelar
+                </a>
+                <a style="color: black;" class="btn green darken-3 modal-trigger" href="#confirm">
+                    Guardar
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+        <div class="modal-content">
+            <h6>¿Está usted seguro de realizar esta acción?</h6>
+        </div>
+        <div class="modal-footer">
+            <a style="background: #FF3800;" class=" btn modal-close">
+                No
+            </a>
+            <a class="modal-action modal-close btn grey lighten-3" style="color: black;" ng-click="vm.formChecOut();">Si</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+<div class="container">
+  <div ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
+    <h5 class="letersLength" style="color: #FF3800"> Loading . . . .</h5>
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+  </div>
+  <div ng-show="!vm.esperar" class="" >
+    <div class="center" style="margin-top: 20px;">
+      <a ng-click="vm.mapForPackage();" style="background: #FF3800;" data-position="right" data-tooltip="NUEVO PAQUETE" class="tooltipped Asap-Bold btn-floating btn-large modal-trigger"
+        href="#modal_package">
+        <i class="material-icons">add</i>
+      </a>
+    </div>
+    <div>
+      <div class="blanco lblanco" style="padding: 20px !important; position: relative;">
+        <label>Buscar paquete</label>
+        <input type="search" ng-model="buscar" autocomplete="off" ng-blur="buscar=''">
+        <div class="switch" style="position: absolute; top: 0; right: 0;">
+          <label>
+            Show All
+            <input type="checkbox" ng-model="vm.verTodosPaquetes" ng-true-value="true" ng-false-value="false" class="deep-orange lighten-5">
+            <span class="lever deep-orange accent-3"></span>
+          </label>
+        </div>
+      </div>
+      <div class="blanco lblanco" style="padding: 20px !important;" ng-repeat="x in vm.packages | filter: buscar" ng-if="x.status || vm.verTodosPaquetes">
+        <div class="row" style="padding: 15px;">
+          <p class="letersLength " style="margin: 0vh auto 0px auto !important; font-size: 35px; text-transform: uppercase; color: #FF3800;">{{x.name_package}}
+            <a ng-if="x.status" style="margin: -5vh auto 0px auto !important; font-size: 12px; color: #FF3800;" ng-click="vm.editPackage(x);" class=" modal-trigger"
+              href="#modal_package">
+              <i class="material-icons Bcolor" style="color: #FF3800"> edit </i>
+            </a>
+            <a ng-if="x.status" style="margin: -5vh auto 0px auto !important; font-size: 12px; color: #FF3800;" ng-click="vm.deletePaquete(x, false);"
+              href>
+              <i class="material-icons Bcolor" style="color: #FF3800"> delete </i>
+            </a>
+            <a ng-if="x.status" style="margin: 0vh auto 0px auto !important; font-size: 12px; color: #FF3800;" ng-click="vm.pagosP(x);" class="" href>
+              <i class="material-icons Bcolor" style="color: #FF3800">notifications</i>{{'( '+ x.tam + " )" }}
+            </a>
+            <a ng-if="!x.status" style="color: #FF3800; margin: -5vh auto 0px auto !important; font-size: 15px; color: #FF3800; text-decoration: underline;" ng-click="vm.deletePaquete(x, true);"
+              href>
+              Habilitar
+            </a>
+          </p>
+        </div>
+        <div class="row" style="padding: 15px;">
+          <div class="col s5" style="white-space: pre-line;">
+            <h6 class="naranja">Descripción</h6> {{ x.descriptionP }}
+          </div>
+          <div class="col s5" style="white-space: pre-line;">
+            <h6 class="naranja">Términos & condiciones</h6> {{ x.terms }}
+          </div>
+          <div class="center col s2" style="white-space: pre-line;">
+            <h6 class="naranja">Precio</h6>
+            <h5>{{x.cost | currency}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Structure -->
+  <div id="modal_package" class="modal modalG bottom-sheet">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col s4">
+          <form name="formPaquete" role="form" novalidate>
+            <div input-field>
+              <label for="namePackage">* Nombre</label>
+              <input id="namePackage" name="namePackage" class="validate" type="text" ng-model="vm.namePackage" autocomplete="off" required>
+            </div>
+            <div input-field>
+              <label for="costPackage">* Precio</label>
+              <input id="costPackage" onkeypress="return justNumbers(event);" name="costPackage" type="text" class="validate" autocomplete="off" ng-model="vm.costPackage"
+                required>
+            </div>
+            <div input-field>
+              <label>* Descripción</label>
+              <textarea id="descPackage" name="descPackage" class="materialize-textarea validate" ng-model="vm.descPackage" autocomplete="off" required></textarea>
+            </div>
+            <div input-field>
+              <label for="terms">* Términos</label>
+              <textarea id="terms" name="terms" class="materialize-textarea validate" ng-model="vm.terms" autocomplete="off" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="col s8">
+          <div id="mapPackage"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="right">
+        <a style="background: #FF3800;" ng-click="vm.clearPackage();" class="btn modal-close">
+          Cancelar
+        </a>
+        <a ng-disabled="!formPaquete.$valid" type="submit" ng-click="vm.confirmacion=true;" class="modal-action modal-close btn green darken-3 modal-trigger" href="#confirm">
+          Guardar
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+    <div class="modal-content">
+      <h6>¿Está usted seguro de realizar esta acción?</h6>
+    </div>
+    <div class="modal-footer">
+      <a style="background: #FF3800;" class=" btn  modal-trigger modal-close" href="#modal_package">
+        No
+      </a>
+      <a class="modal-action modal-close btn grey lighten-2" style="color: #1a1a19;" ng-click="vm.formPackage();">Si</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.timepicker').pickatime({
+    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+    fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: false, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Limpiar', // text for clear-button
+    canceltext: 'Cancelar', // Text for cancel-button
+    autoclose: false, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function () { } //Function for after opening timepicker
+  });
+
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15, // Creates a dropdown of 15 years to control year,
+    today: 'Hoy',
+    clear: 'Limpiar',
+    close: 'Ok',
+    format: 'mm/dd/yyyy',
+    closeOnSelect: false // Close upon selecting a date,
+  });
+  $('.modal').modal({
+    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+    opacity: .5, // Opacity of modal background
+    inDuration: 300, // Transition in duration
+    outDuration: 200, // Transition out duration
+    startingTop: '4%', // Starting top style attribute
+    endingTop: '10%', // Ending top style attribute
+    ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      console.log(modal, trigger);
+    },
+    complete: function () { } // Callback for Modal close
+  });
+  $('.tooltipped').tooltip({
+    delay: 50
+  });
+</script>

@@ -1,0 +1,28 @@
+<div ng-controller="contactController as vm">
+  <div class="blanco lblanco container" style="margin-top: 20px;">
+    <table class="bordered responsive-table centered">
+      <thead>
+        <tr>
+          <th class="naranja">Tipo de Contacto</th>
+          <th class="naranja">Contacto</th>
+          <th class="naranja">Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="x in vm.contact">
+          <td>
+            <strong>{{ x.type_description }}</strong>
+          </td>
+          <td>{{ x.description }}</td>
+          <td>
+            <a ng-click="vm.editarContacto(x);" href class="naranja">
+              <i class="material-icons Bcolor">edit
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>

@@ -1,0 +1,266 @@
+<div class="container" ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
+  <h5 class="letersLength" style="color: #FF3800"> Loading . . . .</h5>
+  <div class="progress">
+    <div class="indeterminate"></div>
+  </div>
+</div>
+<div ng-show="!vm.esperar" class="bg-workSpace">
+  <div class="container" style="color: #FF3800;">
+    <h4 class="center">{{ vm.checkEvent.nameEvent }}</h4>
+  </div>
+  <div class="row container" style="background: #fff !important; padding: 15px;">
+    <div>
+      <div ng-show="vm.showPoints" style="margin: 10px !important;">
+        <div>
+          <h6 class="naranja">Origen
+            <span class="badge">
+              <a class="btn-floating" ng-click="vm.typeColection = 1;vm.showPoints = false;vm.nombreCheck='Recolección / entrega origen';"
+                style="background: #FF3800;">
+                <i class="material-icons ">add</i>
+              </a>
+            </span>
+          </h6>
+        </div>
+        <div>
+          <table class="responsive-table">
+            <thead>
+              <th>Tipo</th>
+              <th>Lugar</th>
+              <th>Ver</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in vm.colections" ng-if="item.type == 1 && item.type_collection == 1">
+                <td>Recolección</td>
+                <td>{{item.additional_reference}}</td>
+                <td>
+                  <a ng-click="vm.map.setCenter(item.gps);vm.map.setZoom(18);" class="Asap-Bold;" href="">
+                    <i class="material-icons Tiny" style="color:green">place</i>
+                  </a>
+                </td>
+                <td>
+                  <a class="Asap-Bold;" href="">
+                    <i class="material-icons Tiny" ng-click="vm.editPoint(item);" style="color:#FF3800">edit</i>
+                  </a>
+                </td>
+                <td>
+                  <a class="Asap-Bold;" href="">
+                    <i class="material-icons Small modal-trigger" data-ng-href="#delete" ng-click="vm.elemetTemporal = item;" style="color:#FF3800">delete</i>
+                  </a>
+                </td>
+              </tr>
+              <tr ng-repeat="item in vm.colections" ng-if="item.type ==1 && item.type_collection==2">
+                <td>Entrega</td>
+                <td>{{item.additional_reference}}</td>
+                <td>
+                  <a ng-click="vm.map.setCenter(item.gps);vm.map.setZoom(18);" class="Asap-Bold;" href="">
+                    <i class="material-icons Tiny" style="color:red">place</i>
+                  </a>
+                </td>
+                <td>
+                  <a class="Asap-Bold;" href="">
+                    <i class="material-icons Tiny" ng-click="vm.editPoint(item);" style="color:#FF3800">edit</i>
+                  </a>
+                </td>
+                <td>
+                  <a class="Asap-Bold;" href="">
+                    <i class="material-icons Small modal-trigger" data-ng-href="#delete" ng-click="vm.elemetTemporal = item;" style="color:#FF3800">delete</i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+        </div>
+        <hr>
+        <div>
+          <h6 class="naranja">Destino
+            <span class="badge">
+              <a class="btn-floating" ng-click="vm.typeColection = 2;vm.showPoints = false;vm.nombreCheck='Recolección / entrega destino';"
+                style="background: #FF3800;">
+                <i class="material-icons ">add</i>
+              </a>
+            </span>
+          </h6>
+        </div>
+        <div>
+          <table class="responsive-table">
+            <thead>
+              <th>Tipo</th>
+              <th>Lugar</th>
+              <th>Ver</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in vm.colections" ng-if="item.type == 2 && item.type_collection == 1">
+                <td>Recolección</td>
+                <td>{{item.additional_reference}}</td>
+                <td>
+                  <a ng-click="vm.map.setCenter(item.gps);vm.map.setZoom(18);" class="Asap-Bold;" href="">
+                    <i class="material-icons Tiny" style="color:blue">place</i>
+                  </a>
+                </td>
+                <td>
+                  <a class="Asap-Bold;" href="">
+                    <i class="material-icons Tiny" ng-click="vm.editPoint(item);" style="color:#FF3800">edit</i>
+                  </a>
+                </td>
+                <td>
+                  <a class="Asap-Bold;" href="">
+                    <i class="material-icons Small modal-trigger" data-ng-href="#delete" ng-click="vm.elemetTemporal = item;" style="color:#FF3800">delete</i>
+                  </a>
+                </td>
+              </tr>
+              <tr ng-repeat="item in vm.colections" ng-if="item.type ==2 && item.type_collection==2">
+                <td>Entrega</td>
+                <td>{{item.additional_reference}}</td>
+                <td>
+                  <a ng-click="vm.map.setCenter(item.gps);vm.map.setZoom(18);" class="Asap-Bold;" href="">
+                    <i class="material-icons Tiny" style="color:purple">place</i>
+                  </a>
+                </td>
+                <td>
+                  <a class="Asap-Bold;" href="">
+                    <i class="material-icons Tiny" ng-click="vm.editPoint(item);" style="color:#FF3800">edit</i>
+                  </a>
+                </td>
+                <td>
+                  <a class="Asap-Bold;" href="">
+                    <i class="material-icons Small modal-trigger" data-ng-href="#delete" ng-click="vm.elemetTemporal = item;" style="color:#FF3800">delete</i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div ng-show="!vm.showPoints">
+        <form name="formCheck" crole="form" novalidate>
+          <div class="row center">
+            <h6>{{vm.nombreCheck}}</h6>
+          </div>
+          <div class="row">
+            <div input-field class="col s6">
+              <label for="direccion">* Dirección</label>
+              <input type="text" id="direccion" class="Asap-BoldItalic" ng-blur="vm.getCenter();" ng-model="vm.direccionCheck" required>
+            </div>
+            <div input-field class="col s6">
+              <label for="referencia">* Referencia</label>
+              <input id="referencia" type="text" class="validate" ng-model="vm.referenciaCheck" required>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s6">
+              <div input-field class="col s6">
+                <label for="referencia">* Fecha inicial</label>
+                <input id="dateStart" name="dateStart" type="text" class="datepicker" ng-model="vm.dateStart">
+
+              </div>
+              <div input-field class="col s6">
+                <label for="referencia">* Fecha final</label>
+                <input id="dateEnd" name="dateEnd" type="text" class="datepicker" ng-model="vm.dateEnd">
+              </div>
+            </div>
+            <div class="col s6">
+              <div input-field class="col s6">
+                <label>* Desde</label>
+                <input type="text" class="timepicker" ng-model="vm.starTime1" required>
+              </div>
+              <div input-field class="col s6">
+                <label>* Hasta</label>
+                <input type="text" class="timepicker" ng-model="vm.endTime1" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div input-field class="col s3">
+              <p>
+                <input name="group1" type="radio" id="test1" ng-model="vm.rdEntrega" ng-value="2" required/>
+                <label for="test1">* Entrega</label>
+              </p>
+            </div>
+            <div input-field class="col s3">
+              <p>
+                <input name="group1" type="radio" id="test2" ng-model="vm.rdEntrega" ng-value="1" required/>
+                <label for="test2">* Recolección</label>
+              </p>
+            </div>
+            <div class="col s6">
+              <div class="row right">
+                <a class=" btn" ng-click="vm.clearDataPoints();" style="background :#FF3800">
+                  Cancelar</a>
+
+                <a ng-disabled="!formCheck.$valid" class="btn green darken-3 modal-trigger" href="#confirm">
+                  Guardar</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div id="map" class="container"></div>
+    </div>
+  </div>
+  <div id="confirm" class="modal modalSiNo modal-fixed-footer">
+    <div class="modal-content">
+      <h6>¿Está usted seguro de realizar esta acción?</h6>
+    </div>
+    <div class="modal-footer">
+      <a style="background: #FF3800;" class=" btn modal-close">
+        No
+      </a>
+      <a class="modal-action modal-close waves-effect waves-green btn grey lighten-3" ng-click="vm.newPoint();" style="color: black;">Si</a>
+    </div>
+  </div>
+  <div id="delete" class="modal modalSiNo modal-fixed-footer">
+    <div class="modal-content">
+      <h6>¿Está usted seguro de eliminar este punto??</h6>
+    </div>
+    <div class="modal-footer">
+      <a style="background: #FF3800;" class=" btn modal-close">
+        No
+      </a>
+      <a class="modal-action modal-close btn grey lighten-3" ng-click="vm.deletePoint();" style="color: black;">Si</a>
+    </div>
+  </div>
+</div>
+<script>
+  $('.timepicker').pickatime({
+    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+    fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: false, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Limpiar', // text for clear-button
+    canceltext: 'Cancelar', // Text for cancel-button
+    autoclose: false, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function () { } //Function for after opening timepicker
+  });
+
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15, // Creates a dropdown of 15 years to control year,
+    today: 'Hoy',
+    clear: 'Limpiar',
+    close: 'Ok',
+    format: 'mm/dd/yyyy',
+    closeOnSelect: false // Close upon selecting a date,
+  });
+
+  $('.modal').modal({
+    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+    opacity: .5, // Opacity of modal background
+    inDuration: 300, // Transition in duration
+    outDuration: 200, // Transition out duration
+    startingTop: '4%', // Starting top style attribute
+    endingTop: '10%', // Ending top style attribute
+    ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+
+      console.log(modal, trigger);
+    },
+    complete: function () { } // Callback for Modal close
+  });
+</script>
