@@ -1,12 +1,12 @@
 <style media="screen">
-.swal-button {
-  padding: 7px 19px;
-  border-radius: 2px;
-  background-color: #FF3800;
-  font-size: 12px;
-  color: white;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
-}
+  .swal-button {
+    padding: 7px 19px;
+    border-radius: 2px;
+    background-color: #FF3800;
+    font-size: 12px;
+    color: white;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+  }
 </style>
 <nav>
   <div class="nav-wrapper">
@@ -20,22 +20,25 @@
 
     <div class="blanco col s12 m12 l12">
       <div ng-if="vm.form">
-        <form name="form" ng-submit="vm.login()" role="form"  class="lblanco">
+        <form name="form" ng-submit="vm.login()" role="form" class="lblanco">
 
           <div class="input-field">
-            <input id="usermail" type="email" class="RidleyGroteskDemo-Italic validate center-align" name="usermail" ng-model="vm.usermail" required>
+            <input id="usermail" type="email" class="RidleyGroteskDemo-Italic validate center-align" name="usermail" ng-model="vm.usermail"
+              required>
             <label for="usermail" style="color: #FF3800">Email</label>
           </div>
 
           <div class="input-field">
 
-            <input id="password" type="password" class="RidleyGroteskDemo-Italic validate center-align" name="password" ng-model="vm.password" required>
+            <input id="password" type="password" class="RidleyGroteskDemo-Italic validate center-align" name="password" ng-model="vm.password"
+              required>
             <label for="password" style="color: #FF3800">Contraseña</label>
           </div>
           <div class="center container">
           </div>
 
-          <button type="submit" style="background: #FF3800" class="btn Asap-Bold">Aceptar</button> <!--ng-disabled="!vm.usermail && !vm.password"-->
+          <button type="submit" style="background: #FF3800" class="btn Asap-Bold">Aceptar</button>
+          <!--ng-disabled="!vm.usermail && !vm.password"-->
           <br>
         </form>
         <a class="btn-flat naranja" style="font-size: 10px; text-decoration: underline;" ng-click="vm.pass()">Olvide mi contraseña</a>
@@ -47,8 +50,24 @@
   </div>
 </div>
 <footer style="position:fixed; left:0px; bottom:0px; width:100%; background:#1a1a19;">
-  <h6 style="color: #FF3800" class="center-align">© 2018 NOOHWI CYCLING HUB <br><span>version 0.3</span></h6>
+  <h6 style="color: #FF3800" class="center-align">© 2018 NOOHWI CYCLING HUB
+    <br>
+    <span>version 0.3</span>
+  </h6>
 </footer>
 <script type="text/javascript">
   $('.carousel').carousel();
+  $('.modal').modal({
+    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+    opacity: .5, // Opacity of modal background
+    inDuration: 300, // Transition in duration
+    outDuration: 200, // Transition out duration
+    startingTop: '4%', // Starting top style attribute
+    endingTop: '10%', // Ending top style attribute
+    ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+      console.log(modal, trigger);
+    },
+    complete: function () { } // Callback for Modal close
+  });
+  $('.modal').modal('close');
 </script>

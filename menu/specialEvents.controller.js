@@ -59,8 +59,14 @@
         vm.action;
         vm.ovjMasive = {};
 
+
+        vm.regresar = () => {
+            vm.action = 1;
+        }
+
         vm.ver_new_week = false;
         vm.newWeek = (value, regresar) => {
+            if (!value) vm.action = 1;
             vm.ver_new_week = value;
             vm.newWeekObj = {};
 
@@ -77,19 +83,17 @@
 
         vm.saveNewRodada = () => {
             if (vm.action == 0) {
-                console.log("accion", vm.action);
                 // SOLO GUARDA EN MEMORIA POR QUE SE PERSISTE UN OBJETO COMPLETO
                 vm.saveNewRodada_newSE();
             } else if (vm.action == -1) {
-                console.log("accion", vm.action);
                 vm.saveUpdateChild();
             } else if (vm.action == 1) {
-                console.log("accion", vm.action);
                 vm.newWeekObj.id_weekend_rides = 0;
                 vm.newWeekObj.id_promo_code = 0;
                 vm.saveUpdateChild();
             }
         }
+
         vm.saveUpdateChild = () => {
 
             swal({
@@ -106,14 +110,10 @@
             }).then((result) => {
                 if (result.value) {
 
-                    console.log("11", new Date(vm.obj.start_date));
-                    console.log("22", new Date(vm.fecha));
-                    console.log("RR", new Date(vm.fecha) < new Date(vm.obj.start_date));
                     if (new Date(vm.fecha) < new Date(vm.obj.start_date)) {
                         Materialize.toast('La fecha de rodada fuera de rango !', 5000);
                         return;
                     }
-                    console.log('vm.fynallyOBJ');
 
                     var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
                     vm.fynallyOBJ.id_user = aux[0];
@@ -124,7 +124,7 @@
                     vm.fynallyOBJ.name = vm.newWeekObj.name;
                     vm.fynallyOBJ.place = vm.newWeekObj.place;
                     vm.fynallyOBJ.date = vm.fecha.split(/\//g)[2] + "-" + vm.fecha.split(/\//g)[0] + "-" + vm.fecha.split(/\//g)[1] + " " + vm.hora + ":00";
-                    console.log('vm.fynallyOBJ.date', vm.fynallyOBJ.date);
+
                     vm.fynallyOBJ.description = vm.newWeekObj.description;
                     vm.fynallyOBJ.amount = 0;
                     vm.fynallyOBJ.terms = vm.newWeekObj.terms;
@@ -139,7 +139,6 @@
                     vm.fynallyOBJ.percentage_des = vm.newWeekObj.percentage_des;
                     vm.fynallyOBJ.cost_des = vm.newWeekObj.cost_des;
 
-                    console.log("sendv", vm.fynallyOBJ);
 
 
 
@@ -147,6 +146,8 @@
                     DataServiceServer.saveUpdateChild(vm.fynallyOBJ)
                         .then(function successCallback(response) {
                             if (response == -3) {
+
+                                $('.modal').modal('close');
                                 Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                                 $location.path("/login");
                                 return;
@@ -158,9 +159,10 @@
                                 `¡ Evento especial guardado !`,
                                 'success'
                             )
+
                             vm.update_list();
                         }, function errorCallback(response) {
-                            console.log(response);
+
                             Materialize.toast('Service error', 5000);
                         });
 
@@ -188,7 +190,7 @@
             vm.newWeekObj.cantidad = vm.newWeekObj.amount_use;
             vm.newWeekObj.percentage_des = vm.newWeekObj.percentage_des;
             vm.newWeekObj.cost_des = vm.newWeekObj.cost_des;
-            console.log(vm.newWeekObj);
+
         }
 
         vm.hora;
@@ -200,14 +202,11 @@
 
                 vm.newWeekObj.type_code = vm.newWeekObj.type_code;
 
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 vm.newWeekObj.active = true;
 
 
                 vm.rodadas.push(vm.newWeekObj);
-                console.log("accion", vm.rodadas);
+
                 vm.newWeekObj = {};
                 vm.hora = '';
                 vm.fecha = '';
@@ -232,15 +231,18 @@
             var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
             DataServiceServer.getSpecialEventsDetails(aux[0], aux[1], vm.obj.id_special_events)
                 .then(function successCallback(response) {
-                    console.log(response);
+
                     if (response == -3) {
+                        $('.modal').modal('close');
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                         $location.path("/login");
                         return;
                     }
+                    vm.action = 1;
                     //Materialize.toast('List updated', 4000);
                     vm.rodadas = response.special_events_details;
                     vm.esperar = false;
+
                 }, function errorCallback(response) {
                     vm.esperar = false;
                     Materialize.toast('ERROR POR CONEXION', 4000);
@@ -250,7 +252,6 @@
         vm.saveUpdate = () => {
             if (vm.action == 0) {
                 vm.saveUpdateNew();
-
             } else if (vm.action == 1) {
                 vm.saveUpdateEdit();
             }
@@ -286,16 +287,16 @@
                     vm.fynallyOBJ.id_special_events = vm.obj.id_special_events;
                     vm.fynallyOBJ.start_date = vm.obj.start_date.split(/\//g)[2] + "-" + vm.obj.start_date.split(/\//g)[0] + "-" + vm.obj.start_date.split(/\//g)[1];
                     vm.fynallyOBJ.end_date = vm.obj.end_date.split(/\//g)[2] + "-" + vm.obj.end_date.split(/\//g)[0] + "-" + vm.obj.end_date.split(/\//g)[1];
-                    console.log(vm.fynallyOBJ);
 
                     DataServiceServer.saveUpdateEdit(vm.fynallyOBJ)
                         .then(function successCallback(response) {
                             if (response == -3) {
+                                $('.modal').modal('close');
                                 Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                                 $location.path("/login");
                                 return;
                             }
-                            console.log(response);
+
                             vm.fynallyOBJ = {};
                             vm.obj = {};
                             getSpecialEvents();
@@ -359,16 +360,16 @@
                         );
 
                     });
-                    console.log(vm.fynallyOBJ);
+
                     DataServiceServer.setSpecialEventsAdminMassive(vm.fynallyOBJ)
                         .then(function successCallback(response) {
                             if (response == -3) {
+                                $('.modal').modal('close');
                                 Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                                 $location.path("/login");
                                 return;
                             }
 
-                            console.log(response);
                             //Materialize.toast('GUARDADO CON ÉXITO', 9000);
                             vm.fynallyOBJ = {};
                             getSpecialEvents();
@@ -431,9 +432,10 @@
                             ///
                             DataServiceServer.getSpecialEventsDetails(aux[0], aux[1], vm.obj.id_special_events)
                                 .then(function successCallback(response) {
-                                    console.log("weeks", response);
+                                    
 
                                     if (response == -3) {
+                                        $('.modal').modal('close');
                                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                                         $location.path("/login");
                                         return;
@@ -472,14 +474,7 @@
             }).then((result) => {
                 if (result.value) {
                     var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
-                    console.log(week);
 
-                    console.log({
-                        "id_user": aux[0],
-                        "token": aux[1],
-                        "id_special_events": week.id_special_events,
-                        "active": hab
-                    });
 
                     DataServiceServer.desableSpecialEvents({
                         "id_user": aux[0],
@@ -487,7 +482,7 @@
                         "id_special_events": week.id_special_events,
                         "active": hab
                     }).then(function (response) {
-                        console.log(response);
+                        
 
                         swal(
                             `${msg3} !`,
@@ -513,9 +508,8 @@
             var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
             DataServiceServer.getSpecialEventsDetails(aux[0], aux[1], vm.obj.id_special_events)
                 .then(function successCallback(response) {
-                    console.log("weeks", response);
-
                     if (response == -3) {
+                        $('.modal').modal('close');
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                         $location.path("/login");
                         return;
@@ -571,6 +565,7 @@
             DataServiceServer.getSpecialEvents(aux[0], aux[1])
                 .then(function successCallback(response) {
                     if (response == -3) {
+                        $('.modal').modal('close');
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                         $location.path("/login");
                         return;
@@ -721,6 +716,7 @@
                 DataServiceServer.activeTracking(vm.ride)
                     .then(function successCallback(response) {
                         if (response == -3) {
+                            $('.modal').modal('close');
                             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                             $location.path("/login");
                             return;
@@ -790,6 +786,7 @@
                 console.log("No position");
             }
         }
+
         vm.centrar = x => {
             var limites = new google.maps.LatLngBounds();
             if (vm.participantes.length != 0) {

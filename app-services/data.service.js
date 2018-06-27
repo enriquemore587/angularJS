@@ -55,11 +55,21 @@
 
         service.desableSpecialEvents = desableSpecialEvents;
         service.desableWeekendPackage = desableWeekendPackage;
+        service.sendPushNotification = sendPushNotification;
 
         service.url2 = "https://s692755340.onlinehome.mx:8743";
         service.url = 'http://74.208.103.93:8780';
 
         return service;
+
+        function sendPushNotification(obj) {
+            return $http.post(service.url + '/noohwi/notification', obj, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
+                .then(function successCallback(response) {
+                    return response;
+                }, function errorCallback(response) {
+                    return response;
+                });
+        }
 
         function saveUpdatecontacto(obj) {
             return $http.post(service.url + '/noohwi/contact', obj, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })

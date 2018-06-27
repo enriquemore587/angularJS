@@ -1,0 +1,59 @@
+<div ng-controller="pushController as vm" style=" width: 100%;">
+    <div class="card" style="background-color: white; height: 90vh;">
+        <div class="card" style="background-color: white; height: 100%">
+            <div class="card-content white-text">
+                <div class="row">
+                    <form class="col s7" name="formPushNot" role="form" style="color: black;">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="titulo" ng-model="vm.obj.title" type="text" class="validate" required>
+                                <label for="titulo">Titulo</label>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="input-field col s12">
+                                <textarea id="descripcion" ng-model="vm.obj.body" class="materialize-textarea" required></textarea>
+                                <label for="descripcion">Cuerpo de mensaje</label>
+                            </div>
+
+                        </div>
+                    </form>
+                    <div class="col s5" style="background-color: black; overflow: auto; max-height: 100%;">
+                        <div>
+                            <div>
+                                <label>Buscar usuario</label>
+                                <input type="search" ng-model="buscar" style="color: #fff" ng-blur="buscar=''">
+                            </div>
+                            <div class="col s12">
+                                <div style="width: 100%; height: 50px;">
+                                    <input type="checkbox" ng-checked="vm.sendAll" />
+                                    <label ng-click="vm.sendAllF()">
+                                        <span>TODOS</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div>
+                                <div class="col s12" ng-repeat="item in vm.listaUsers | filter: buscar">
+                                    <div style="width: 100%; height: 50px;">
+                                        <input type="checkbox" ng-checked="item.send" />
+                                        <label ng-click="vm.send(item)">
+                                            <span>{{item.name}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-action">
+                <a type="submit" ng-disabled="!vm.obj.title || !vm.obj.body" ng-click="vm.sendMessage()" class="modal-action modal-close btn green darken-3 modal-trigger"
+                    style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;">
+                    ENVIAR
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -296,10 +296,7 @@ function justNumbers(e) {
     };
 
     vm.showMenuActive = function (element) {
-
-      if (vm.checkBol) {
-        vm.checkBol = false;
-      }
+      if (vm.checkBol) vm.checkBol = false;
       $(".button-collapse").sideNav("hide");
       vm.showMenu = element.urlMenu;
       vm.namePosition = "Admin Noohwi/" + element.nombre;
@@ -799,6 +796,14 @@ function justNumbers(e) {
               nombre = "Special Events";
               urlMenu = "specialEvents.html";
               break;
+            case "mod_web_push_notification":
+              nombre = response[i].name_module;
+              urlMenu = "pushNotification.html";
+              break;
+            case "mod_web_cupones":
+              nombre = 'Coupons';
+              urlMenu = "cupones.html";
+              break;
             case "mod_web_pass":
               continue;
               nombre = response[i].name_module;
@@ -966,8 +971,6 @@ function justNumbers(e) {
             });
           }
 
-          console.log(vm.eventos, 'vm.eventos');
-
           vm.esperar = false;
         }, function errorCallback(response) {
           vm.esperar = false;
@@ -1083,8 +1086,7 @@ function justNumbers(e) {
         var temp = $rootScope.globals.currentUser;
         var aux = Base64.decode(temp.authdata).split(":");
         vm.esperar = true;
-        console.log(JSON.stringify(vm.jsonI));
-
+        
         DataServiceServer.saveUpdatePackage(
           aux[0],
           aux[1],
@@ -1182,7 +1184,6 @@ var Base64 = {
       enc4 = "";
     var i = 0;
 
-    // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
     var base64test = /[^A-Za-z0-9\+\/\=]/g;
     if (base64test.exec(input)) {
       window.alert(

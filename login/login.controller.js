@@ -58,7 +58,6 @@
       vm.dataLoading = true;
       vm.form = false;
       AuthenticationService.Login(vm.usermail, vm.password, function(response) {
-        console.log(response);
         
         if (response.success == -9) {
           FlashService.Error(response.message);
