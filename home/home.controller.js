@@ -234,7 +234,6 @@ function justNumbers(e) {
             "id_events": event.id_event,
             "active": hab
           }).then(function (response) {
-            console.log('response', response);
             swal(
               `${msg3} !`,
               `Se ha ${msg3}  ${event.nameEvent}`,
@@ -793,7 +792,7 @@ function justNumbers(e) {
               urlMenu = "weekendPackage.html";
               break;
             case "mod_web_special_events":
-              nombre = "Special Events";
+              nombre = "Noohwi Rides";
               urlMenu = "specialEvents.html";
               break;
             case "mod_web_push_notification":
@@ -947,8 +946,6 @@ function justNumbers(e) {
         .then(function successCallback(response) {
 
           var list = response.events;
-
-          console.log(list, 'list');
           if (response == -3) {
             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
             $location.path("/login");

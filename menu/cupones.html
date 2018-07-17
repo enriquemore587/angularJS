@@ -1,4 +1,8 @@
 <style>
+    .items {
+        font-size: 0.8em;
+    }
+
     .myC {
         width: 100%;
         height: 500px;
@@ -12,80 +16,124 @@
         width: 100% !important;
         background-color: #1a1a19;
     }
-    input{
+
+    input {
         color: #ffffff;
     }
+
+
+    .editVariable {
+        color: #FF3800;
+    }
+
+    .editVariable:hover {
+        cursor: pointer;
+        color: #fff;
+    }
 </style>
-<div ng-controller="cuponesController as vm" class="container myC">
-    <div class="row formCupones">
-        <form name="formCupon"  class="col s12s">
-            <div class="row">
-                <div class="input-field col s12">
-                    <label>Cupon</label>
-                    <input type="text" class="validate" ng-model="vm.a" maxlength="30" required>
+<div ng-controller="cuponesController as vm">
+    <div class="row" style="width: 100%; height: 80vh; position: relative;">
+        <!-- style="height: 100%; overflow: auto;" -->
+        <div class="col s8" style="margin-left: -10px; height: 80vh; overflow: auto;">
+            <table class="centered responsive-table" style="margin-top: 10%; color: #fff;">
+                <thead>
+                    <tr>
+                        <th>Cupón</th>
+                        <th>Servicio</th>
+                        <th>Veces a utilziar</th>
+                        <th>Utilizados</th>
+                        <th>Valor</th>
+                        <th>Vigencia</th>
+                        <th>Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="cupon in vm.cuponesList">
+                        <td class="items">{{cupon.code}}</td>
+                        <td class="items">
+                            <span>{{vm.getTypeService(cupon.type_service)}}</span>
+                        </td>
+                        <td class="items">{{cupon.amount_use}}</td>
+                        <td class="items">{{cupon.amount_used}}</td>
+                        <td class="items">{{vm.getTypeCupon(cupon.type_code, cupon.percentage_des, cupon.cost_des)}}</td>
+                        <td class="items">{{cupon.start_date}} - {{cupon.end_date}}</td>
+                        <td>
+                            <i class="editVariable tiny material-icons" ng-click="vm.editCupon(cupon)">edit</i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col s4">
+            <div class="myC" style=" margin-top: -10px;">
+                <div class="row formCupones">
+                    <form name="formCupon" class="col s12s">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" class="validate" ng-model="vm.cuponToSave.code" placeholder="Cupón" maxlength="30" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="type_service">Tipo de servicio</label>
+                            <select name="ngvalueselect" class="browser-default" ng-model="vm.cuponToSave.type_service" required>
+                                <option ng-repeat="option in vm.typeServices" ng-value="option.value">{{option.name}}</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col s6">
+                                <p>
+                                    <input name="group1" type="radio" id="type_code2" ng-model="vm.cuponToSave.type_code" ng-value="2" required/>
+                                    <label for="type_code2">* Cantidad</label>
+                                </p>
+                            </div>
+                            <div class="col s6">
+                                <p>
+                                    <input name="group1" type="radio" id="type_code1" ng-model="vm.cuponToSave.type_code" ng-value="1" required/>
+                                    <label for="type_code1">* Porcentaje</label>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <label ng-show="vm.cuponToSave.percentage_des > 100 && vm.cuponToSave.type_code == 1">El porcentaje no puede superar el valor 100%</label>
+                                <input name="porc" type="number" class="validate" ng-model="vm.cuponToSave.percentage_des" placeholder="Valor de descuento">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="number" placeholder="Cantidad de veces a utilizar" class="validate" ng-model="vm.cuponToSave.amount_use" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s2">
+                                <label>Vigencia</label>
+                            </div>
+                            <div class="col s5">
+                                <input type="text" placeholder="Desde" class="datepicker" ng-model="vm.cuponToSave.start_date" required>
+                            </div>
+                            <div class="col s5">
+                                <input type="text" placeholder="Hasta" class="datepicker" ng-model="vm.cuponToSave.end_date" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s6">
+                                <a class="btn modal-close" style="background: #FF3800; margin-right: 10px; display: block" ng-click="vm.cancel()">
+                                    Cancelar
+                                </a>
+                            </div>
+                            <div class="col s6">
+                                <a type="submit" ng-disabled="!formCupon.$valid||(vm.cuponToSave.type_code==1 && vm.cuponToSave.percentage_des >100)" style=" display: block" class=" btn green darken-3"
+                                    ng-click="vm.saveCupon()">
+                                    Guardar
+                                </a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <label>Tipo de servicio</label>
-                <select class="browser-default" ng-model="vm.a2" required>
-                    <option value="" disabled selected>Selecciona una opción</option>
-                    <option value="1">Weeken rides</option>
-                    <option value="2">Mobile Service</option>
-                    <option value="3">Transportation Service</option>
-                </select>
-            </div>
-            <div class="row">
-                <div class="col s6">
-                    <input id="monetario" name="group1" type="radio" checked/>
-                    <label for="monetario">
-                        Monetario
-                    </label>
-                </div>
-                <div class="col s6">
-                    <input id="porcentaje" name="group1" type="radio" />
-                    <label for="porcentaje">
-                        Porcentaje
-                    </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <label>Valor de descuento</label>
-                    <input type="number" class="validate" ng-model="vm.a3" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <label>Cantidad de veces a utilizar</label>
-                    <input type="number" class="validate" ng-model="vm.a4" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s2">
-                    <label>Vigencia</label>
-                </div>
-                <div class="col s5">
-                    <input type="text" placeholder="Desde" class="datepicker" ng-model="vm.a5" required>
-                </div>
-                <div class="col s5">
-                    <input type="text" placeholder="Hasta" class="datepicker" ng-model="vm.a6" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s6">
-                    <a class="btn modal-close" style="background: #FF3800; margin-right: 10px; display: block" ng-click="">
-                        Cancelar
-                    </a>
-                </div>
-                <div class="col s6">
-                    <a type="submit" ng-disabled="!formCupon.$valid" style=" display: block" class=" btn green darken-3"
-                        ng-click="vm.confirmacion = true;">
-                        Guardar
-                    </a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
+
 </div>
 
 <script>
@@ -95,8 +143,8 @@
         today: 'Hoy',
         clear: 'Limpiar',
         close: 'Ok',
-        format: 'mm/dd/yyyy',
-        formatSubmit: 'mm/dd/yyyy',
+        format: 'yyyy-mm-dd',
+        formatSubmit: 'yyyy-mm-dd',
         closeOnSelect: false // Close upon selecting a date,
     });
 </script>

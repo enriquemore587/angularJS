@@ -1,4 +1,3 @@
-// controlador de checkInController
 "use strict";
 (function () {
   var app = angular.module('app');
@@ -36,30 +35,45 @@
     vm.obj = {};
 
     vm.sendMessage = () => {
-      var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
-      vm.obj.id_user = aux[0];
-      vm.obj.token = aux[1];
-      vm.obj.id_users = [];
-      vm.obj.all = vm.sendAll;
-      if (!vm.obj.all) {
-        vm.listaUsers.forEach(user => {
-          if (user.send) vm.obj.id_users.push(user.id_user);
-        });
-      }
-
-      DataServiceServer.sendPushNotification(vm.obj)
-        .then(function successCallback(response) {
-          if (response == undefined) {
-            Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
-            $location.path("/login");
-            return;
+      swal({
+        title: '¿ Estás seguro ?',
+        text: `¡ Se mandará la notificación !`,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#C0C0C0',
+        cancelButtonColor: '#FF3800',
+        cancelarButtonText: 'Cancelar',
+        showCloseButton: true,
+        confirmButtonText: `Si, enviar`,
+        focusConfirm: false
+      }).then((result) => {
+        if (result.value) {
+          var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
+          vm.obj.id_user = aux[0];
+          vm.obj.token = aux[1];
+          vm.obj.id_users = [];
+          vm.obj.all = vm.sendAll;
+          if (!vm.obj.all) {
+            vm.listaUsers.forEach(user => {
+              if (user.send) vm.obj.id_users.push(user.id_user);
+            });
           }
-          vm.obj = {};
-          Materialize.toast('Notificacion enviada', 5000);
-          vm.getAllUsers();
-        }, function errorCallback(response) {
-          Materialize.toast('Falla de conexión', 1000);
-        });
+          DataServiceServer.sendPushNotification(vm.obj)
+            .then(function successCallback(response) {
+              if (response == undefined) {
+                Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                $location.path("/login");
+                return;
+              }
+              vm.obj = {};
+              Materialize.toast('Notificacion enviada', 5000);
+              vm.sendAll = true;
+              vm.getAllUsers();
+            }, function errorCallback(response) {
+              Materialize.toast('Falla de conexión', 1000);
+            });
+        }
+      })
     }
 
     vm.sendAllF = () => {

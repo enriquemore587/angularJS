@@ -138,7 +138,6 @@
       if (vm.dia != "") {
         if (vm.hora != "" && String(vm.hora).length == 5) {
           var vari = vm.dia + " " + vm.hora + ":00";
-          console.log(vari);
           var dt = new Date(vari).getTime();
           var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
           vm.objConfirmEdit['id_user'] = aux[0];
@@ -243,8 +242,6 @@
               vm.data.push(element);
             }
           });
-          console.log(vm.data);
-          
           vm.esperar = false;
         }, function errorCallback(response) {
           vm.esperar = false;

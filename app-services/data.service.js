@@ -56,11 +56,34 @@
         service.desableSpecialEvents = desableSpecialEvents;
         service.desableWeekendPackage = desableWeekendPackage;
         service.sendPushNotification = sendPushNotification;
+        service.getCodeList = getCodeList;
+        service.sendCupon = sendCupon;
 
         service.url2 = "https://s692755340.onlinehome.mx:8743";
         service.url = 'http://74.208.103.93:8780';
 
         return service;
+
+        function getCodeList(userId, token) {
+            return $http.get(service.url + `/noohwi/promotional?id_user=${userId}&token=${token}`,
+                {}, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
+                .then(function successCallback(response) {
+                    if (response.data.message == "successful") {
+                        return response.data.data;
+                    }
+                }, function errorCallback(response) {
+                    return response;
+                });
+        }
+
+        function sendCupon(obj) {
+            return $http.post(service.url + '/noohwi/promotional', obj, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
+                .then(function successCallback(response) {
+                    return response;
+                }, function errorCallback(response) {
+                    return response;
+                });
+        }
 
         function sendPushNotification(obj) {
             return $http.post(service.url + '/noohwi/notification', obj, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
@@ -358,7 +381,7 @@
                 .then(handleSuccess, handleError('Error Token Invalido'));
         }
 
-        
+
 
         function getLocationGoogle(data) {
             return $http.get('https://maps.googleapis.com/maps/api/geocode/json',

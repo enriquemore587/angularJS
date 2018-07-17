@@ -65,16 +65,19 @@
         }
 
         vm.ver_new_week = false;
+        vm.haveACode = false;
         vm.newWeek = (value, regresar) => {
-            if (!value) vm.action = 1;
+            if (!value && vm.action != 0) vm.action = 1;
+            else if (!value && vm.action == 0) vm.action = 0;
             vm.ver_new_week = value;
             vm.newWeekObj = {};
-
+            vm.newWeekObj.haveACode = false;
+            vm.newWeekObj.isAutoGe = false;
             vm.newWeekObj.type_code = 1;    // 1 es para porcentaje y el 2 es descuento en efectivo
-            vm.newWeekObj.cantidad = 1000;
+            vm.newWeekObj.cantidad = 0;
             //vm.newWeekObj.descuento = 100;
-            vm.newWeekObj.percentage_des = 100;
-            vm.newWeekObj.cost_des = 100;
+            vm.newWeekObj.percentage_des = 0;
+            vm.newWeekObj.cost_des = 0;
             vm.fecha = $filter('date')(new Date(), 'MM/dd/yyyy');
             vm.newWeekObj.inicio_vigencia = $filter('date')(new Date(), 'MM/dd/yyyy');
             vm.newWeekObj.fin_vigencia = $filter('date')(new Date(), 'MM/dd/yyyy');
@@ -126,7 +129,8 @@
                     vm.fynallyOBJ.date = vm.fecha.split(/\//g)[2] + "-" + vm.fecha.split(/\//g)[0] + "-" + vm.fecha.split(/\//g)[1] + " " + vm.hora + ":00";
 
                     vm.fynallyOBJ.description = vm.newWeekObj.description;
-                    vm.fynallyOBJ.amount = 0;
+
+                    vm.fynallyOBJ.amount = vm.newWeekObj.amount;
                     vm.fynallyOBJ.terms = vm.newWeekObj.terms;
                     vm.fynallyOBJ.id_promo_code = vm.newWeekObj.id_promo_code;
                     vm.fynallyOBJ.code = vm.newWeekObj.code;
@@ -170,7 +174,6 @@
             })
         }
 
-
         vm.clearData = () => {
             $('#modal_new').modal('close');
             vm.obj = {};
@@ -190,7 +193,6 @@
             vm.newWeekObj.cantidad = vm.newWeekObj.amount_use;
             vm.newWeekObj.percentage_des = vm.newWeekObj.percentage_des;
             vm.newWeekObj.cost_des = vm.newWeekObj.cost_des;
-
         }
 
         vm.hora;
@@ -204,6 +206,7 @@
 
                 vm.newWeekObj.active = true;
 
+                // console.log(vm.newWeekObj.haveACode);
 
                 vm.rodadas.push(vm.newWeekObj);
 
@@ -231,7 +234,6 @@
             var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
             DataServiceServer.getSpecialEventsDetails(aux[0], aux[1], vm.obj.id_special_events)
                 .then(function successCallback(response) {
-
                     if (response == -3) {
                         $('.modal').modal('close');
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
@@ -242,7 +244,6 @@
                     //Materialize.toast('List updated', 4000);
                     vm.rodadas = response.special_events_details;
                     vm.esperar = false;
-
                 }, function errorCallback(response) {
                     vm.esperar = false;
                     Materialize.toast('ERROR POR CONEXION', 4000);
@@ -355,7 +356,9 @@
                                 element.cantidad,   // falta las veces que se ocuparan
                                 element.type_code,
                                 element.cost_des,   // cantidad
-                                element.percentage_des // porcentaje
+                                element.percentage_des, // porcentaje
+                                element.haveACode,
+                                element.isAutoGe
                             ]
                         );
 
@@ -405,19 +408,18 @@
                 focusConfirm: false
             }).then((result) => {
                 if (result.value) {
-                    console.log('vm.action__', vm.action);
                     if (vm.action == 0) {
                         vm.rodadas.splice(index, 1);
                     } else {
                         var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
-                        console.log('week', week);
-                        console.log({
-                            "id_user": aux[0],
-                            "token": aux[1],
-                            "id_weekend": week.id_weekend_rides,
-                            "active": hab
-                        });
-
+                        /*
+                                                console.log({
+                                                    "id_user": aux[0],
+                                                    "token": aux[1],
+                                                    "id_weekend": week.id_weekend_rides,
+                                                    "active": hab
+                                                });
+                        */
                         DataServiceServer.desableWeek({
                             "id_user": aux[0],
                             "token": aux[1],
@@ -432,7 +434,7 @@
                             ///
                             DataServiceServer.getSpecialEventsDetails(aux[0], aux[1], vm.obj.id_special_events)
                                 .then(function successCallback(response) {
-                                    
+
 
                                     if (response == -3) {
                                         $('.modal').modal('close');
@@ -482,7 +484,7 @@
                         "id_special_events": week.id_special_events,
                         "active": hab
                     }).then(function (response) {
-                        
+
 
                         swal(
                             `${msg3} !`,
@@ -570,8 +572,6 @@
                         $location.path("/login");
                         return;
                     }
-                    console.log(response.special_events);
-
                     vm.items = response.special_events;
                     vm.esperar = false;
 
@@ -612,7 +612,6 @@
             }
         }
         vm.verUser = item => {
-            console.log(item);
             vm.mapWeek.setCenter({ lat: parseFloat(item.l.split(",")[0]), lng: parseFloat(item.l.split(",")[1]) });
             vm.mapWeek.setZoom(20);
         }
@@ -639,45 +638,29 @@
         function alertasF() {
             let flag = {};
             if (vm.alertaParticipantes.length > 0) {
-                console.log(1);
-
                 vm.alertaParticipantes.forEach(elem => {
 
                     if (elem.ec) {
-                        console.log(2);
                         flag.ec = true;
                         $('#mec').css('visibility', 'visible');
-                        console.log(3);
                         let sound = document.getElementById("sound");
-                        console.log(4);
                         sound.pause();
-                        console.log(5);
                         sound.currentTime = 0;
                         sound.play();
-                        console.log(6);
                     } else {
-                        console.log(7);
                         flag.ec = false;
                         $('#mec').css('visibility', 'hidden');
-                        console.log(8);
                     }
                     if (elem.ed) {
-                        console.log(9);
                         flag.ed = true;
                         $('#med').css('visibility', 'visible');
-                        console.log(10);
                         let sound = document.getElementById("sound");
-                        console.log(11);
                         sound.pause();
-                        console.log(12);
                         sound.currentTime = 0;
                         sound.play();
-                        console.log(13);
                     } else {
-                        console.log(14);
                         flag.ed = false;
                         $('#med').css('visibility', 'hidden');
-                        console.log(15);
                     }
                 });
             } else {
@@ -775,7 +758,6 @@
                             lng: position.coords.longitude,
                         };
                         vm.camioneta.setPosition(pos);
-                        console.log("posoicion camioneta", vm.camioneta.getPosition());
                     }, function (er) { //ERROR DE GEOLOCALIZACION
                         Materialize.toast(er.message, 2200);
                     });
@@ -797,25 +779,16 @@
             try {
                 limites.extend(vm.camioneta.position);
                 vm.mapWeek.fitBounds(limites);
-                console.log("center");
-
             } catch (error) {
                 console.log("no hay ubicacion Camioneta");
             }
         }
-
-
-
-
 
         function loadData() {
             if (vm.abierto && vm.ride.active) {
 
                 getMyPosition();
                 vm.iterar++;
-
-                console.log(vm.iterar % 10);
-
                 let flag = {};
 
                 vm.alertaParticipantes = [];
@@ -873,7 +846,7 @@
 
                             vm.esperarTracking = false;
                             alertasF();
-                            if (vm.iterar == 1) { vm.centrar(); console.log("PRIMER ITERACIÓN"); loadData(); }
+                            if (vm.iterar == 1) { vm.centrar(); loadData(); }
                             else setTimeout(loadData, 10000);
                             return;
 
@@ -894,12 +867,8 @@
 
             vm.ride.active = x.tracking;
             vm.ride.id_weekend = x.id_weekend_rides;
-            console.log('vm.nameTracking => ', vm.nameTracking);
-            console.log('vm.repeat => ', vm.repeat);
-            console.log('vm.ride => ', vm.ride);
 
             //      arranca modal
-
             vm.isOk();
             vm.abierto = true;
             vm.esperarTracking = false;
@@ -909,7 +878,6 @@
                 vm.esperarTracking = true;
                 loadData();
             } else {
-                console.log("no esta activo");
                 getMyPosition();
                 vm.centrar();
             }
@@ -936,8 +904,6 @@
         /****************************************************************************************************************************************************************** */
         /****************************************************************************************************************************************************************** */
         /****************************************************************************************************************************************************************** */
-
-
 
     }
 })();

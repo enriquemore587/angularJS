@@ -41,7 +41,6 @@
         vm.alert = false;
         vm.isCero = (value) => {
             console.log(value);
-            
         }
 
 
@@ -51,8 +50,6 @@
             var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
             DataServiceServer.getPackageWRsUsers(aux[0], aux[1], vm.packWRObj.id_wrp)
                 .then(function successCallback(response) {
-                    console.log(response);
-
                     if (response == -3) {
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                         $location.path("/login");
@@ -71,7 +68,6 @@
             var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
             DataServiceServer.getPackageWRsUsers(aux[0], aux[1], vm.packWRObj.id_wrp)
                 .then(function successCallback(response) {
-                    console.log(response);
                     if (response == -3) {
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                         $location.path("/login");
@@ -109,8 +105,6 @@
                     });
                     DataServiceServer.saveUpdatePWR(vm.packWRObj)
                         .then(function successCallback(response) {
-                            console.log(response);
-
                             if (response == -3) {
                                 Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                                 $location.path("/login");
@@ -186,7 +180,6 @@
             var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
             DataServiceServer.getPackageWRsUsers(aux[0], aux[1], pws.id_wrp)
                 .then(function successCallback(response) {
-                    console.log(response);
                     if (response == -3) {
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                         $location.path("/login");
@@ -220,7 +213,6 @@
             vm.esperar = true;
             DataServiceServer.getPackageWRs(aux[0], aux[1])
                 .then(function successCallback(response) {
-                    console.log(response);
                     if (response == -3) {
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
                         $location.path("/login");

@@ -34,7 +34,6 @@
     vm.verTodosWeek = false;
     vm.mapWeek;
     vm.verUser = item => {
-      console.log(item);
       vm.mapWeek.setCenter({ lat: parseFloat(item.l.split(",")[0]), lng: parseFloat(item.l.split(",")[1]) });
       vm.mapWeek.setZoom(20);
     }
@@ -97,12 +96,10 @@
               lng: position.coords.longitude,
             };
             vm.camioneta.setPosition(pos);
-            console.log("posoicion camioneta", vm.camioneta.getPosition());
           }, function (er) { //ERROR DE GEOLOCALIZACION
-            Materialize.toast(er.message, 2200);
+            Materialize.toast("ERROR DE GEOLOCALIZACION"+er.message, 2200);
           });
         } else {
-
           console.log("else => navigator.geolocation");
         }
       } catch (error) {
@@ -120,8 +117,6 @@
       try {
         limites.extend(vm.camioneta.position);
         vm.mapWeek.fitBounds(limites);
-        console.log("center");
-
       } catch (error) {
         console.log("no hay ubicacion Camioneta");
       }
@@ -166,8 +161,6 @@
         .then(function successCallback(response) {
           try {
             vm.weekObj.user = response.user;
-            console.log(vm.weekObj.user);
-
             Materialize.toast('Updated', 250);
           } catch (err) {
             Materialize.toast('SIN DATA', 500);
@@ -211,7 +204,6 @@
           }
           try {
             vm.weeks = response.weekend_rides;
-            console.log("vm.weeks", vm.weeks);
           } catch (err) {
             Materialize.toast('SIN DATA', 500);
           }
@@ -228,9 +220,6 @@
       //var dt = new Date(vari[2] + "-" + vari[0] + "-" + vari[1] + " " + vm.hora + ":12").getTime() - 28800000;
 
       var dt = new Date(vm.fecha + " " + vm.hora + ":00").getTime() - 25200000;
-      console.log(new Date(vm.fecha + " " + vm.hora + ":00"));
-      console.log(vm.fecha + " " + vm.hora + ":00");
-
 
       vm.weekObj.date = dt;
       var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
@@ -429,8 +418,7 @@
                 vm.ride.id_user = aux[0];
                 vm.ride.token = aux[1];
                 vm.esperarTracking = true;
-                console.log('vm.ride', vm.ride);
-                
+                                
                 DataServiceServer.activeTracking(vm.ride)
                   .then(function successCallback(response) {
                     if (response == -3) {
@@ -478,8 +466,7 @@
                 getMyPosition();
                 vm.iterar++;
 
-                console.log(vm.iterar % 10);
-
+                
                 let flag = {};
 
                 vm.alertaParticipantes = [];
@@ -537,7 +524,7 @@
 
                       vm.esperarTracking = false;
                       alertasF();
-                      if (vm.iterar == 1) { vm.centrar(); console.log("PRIMER ITERACIÓN"); loadData(); }
+                      if (vm.iterar == 1) { vm.centrar(); loadData(); }
                       else setTimeout(loadData, 10000);
                       return;
 
@@ -554,7 +541,6 @@
               vm.esperarTracking = true;
               loadData();
             } else {
-              console.log("no esta activo");
               getMyPosition();
               vm.centrar();
             }

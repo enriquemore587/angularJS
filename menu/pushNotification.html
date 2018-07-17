@@ -3,22 +3,6 @@
         <div class="card" style="background-color: white; height: 100%">
             <div class="card-content white-text">
                 <div class="row">
-                    <form class="col s7" name="formPushNot" role="form" style="color: black;">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="titulo" ng-model="vm.obj.title" type="text" class="validate" required>
-                                <label for="titulo">Titulo</label>
-                            </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="input-field col s12">
-                                <textarea id="descripcion" ng-model="vm.obj.body" class="materialize-textarea" required></textarea>
-                                <label for="descripcion">Cuerpo de mensaje</label>
-                            </div>
-
-                        </div>
-                    </form>
                     <div class="col s5" style="background-color: black; overflow: auto; max-height: 100%;">
                         <div>
                             <div>
@@ -46,6 +30,22 @@
                             </div>
                         </div>
                     </div>
+                    <form class="col s7" name="formPushNot" role="form" style="color: black;">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="titulo" ng-model="vm.obj.title" type="text" class="validate" required>
+                                <label for="titulo">Titulo</label>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="input-field col s12">
+                                <textarea id="descripcion" ng-model="vm.obj.body" class="materialize-textarea" required></textarea>
+                                <label for="descripcion">Cuerpo de mensaje</label>
+                            </div>
+
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="card-action">

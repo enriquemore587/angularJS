@@ -118,7 +118,6 @@
                         <div class="col s7" style="margin-top: 10px;">
                             <input type="search" autocomplete="off" ng-model="buscarU" ng-blur="buscarU=''">
                         </div>
-
                     </div>
                     <div class="center" style="margin-top: 25px; position: relative;">
                         <a ng-click="vm.newWeek(true);" style="background: #FF3800;" data-position="right" data-tooltip="NUEVO EVENTO" class="tooltipped btn-floating btn-large">
@@ -222,6 +221,13 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div input-field class="col s6">
+                                <label>* Precio
+                                </label>
+                                <input name="precio" class="validate" type="number" ng-model="vm.newWeekObj.amount" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div input-field class="col s12">
                                 <label for="nameWeek">* Descripción </label>
                                 <textarea ng-model="vm.newWeekObj.description" autocomplete="off" required class="materialize-textarea"></textarea>
@@ -233,49 +239,57 @@
                                 <textarea ng-model="vm.newWeekObj.terms" autocomplete="off" required class="materialize-textarea"></textarea>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div input-field class="col s4">
-                                <label>* Codigo promocional</label>
-                                <input name="name" class="validate" type="text" ng-model="vm.newWeekObj.code" autocomplete="off" required>
+                        <div style="padding-bottom: 5px;">
+                            <input type="checkbox" ng-checked="vm.newWeekObj.haveACode" />
+                            <label ng-click="vm.newWeekObj.haveACode = !vm.newWeekObj.haveACode">
+                                <span>Tiene código promocional</span> {{vm.newWeekObj.haveACode}}
+                            </label>
+                        </div>
+                        <div ng-show="vm.newWeekObj.haveACode" class="row" style="margin-top: 15px; padding-top: 5px;">
+                            <div input-field class="col s3">
+                                <label>* Código promocional</label>
+                                <input name="name" class="validate" type="text" ng-model="vm.newWeekObj.code" autocomplete="off">
                             </div>
-                            <div input-field class="col s4">
+                            <div input-field class="col s3">
+                                <input type="checkbox" ng-checked="vm.newWeekObj.isAutoGe"/>
+                                <label ng-click="vm.newWeekObj.isAutoGe = !vm.newWeekObj.isAutoGe">Autogenerar</label>
+                            </div>
+                            <div input-field class="col s3">
                                 <label for="date">* Inicio vigencia</label>
-                                <input id="date" name="date" type="text" class="datepicker" autocomplete="off" ng-model="vm.newWeekObj.inicio_vigencia" required>
+                                <input id="date" name="date" type="text" class="datepicker" autocomplete="off" ng-model="vm.newWeekObj.inicio_vigencia">
                             </div>
 
-                            <div input-field class="col s4">
+                            <div input-field class="col s3">
                                 <label for="date">* Fin vigencia</label>
-                                <input id="date" name="date" type="text" class="datepicker" autocomplete="off" ng-model="vm.newWeekObj.fin_vigencia" required>
+                                <input id="date" name="date" type="text" class="datepicker" autocomplete="off" ng-model="vm.newWeekObj.fin_vigencia">
                             </div>
                         </div>
-                        <div class="row">
+                        <div ng-show="vm.newWeekObj.haveACode" class="row">
                             <div input-field class="col s4">
                                 <label>* Cuantas veces será utilizado el código</label>
                                 <input onkeypress="return justNumbers(event);" name="amount" type="text" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cantidad"
-                                    required>
+                                    >
                             </div>
                             <div input-field class="col s2">
                                 <p>
-                                    <input name="group1" type="radio" id="test1" ng-model="vm.newWeekObj.type_code" ng-value="1" required/>
+                                    <input name="group1" type="radio" id="test1" ng-model="vm.newWeekObj.type_code" ng-value="1" />
                                     <label for="test1">* Porcentaje</label>
                                 </p>
                             </div>
                             <div input-field class="col s2">
                                 <p>
-                                    <input name="group1" type="radio" id="test2" ng-model="vm.newWeekObj.type_code" ng-value="2" required/>
+                                    <input name="group1" type="radio" id="test2" ng-model="vm.newWeekObj.type_code" ng-value="2"/>
                                     <label for="test2">* Cantidad</label>
                                 </p>
                             </div>
                             <div input-field class="col s4" style="position: relative;">
                                 <label>Descuento por {{ vm.newWeekObj.type_code == 1 ? 'porcentaje' : 'cantidad en efectivo'}}</label>
-                                <input ng-show="vm.newWeekObj.type_code == 1" onkeypress="return justNumbers(event);" name="amount" type="text" class="validate"
-                                    autocomplete="off" ng-model="vm.newWeekObj.percentage_des" required>
-                                <input ng-show="vm.newWeekObj.type_code == 2" onkeypress="return justNumbers(event);" name="amount" type="text" class="validate"
-                                    autocomplete="off" ng-model="vm.newWeekObj.cost_des" required>
+                                <input ng-show="vm.newWeekObj.type_code == 1" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.percentage_des"
+                                    >
+                                <input ng-show="vm.newWeekObj.type_code == 2" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cost_des"
+                                    >
                             </div>
                         </div>
-
                         <div class="row" style=" margin-right: 15px;  margin-top: 15px;">
                             <a type="submit" ng-disabled="!form_Weekend.$valid" ng-click="vm.saveNewRodada();" class="btn green darken-3" style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;">
                                 GUARDAR

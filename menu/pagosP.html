@@ -24,7 +24,7 @@
               </h5>
               <p>Dirrección: {{item.address}}</p>
               <p>Fecha de registro: {{item.registration_date | date: 'dd/MM/yyyy'}}</p>
-              <p>Fecha de servcio: {{item.service_date}}
+              <p>Fecha de servcio: {{item.service_date | date: 'dd/MM/yyyy'}}
                   <span>
                       <a ng-show="item.status_service == 1 && item.status_service != 2 " href="#modal_confirmar" ng-click="vm.itemEdit = item;"
                           class="Asap-Bold modal-trigger" title="EDITAR FECHA Y HORA">

@@ -62,10 +62,8 @@
           "id_eventcollection": vm.eventColaction,
           "id_check_in": vm.objCI.id_collpoint
         };
-      console.log("mando", vm.obj);
       DataServiceServer.checkOut(vm.obj)
         .then(function successCallback(response) {
-          console.log('response',response);
           getCheckOut();
           vm.ver = false;
           vm.objCI = {};
