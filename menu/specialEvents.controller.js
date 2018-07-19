@@ -58,16 +58,17 @@
         */
         vm.action;
         vm.ovjMasive = {};
+        vm.inputsToBlock = {};
 
         vm.ver_new_week = false;
         vm.haveACode = false;
         vm.indexWhenEditing = -1;
         vm.newWeek = (value, regresar) => {
+            vm.inputsToBlock = {};  //  libera los input condicionados
             // cuando value es false quiere decir que se cierra ventana
-            if (!value && vm.action != 0) vm.action = 1;
-            else if (!value && vm.action == 0) {
-                vm.action = 0;
-            }
+            if (!value && vm.action != 0) vm.action = 1;    //  se edita package y al agregar una rodada preciona regresar
+            else if (!value && vm.action == 0) vm.action = 0;
+
             vm.indexWhenEditing = -1;
             vm.ver_new_week = value;
             vm.newWeekObj = {};
@@ -86,6 +87,7 @@
         }
 
         vm.saveNewRodada = () => {
+            vm.inputsToBlock = {};  //  libera los input condicionados
             if (vm.action == 0) {
                 // SOLO GUARDA EN MEMORIA POR QUE SE PERSISTE UN OBJETO COMPLETO
                 vm.saveNewRodada_newSE();
@@ -144,6 +146,9 @@
                     vm.fynallyOBJ.percentage_des = vm.newWeekObj.percentage_des;
                     vm.fynallyOBJ.cost_des = vm.newWeekObj.cost_des;
 
+                    vm.fynallyOBJ.has_code = vm.newWeekObj.haveACode;
+                    vm.fynallyOBJ.auto_code = vm.newWeekObj.isAutoGe;
+
 
 
 
@@ -197,17 +202,41 @@
             vm.newWeekObj.cost_des = vm.newWeekObj.cost_des;
         }
 
+        
         vm.editChild = x => {
+            
             vm.ver_new_week = true;
             vm.action = -1;
-            vm.newWeekObj = x;
-            vm.fecha = $filter('date')(vm.newWeekObj.date, 'MM/dd/yyyy');
-            vm.hora = $filter('date')(vm.newWeekObj.date, 'HH:mm');
-            vm.newWeekObj.inicio_vigencia = vm.newWeekObj.start_date.split("-")[1] + "/" + vm.newWeekObj.start_date.split("-")[2] + "/" + vm.newWeekObj.start_date.split("-")[0];
-            vm.newWeekObj.fin_vigencia = vm.newWeekObj.end_date.split("-")[1] + "/" + vm.newWeekObj.end_date.split("-")[2] + "/" + vm.newWeekObj.end_date.split("-")[0];
-            vm.newWeekObj.cantidad = vm.newWeekObj.amount_use;
-            vm.newWeekObj.percentage_des = vm.newWeekObj.percentage_des;
-            vm.newWeekObj.cost_des = vm.newWeekObj.cost_des;
+            //vm.newWeekObj = x;
+            vm.newWeekObj.id_weekend_rides = x.id_weekend_rides;
+            vm.newWeekObj.name = x.name;
+            vm.newWeekObj.place = x.place;
+            vm.newWeekObj.amount = x.amount;
+            vm.newWeekObj.description = x.description;
+            vm.newWeekObj.terms = x.terms;
+            vm.fecha = $filter('date')(x.date, 'MM/dd/yyyy');
+            vm.hora = $filter('date')(x.date, 'HH:mm');
+            vm.newWeekObj.inicio_vigencia = x.start_date.split("-")[1] + "/" + x.start_date.split("-")[2] + "/" + x.start_date.split("-")[0];
+            vm.newWeekObj.fin_vigencia = x.end_date.split("-")[1] + "/" + x.end_date.split("-")[2] + "/" + x.end_date.split("-")[0];
+            vm.newWeekObj.cantidad = x.amount_use;
+            vm.newWeekObj.percentage_des = x.percentage_des;
+            vm.newWeekObj.cost_des = x.cost_des;
+            vm.newWeekObj.haveACode = x.has_code;
+            vm.newWeekObj.code = x.code;
+            vm.newWeekObj.isAutoGe = x.auto_code;
+            vm.newWeekObj.type_code = x.type_code;
+            if (x.count_cof > 0) {
+                vm.inputsToBlock.amount = true;
+                vm.inputsToBlock.type_code = true;
+            }
+            if (vm.newWeekObj.haveACode) {
+                vm.inputsToBlock.haveACode = true;
+                vm.inputsToBlock.code = true;
+            }
+            if (vm.newWeekObj.isAutoGe) {
+                vm.inputsToBlock.isAutoGe = true;
+            }
+            
         }
 
         vm.hora;

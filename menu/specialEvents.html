@@ -154,11 +154,11 @@
                                 </a>
                                 <div class="card-action center">
                                     <div>
-                                        <a ng-show="vm.action==0" style="margin-right: 9px !important;" ng-click="vm.editChildMasive(x, $index);" class="modal-trigger"
+                                        <a ng-show="vm.action == 0" style="margin-right: 9px !important;" ng-click="vm.editChildMasive(x, $index);" class="modal-trigger"
                                             href="#modal_new" title="Editar datos">
                                             <i class="material-icons Ncolor" style="color: white">edit</i>
                                         </a>
-                                        <a ng-show="vm.action==1" style="margin-right: 9px !important;" ng-click="vm.editChild(x);" class="modal-trigger" href="#modal_new"
+                                        <a ng-show="vm.action == 1" style="margin-right: 9px !important;" ng-click="vm.editChild(x);" class="modal-trigger" href="#modal_new"
                                             title="Editar Datos">
                                             <i class="material-icons Ncolor" style="color: white">edit</i>
                                         </a>
@@ -229,7 +229,8 @@
                             <div input-field class="col s6">
                                 <label>* Precio
                                 </label>
-                                <input name="precio" class="validate" type="number" ng-model="vm.newWeekObj.amount" autocomplete="off" required>
+                                <input name="precio" class="validate" type="number" ng-disabled="vm.inputsToBlock.amount" ng-model="vm.newWeekObj.amount"
+                                    autocomplete="off" required>
                             </div>
                         </div>
                         <div class="row">
@@ -244,20 +245,32 @@
                                 <textarea ng-model="vm.newWeekObj.terms" autocomplete="off" required class="materialize-textarea"></textarea>
                             </div>
                         </div>
-                        <div style="padding-bottom: 5px;">
+
+                        <div ng-show="!vm.inputsToBlock.haveACode" style="padding-bottom: 5px;">
                             <input type="checkbox" ng-checked="vm.newWeekObj.haveACode" />
                             <label ng-click="vm.newWeekObj.haveACode = !vm.newWeekObj.haveACode">
                                 <span>Tiene código promocional</span>
                             </label>
                         </div>
+                        <div ng-show="vm.inputsToBlock.haveACode" style="padding-bottom: 5px;">
+                            <input type="checkbox" ng-checked="vm.newWeekObj.haveACode" />
+                            <label>
+                                <span>Tiene código promocional</span>
+                            </label>
+                        </div>
+
                         <div ng-show="vm.newWeekObj.haveACode" class="row" style="margin-top: 15px; padding-top: 5px;">
                             <div input-field class="col s3">
                                 <label>* Código promocional</label>
-                                <input name="name" class="validate" type="text" ng-model="vm.newWeekObj.code" autocomplete="off">
+                                <input name="name" class="validate" ng-disabled="vm.inputsToBlock.code" type="text" ng-model="vm.newWeekObj.code" autocomplete="off">
                             </div>
-                            <div input-field class="col s3">
+                            <div ng-show="!vm.inputsToBlock.isAutoGe" input-field class="col s3">
                                 <input type="checkbox" ng-checked="vm.newWeekObj.isAutoGe" />
                                 <label ng-click="vm.newWeekObj.isAutoGe = !vm.newWeekObj.isAutoGe">Autogenerar</label>
+                            </div>
+                            <div ng-show="vm.inputsToBlock.isAutoGe" input-field class="col s3">
+                                <input type="checkbox" ng-checked="vm.newWeekObj.isAutoGe" />
+                                <label>Autogenerar</label>
                             </div>
                             <div input-field class="col s3">
                                 <label for="date">* Inicio vigencia</label>

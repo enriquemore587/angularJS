@@ -633,6 +633,10 @@ function justNumbers(e) {
     };
 
     vm.clearPackage = function () {
+      vm.namePackage = '';
+      vm.costPackage = '';
+      vm.descPackage = '';
+      vm.terms = '';
       vm.mapForPackage();
       vm.deleteArea = false;
       vm.confirmacion = false;
