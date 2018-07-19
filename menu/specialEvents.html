@@ -285,7 +285,7 @@
                         <div ng-show="vm.newWeekObj.haveACode" class="row">
                             <div input-field class="col s4">
                                 <label>* Cuantas veces será utilizado el código</label>
-                                <input onkeypress="return justNumbers(event);" name="amount" type="text" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cantidad">
+                                <input name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cantidad">
                             </div>
                             <div input-field class="col s2">
                                 <p>
