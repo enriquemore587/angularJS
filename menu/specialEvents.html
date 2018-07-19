@@ -145,7 +145,7 @@
                                     <i class="tiny material-icons">date_range</i> {{x.date | date:"MMM/dd/yyyy 'Hora: ' h:mma"}}
                                 </p>
                                 <p style="color: white;">
-                                    <i class="tiny material-icons">local_play</i> {{x.code}} {{x.active}}
+                                    <i class="tiny material-icons">local_play</i> {{x.code}}
                                 </p>
                             </div>
                             <div ng-if="x.active" class="card-reveal gris">
@@ -154,7 +154,12 @@
                                 </a>
                                 <div class="card-action center">
                                     <div>
-                                        <a style="margin-right: 9px !important;" ng-click="vm.editChild(x);" class="modal-trigger" href="#modal_new" title="EDITAR DATOS">
+                                        <a ng-show="vm.action==0" style="margin-right: 9px !important;" ng-click="vm.editChildMasive(x, $index);" class="modal-trigger"
+                                            href="#modal_new" title="Editar datos">
+                                            <i class="material-icons Ncolor" style="color: white">edit</i>
+                                        </a>
+                                        <a ng-show="vm.action==1" style="margin-right: 9px !important;" ng-click="vm.editChild(x);" class="modal-trigger" href="#modal_new"
+                                            title="Editar Datos">
                                             <i class="material-icons Ncolor" style="color: white">edit</i>
                                         </a>
                                         <a style="margin-right: 9px !important;" class="Asap-Bold" href ng-click="vm.deleteWeekend(x, false, $index)" title="ELIMINAR">
@@ -242,7 +247,7 @@
                         <div style="padding-bottom: 5px;">
                             <input type="checkbox" ng-checked="vm.newWeekObj.haveACode" />
                             <label ng-click="vm.newWeekObj.haveACode = !vm.newWeekObj.haveACode">
-                                <span>Tiene código promocional</span> {{vm.newWeekObj.haveACode}}
+                                <span>Tiene código promocional</span>
                             </label>
                         </div>
                         <div ng-show="vm.newWeekObj.haveACode" class="row" style="margin-top: 15px; padding-top: 5px;">
@@ -251,7 +256,7 @@
                                 <input name="name" class="validate" type="text" ng-model="vm.newWeekObj.code" autocomplete="off">
                             </div>
                             <div input-field class="col s3">
-                                <input type="checkbox" ng-checked="vm.newWeekObj.isAutoGe"/>
+                                <input type="checkbox" ng-checked="vm.newWeekObj.isAutoGe" />
                                 <label ng-click="vm.newWeekObj.isAutoGe = !vm.newWeekObj.isAutoGe">Autogenerar</label>
                             </div>
                             <div input-field class="col s3">
@@ -267,8 +272,7 @@
                         <div ng-show="vm.newWeekObj.haveACode" class="row">
                             <div input-field class="col s4">
                                 <label>* Cuantas veces será utilizado el código</label>
-                                <input onkeypress="return justNumbers(event);" name="amount" type="text" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cantidad"
-                                    >
+                                <input onkeypress="return justNumbers(event);" name="amount" type="text" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cantidad">
                             </div>
                             <div input-field class="col s2">
                                 <p>
@@ -278,20 +282,24 @@
                             </div>
                             <div input-field class="col s2">
                                 <p>
-                                    <input name="group1" type="radio" id="test2" ng-model="vm.newWeekObj.type_code" ng-value="2"/>
+                                    <input name="group1" type="radio" id="test2" ng-model="vm.newWeekObj.type_code" ng-value="2" />
                                     <label for="test2">* Cantidad</label>
                                 </p>
                             </div>
                             <div input-field class="col s4" style="position: relative;">
                                 <label>Descuento por {{ vm.newWeekObj.type_code == 1 ? 'porcentaje' : 'cantidad en efectivo'}}</label>
-                                <input ng-show="vm.newWeekObj.type_code == 1" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.percentage_des"
-                                    >
-                                <input ng-show="vm.newWeekObj.type_code == 2" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cost_des"
-                                    >
+                                <input ng-show="vm.newWeekObj.type_code == 1" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.percentage_des">
+                                <input ng-show="vm.newWeekObj.type_code == 2" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cost_des">
                             </div>
                         </div>
                         <div class="row" style=" margin-right: 15px;  margin-top: 15px;">
-                            <a type="submit" ng-disabled="!form_Weekend.$valid" ng-click="vm.saveNewRodada();" class="btn green darken-3" style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;">
+                            <a ng-show="vm.indexWhenEditing > -1" type="submit" ng-disabled="!form_Weekend.$valid || vm.correctForm()" ng-click="vm.saveNewRodada();"
+                                class="btn green darken-3" style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;">
+                                <!-- guarda cambios en masivo -->
+                                GUARDAR
+                            </a>
+                            <a ng-show="vm.indexWhenEditing == -1" type="submit" ng-disabled="!form_Weekend.$valid || vm.correctForm()" ng-click="vm.saveNewRodada();"
+                                class="btn green darken-3" style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;">
                                 GUARDAR
                             </a>
 

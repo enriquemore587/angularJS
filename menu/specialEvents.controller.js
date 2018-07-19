@@ -59,22 +59,23 @@
         vm.action;
         vm.ovjMasive = {};
 
-
-        vm.regresar = () => {
-            vm.action = 1;
-        }
-
         vm.ver_new_week = false;
         vm.haveACode = false;
+        vm.indexWhenEditing = -1;
         vm.newWeek = (value, regresar) => {
+            // cuando value es false quiere decir que se cierra ventana
             if (!value && vm.action != 0) vm.action = 1;
-            else if (!value && vm.action == 0) vm.action = 0;
+            else if (!value && vm.action == 0) {
+                vm.action = 0;
+            }
+            vm.indexWhenEditing = -1;
             vm.ver_new_week = value;
             vm.newWeekObj = {};
             vm.newWeekObj.haveACode = false;
             vm.newWeekObj.isAutoGe = false;
             vm.newWeekObj.type_code = 1;    // 1 es para porcentaje y el 2 es descuento en efectivo
             vm.newWeekObj.cantidad = 0;
+            // vm.newWeekObj.amount = 0;    no es necesario iniciarlo con cero pesos
             //vm.newWeekObj.descuento = 100;
             vm.newWeekObj.percentage_des = 0;
             vm.newWeekObj.cost_des = 0;
@@ -123,7 +124,7 @@
                     vm.fynallyOBJ.token = aux[1];
 
 
-                    vm.fynallyOBJ.id_weekend_rides = vm.newWeekObj.id_weekend_rides
+                    vm.fynallyOBJ.id_weekend_rides = vm.newWeekObj.id_weekend_rides;
                     vm.fynallyOBJ.name = vm.newWeekObj.name;
                     vm.fynallyOBJ.place = vm.newWeekObj.place;
                     vm.fynallyOBJ.date = vm.fecha.split(/\//g)[2] + "-" + vm.fecha.split(/\//g)[0] + "-" + vm.fecha.split(/\//g)[1] + " " + vm.hora + ":00";
@@ -182,6 +183,20 @@
             vm.fynallyOBJ = {};
         }
 
+
+        vm.editChildMasive = (x, index) => {
+            vm.indexWhenEditing = index;
+            vm.ver_new_week = true;
+            vm.newWeekObj = x;
+            vm.fecha = $filter('date')(new Date(vm.newWeekObj.date), 'MM/dd/yyyy');
+            vm.hora = $filter('date')(new Date(vm.newWeekObj.date), 'HH:mm');
+            vm.newWeekObj.inicio_vigencia = vm.newWeekObj.inicio_vigencia;
+            vm.newWeekObj.fin_vigencia = vm.newWeekObj.fin_vigencia;
+            vm.newWeekObj.cantidad = vm.newWeekObj.cantidad;
+            vm.newWeekObj.percentage_des = vm.newWeekObj.percentage_des;
+            vm.newWeekObj.cost_des = vm.newWeekObj.cost_des;
+        }
+
         vm.editChild = x => {
             vm.ver_new_week = true;
             vm.action = -1;
@@ -202,13 +217,15 @@
                 //var dt = new Date(vm.fecha + " " + vm.hora + ":00").getTime();// - 25200000;
                 vm.newWeekObj.date = vm.fecha.split(/\//g)[2] + "-" + vm.fecha.split(/\//g)[0] + "-" + vm.fecha.split(/\//g)[1] + " " + vm.hora + ":00";
 
-                vm.newWeekObj.type_code = vm.newWeekObj.type_code;
+                //vm.newWeekObj.type_code = vm.newWeekObj.type_code;
 
                 vm.newWeekObj.active = true;
 
                 // console.log(vm.newWeekObj.haveACode);
-
-                vm.rodadas.push(vm.newWeekObj);
+                if (vm.indexWhenEditing > -1)
+                    vm.rodadas[vm.indexWhenEditing] = vm.newWeekObj;
+                else
+                    vm.rodadas.push(vm.newWeekObj);
 
                 vm.newWeekObj = {};
                 vm.hora = '';
@@ -348,21 +365,24 @@
                                 element.place,
                                 element.date,
                                 element.description,
-                                0,/*costo*/
+                                element.amount,     //  costo
                                 element.terms,
-                                element.code,
+                                element.code == undefined ? '' : element.code,
                                 element.inicio_vigencia.split(/\//g)[2] + "-" + element.inicio_vigencia.split(/\//g)[0] + "-" + element.inicio_vigencia.split(/\//g)[1],
                                 element.fin_vigencia.split(/\//g)[2] + "-" + element.fin_vigencia.split(/\//g)[0] + "-" + element.fin_vigencia.split(/\//g)[1],
                                 element.cantidad,   // falta las veces que se ocuparan
                                 element.type_code,
                                 element.cost_des,   // cantidad
                                 element.percentage_des, // porcentaje
-                                element.haveACode,
-                                element.isAutoGe
+                                element.haveACode,  // tiene codigo promocional ?
+                                element.isAutoGe    // el codigo sera auto incrementable ?
                             ]
                         );
 
                     });
+                    let varTemp = {};
+                    varTemp = vm.fynallyOBJ;
+                    console.log(varTemp);
 
                     DataServiceServer.setSpecialEventsAdminMassive(vm.fynallyOBJ)
                         .then(function successCallback(response) {
@@ -409,17 +429,12 @@
             }).then((result) => {
                 if (result.value) {
                     if (vm.action == 0) {
-                        vm.rodadas.splice(index, 1);
+                        let temp = vm.rodadas;
+                        vm.rodadas = [];
+                        temp.splice(index, 1);
+                        vm.rodadas = temp;
                     } else {
                         var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
-                        /*
-                                                console.log({
-                                                    "id_user": aux[0],
-                                                    "token": aux[1],
-                                                    "id_weekend": week.id_weekend_rides,
-                                                    "active": hab
-                                                });
-                        */
                         DataServiceServer.desableWeek({
                             "id_user": aux[0],
                             "token": aux[1],
@@ -455,6 +470,37 @@
 
                 }
             })
+        }
+
+        vm.correctForm = () => {
+            if (vm.newWeekObj.haveACode) {
+
+                //  valido sitiene codigo
+                if (vm.newWeekObj.code == '' || vm.newWeekObj.code == null)
+                    return true;
+
+                //  valido sitiene codigo
+                if (vm.newWeekObj.cantidad == '' || vm.newWeekObj.cantidad == null)
+                    return true;
+
+                // válido porcentaje
+                if (vm.newWeekObj.type_code == 1) {
+                    if (vm.newWeekObj.percentage_des <= 0 || vm.newWeekObj.percentage_des > 100)
+                        return true;
+                    return false;
+                }
+
+                if (vm.newWeekObj.type_code == 2) {
+                    if (vm.newWeekObj.cost_des <= 0)
+                        return true;
+                    return false;
+                }
+
+                return false;
+
+            } else {
+                return false;
+            }
         }
 
         vm.deleteSpecialEvent = (week, hab) => {
