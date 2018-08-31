@@ -73,10 +73,10 @@ img.bici{
 }
 
 div.rodadas_style_child {
-    height: 155px; border-style: solid; border-color: #1a1a19; background-color: #FF3800;
+    height: 165px; border-style: solid; border-color: #1a1a19; background-color: #FF3800;
 }
 div.rodadas_style_child_disable {
-    height: 155px; border-style: solid; border-color: #FF3800;
+    height: 165px; border-style: solid; border-color: #FF3800;
 }
 
 div.NoEvento {
@@ -168,6 +168,8 @@ background-color:#1a1a19;
 .picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
 background-color:#FF3800;
 }
+
+
 .modalG { width: 100% !important ; height: 100% !important ; max-height: 100% !important;}
 .modalSiNo { width: 50% !important ; height: 25% !important ; }
 .modalPagoP { width: 100% !important ; height: 50% !important ; }

@@ -13,7 +13,8 @@
     '$location',
     '$routeParams',
     '$scope',
-    '$timeout'
+    '$timeout',
+    'AuthenticationService'
   ];
 
   function pushController(
@@ -26,7 +27,8 @@
     $location,
     $routeParams,
     $scope,
-    $timeout
+    $timeout,
+    AuthenticationService
   ) {
 
     var vm = this;
@@ -62,11 +64,13 @@
             .then(function successCallback(response) {
               if (response == undefined) {
                 Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                AuthenticationService.ClearCredentials();
+                DataService.Delete();
                 $location.path("/login");
                 return;
               }
               vm.obj = {};
-              Materialize.toast('Notificacion enviada', 5000);
+              Materialize.toast('Notificación enviada', 5000);
               vm.sendAll = true;
               vm.getAllUsers();
             }, function errorCallback(response) {
@@ -95,6 +99,8 @@
         .then(function successCallback(response) {
           if (response == undefined) {
             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+            AuthenticationService.ClearCredentials();
+            DataService.Delete();
             $location.path("/login");
             return;
           }

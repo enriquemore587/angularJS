@@ -14,7 +14,7 @@
   </div>
   <div class="container" style="position: relative;">
     <label>Buscar evento</label>
-    <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off" ng-blur="buscar=''">
+    <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off">
     <div class="switch" style="position: absolute; top: 0; right: 0;">
       <label>
         Show All
@@ -100,7 +100,7 @@
           <div class="row">
             <div class="col s12">
               <div input-field>
-                <label for="nombreEvento">* Nombre</label>
+                <label for="nombreEvento">* Nombre</label> 
                 <input id="nombreEvento" name="nombreEvento" type="text" class="validate" ng-model="vm.nameEvent" placeholder="Nombre del evento"
                   autocomplete="off" required>
               </div>
@@ -130,12 +130,12 @@
           <div class="row">
             <div input-field class="col s6">
               <label class="Asap-BoldItalic">* Lugares</label>
-              <input id="cupoEvent" name="cupoEvent" onkeypress="return justNumbers(event);" class="validate" type="text" pattern="\d*"
+              <input id="cupoEvent" name="cupoEvent" class="validate" type="number" pattern="\d*"
                 placeholder="Cupo de personas" ng-model="vm.cupoEvent" autocomplete="off" required>
             </div>
             <div input-field class="col s6">
               <label class="Asap-BoldItalic" for="costEvent">* Precio</label>
-              <input id="costEvent" name="costEvent" type="text" onkeypress="return justNumbers(event);" class="validate" placeholder="Precio"
+              <input id="costEvent" name="costEvent" type="number" class="validate" placeholder="Precio"
                 ng-model="vm.costEvent" autocomplete="off" required>
             </div>
           </div>

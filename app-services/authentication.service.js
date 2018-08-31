@@ -13,12 +13,10 @@
         service.SetCredentials = SetCredentials;
         service.ClearCredentials = ClearCredentials;
         service.contact = contact;
-        service.url2 = 'https://s692755340.onlinehome.mx:8743/noohwi';
-        service.url = 'http://74.208.103.93:8780/noohwi';
+        service.url = 'https://noohwicycling.com:8743/noohwi';
+        service.url2 = 'http://s692755340.onlinehome.mx:8780/noohwi';
         return service;
 
-
-        
 
         function Login(usermail, password, callback) {
             $timeout(function () {

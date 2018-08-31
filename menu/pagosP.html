@@ -74,7 +74,7 @@
                     </div>
                     <div input-field class="col s6">
                         <label class="Asap-BoldItalic">Monto</label>
-                        <input id="monto" name="monto" onkeypress="return justNumbers(event);" type="text" placeholder="Monto" ng-model="vm.pago.amount">
+                        <input id="monto" name="monto" type="number" placeholder="Monto" ng-model="vm.pago.amount">
                     </div>
                 </div>
             </form>
@@ -261,7 +261,7 @@
     </div>
     <div id="confirm2" class="modal modalSiNo modal-fixed-footer">
         <div class="modal-content">
-            <h6>Se confirmara la fecha del dia {{vm.dia}} a las {{vm.hora}} ?</h6>
+            <h6>Se confirmará la fecha del dia {{vm.dia}} a las {{vm.hora}} ?</h6>
         </div>
         <div class="modal-footer">
             <a style="background: #FF3800;" class="btn modal-close">

@@ -13,7 +13,7 @@
         </div>
         <div style="position: relative;">
             <label>Buscar</label>
-            <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off" ng-blur="buscar=''">
+            <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off">
             <div class="switch" style="position: absolute; top: 0; right: 0;">
                 <label>
                     Show All
@@ -38,10 +38,10 @@
                     <!--i class="tiny material-icons">attach_money</i-->{{x.cost | currency}}
                 </p>
                 <p style="color: white;" class="letersLength" ng-show="x.amount > 1">
-                    <!--i class="tiny material-icons">confirmation_number</i-->{{x.amount}} Usuarios confirmados
+                    <!--i class="tiny material-icons">confirmation_number</i-->{{x.amount}} Weekend Rides
                 </p>
                 <p style="color: white;" class="letersLength" ng-show="x.amount == 1">
-                    <!--i class="tiny material-icons">confirmation_number</i-->{{x.amount}} Usuario confirmado
+                    <!--i class="tiny material-icons">confirmation_number</i-->{{x.amount}} Weekend Rides
                 </p>
             </div>
             <div ng-if="x.active" class="card-reveal gris">
@@ -94,7 +94,7 @@
                     <div class="row">
                         <div input-field class="col s12">
                             <label for="amount">* Cantidad de WR's</label>
-                            <input id="amount" name="amount" type="text" onkeypress="return justNumbers(event);" class="validate" ng-model="vm.packWRObj.amount"
+                            <input id="amount" name="amount" type="number" class="validate" ng-model="vm.packWRObj.amount"
                                 autocomplete="off" required>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                         <p class="right" style="font-size: 12px;">Buscar</p>
                     </div>
                     <div class="col s7" style="margin-top: 10px;">
-                        <input type="search" autocomplete="off" ng-model="buscarU"  ng-blur="buscarU=''">
+                        <input type="search" autocomplete="off" ng-model="buscarU">
                     </div>
                 </div>
 

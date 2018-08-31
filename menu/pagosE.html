@@ -11,7 +11,7 @@
         </div>
         <div class=" lblanco">
             <label>Buscar</label>
-            <input type="search" ng-model="buscar" ng-blur="buscar=''">
+            <input type="search" ng-model="buscar">
         </div>
         <div ng-repeat="item in vm.data | orderBy:'status' | filter: buscar" style="padding: 25px;">
             <div class="row lblanco" style="width: 100%; border-bottom: 1px ridge #FF3800; height: 130px;">
@@ -58,7 +58,7 @@
                     <div class="row">
                         <div input-field class="col s12">
                             <label class="Asap-BoldItalic">Monto</label>
-                            <input disabled id="monto" name="monto" type="text" onkeypress="return justNumbers(event);" placeholder="Monto" ng-model="vm.obj.amount">
+                            <input disabled id="monto" name="monto" type="number" placeholder="Monto" ng-model="vm.obj.amount">
                         </div>
                     </div>
                 </form>

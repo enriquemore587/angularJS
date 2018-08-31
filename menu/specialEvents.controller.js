@@ -15,7 +15,8 @@
         '$routeParams',
         '$scope',
         '$timeout',
-        '$filter'
+        '$filter',
+        'AuthenticationService'
     ];
 
     function SpecialEventsController(
@@ -29,10 +30,13 @@
         $routeParams,
         $scope,
         $timeout,
-        $filter
+        $filter,
+        AuthenticationService
     ) {
 
         var vm = this;
+        vm.verUsuarios = false;
+        vm.usuariosConfirmados = [];
         vm.esperar = false;
         vm.name = "Package WR";
 
@@ -60,6 +64,37 @@
         vm.ovjMasive = {};
         vm.inputsToBlock = {};
 
+
+        //  BEGIN USER LIST
+        vm.showUserList = (id_weekend) => {
+            vm.verUsuarios = !vm.verUsuarios;
+            vm.usuariosConfirmados = [];
+            if (vm.verUsuarios) {
+                var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
+                DataServiceServer.getUserConfirmList(aux[0], aux[1], id_weekend)
+                    .then(function successCallback(response) {
+                        if (!response) {
+                            Materialize.toast('Sin usuarios', 5000);
+                        }
+                        else if (response == -3) {
+                            $('.modal').modal('close');
+                            Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                            AuthenticationService.ClearCredentials();
+                            DataService.Delete();
+                            $location.path("/login");
+                            return;
+                        }
+                        vm.usuariosConfirmados = response.users;
+                        console.log(vm.usuariosConfirmados);
+                        
+                    }, function errorCallback(response) {
+                        vm.esperar = false;
+                        Materialize.toast('ERROR POR CONEXION', 4000);
+                    });
+            }
+        }
+        //  END USER LIST
+
         vm.ver_new_week = false;
         vm.haveACode = false;
         vm.indexWhenEditing = -1;
@@ -84,9 +119,14 @@
             vm.newWeekObj.inicio_vigencia = $filter('date')(new Date(), 'MM/dd/yyyy');
             vm.newWeekObj.fin_vigencia = $filter('date')(new Date(), 'MM/dd/yyyy');
             vm.hora = '';
+
         }
 
         vm.saveNewRodada = () => {
+            if (vm.newWeekObj.haveACode && vm.newWeekObj.type_code == 2 && vm.newWeekObj.cost_des > vm.newWeekObj.amount) {
+                Materialize.toast('El descuento no puede ser mayor al precio', 4000);
+                return;
+            }
             vm.inputsToBlock = {};  //  libera los input condicionados
             if (vm.action == 0) {
                 // SOLO GUARDA EN MEMORIA POR QUE SE PERSISTE UN OBJETO COMPLETO
@@ -101,7 +141,6 @@
         }
 
         vm.saveUpdateChild = () => {
-
             swal({
                 title: '¿ Estás seguro ?',
                 text: `¡ Se guardaran los cambios cometidos !`,
@@ -159,6 +198,8 @@
 
                                 $('.modal').modal('close');
                                 Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                                AuthenticationService.ClearCredentials();
+                                DataService.Delete();
                                 $location.path("/login");
                                 return;
                             }
@@ -202,9 +243,8 @@
             vm.newWeekObj.cost_des = vm.newWeekObj.cost_des;
         }
 
-        
+
         vm.editChild = x => {
-            
             vm.ver_new_week = true;
             vm.action = -1;
             //vm.newWeekObj = x;
@@ -224,7 +264,8 @@
             vm.newWeekObj.haveACode = x.has_code;
             vm.newWeekObj.code = x.code;
             vm.newWeekObj.isAutoGe = x.auto_code;
-            vm.newWeekObj.type_code = x.type_code;
+            vm.newWeekObj.type_code = x.type_code == 0 ? 1 : x.type_code;
+            // personas inscritas
             if (x.count_cof > 0) {
                 vm.inputsToBlock.amount = true;
                 vm.inputsToBlock.type_code = true;
@@ -236,7 +277,7 @@
             if (vm.newWeekObj.isAutoGe) {
                 vm.inputsToBlock.isAutoGe = true;
             }
-            
+
         }
 
         vm.hora;
@@ -249,6 +290,8 @@
                 //vm.newWeekObj.type_code = vm.newWeekObj.type_code;
 
                 vm.newWeekObj.active = true;
+
+
 
                 // console.log(vm.newWeekObj.haveACode);
                 if (vm.indexWhenEditing > -1)
@@ -283,6 +326,8 @@
                     if (response == -3) {
                         $('.modal').modal('close');
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                        AuthenticationService.ClearCredentials();
+                        DataService.Delete();
                         $location.path("/login");
                         return;
                     }
@@ -340,6 +385,8 @@
                             if (response == -3) {
                                 $('.modal').modal('close');
                                 Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                                AuthenticationService.ClearCredentials();
+                                DataService.Delete();
                                 $location.path("/login");
                                 return;
                             }
@@ -394,30 +441,31 @@
                                 element.place,
                                 element.date,
                                 element.description,
-                                element.amount,     //  costo
+                                `${element.amount}`,     //  costo
                                 element.terms,
-                                element.code == undefined ? '' : element.code,
+                                element.code == undefined ? '_' : element.code,
                                 element.inicio_vigencia.split(/\//g)[2] + "-" + element.inicio_vigencia.split(/\//g)[0] + "-" + element.inicio_vigencia.split(/\//g)[1],
                                 element.fin_vigencia.split(/\//g)[2] + "-" + element.fin_vigencia.split(/\//g)[0] + "-" + element.fin_vigencia.split(/\//g)[1],
-                                element.cantidad,   // falta las veces que se ocuparan
-                                element.type_code,
-                                element.cost_des,   // cantidad
-                                element.percentage_des, // porcentaje
-                                element.haveACode,  // tiene codigo promocional ?
-                                element.isAutoGe    // el codigo sera auto incrementable ?
+                                `${element.cantidad}`,   // falta las veces que se ocuparan
+                                `${element.type_code}`,
+                                `${element.percentage_des}`, // porcentaje
+                                `${element.cost_des}`,   // cantidad
+                                `${element.haveACode}`,  // tiene codigo promocional ?
+                                `${element.isAutoGe}`    // el codigo sera auto incrementable ?
                             ]
                         );
 
                     });
                     let varTemp = {};
                     varTemp = vm.fynallyOBJ;
-                    console.log(varTemp);
 
                     DataServiceServer.setSpecialEventsAdminMassive(vm.fynallyOBJ)
                         .then(function successCallback(response) {
                             if (response == -3) {
                                 $('.modal').modal('close');
                                 Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                                AuthenticationService.ClearCredentials();
+                                DataService.Delete();
                                 $location.path("/login");
                                 return;
                             }
@@ -483,6 +531,8 @@
                                     if (response == -3) {
                                         $('.modal').modal('close');
                                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                                        AuthenticationService.ClearCredentials();
+                                        DataService.Delete();
                                         $location.path("/login");
                                         return;
                                     }
@@ -514,13 +564,13 @@
 
                 // válido porcentaje
                 if (vm.newWeekObj.type_code == 1) {
-                    if (vm.newWeekObj.percentage_des <= 0 || vm.newWeekObj.percentage_des > 100)
+                    if (vm.newWeekObj.percentage_des < 0 || vm.newWeekObj.percentage_des > 100)
                         return true;
                     return false;
                 }
 
                 if (vm.newWeekObj.type_code == 2) {
-                    if (vm.newWeekObj.cost_des <= 0)
+                    if (vm.newWeekObj.cost_des < 0)
                         return true;
                     return false;
                 }
@@ -588,6 +638,8 @@
                     if (response == -3) {
                         $('.modal').modal('close');
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                        AuthenticationService.ClearCredentials();
+                        DataService.Delete();
                         $location.path("/login");
                         return;
                     }
@@ -644,6 +696,8 @@
                     if (response == -3) {
                         $('.modal').modal('close');
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                        AuthenticationService.ClearCredentials();
+                        DataService.Delete();
                         $location.path("/login");
                         return;
                     }
@@ -776,6 +830,8 @@
                         if (response == -3) {
                             $('.modal').modal('close');
                             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                            AuthenticationService.ClearCredentials();
+                            DataService.Delete();
                             $location.path("/login");
                             return;
                         }

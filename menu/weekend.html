@@ -1,5 +1,5 @@
 <div ng-controller="weekendController as vm">
-  <audio src="/noohwi/components/sound/alert.mp3" id="sound"></audio>
+  <audio src="../components/sound/alert.mp3" id="sound"></audio>
   <div>
     <br>
     <div class="center">
@@ -11,7 +11,7 @@
     <br>
     <div class="container" style="position: relative;">
       <label>Buscar weekend ride</label>
-      <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off" ng-blur="buscar=''">
+      <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off">
       <div class="switch" style="position: absolute; top: 0; right: 0;">
         <label>
           Show all
@@ -218,7 +218,7 @@
               </div>
               <div input-field class="col s4">
                 <label>* Precio</label>
-                <input id="amount" onkeypress="return justNumbers(event);" name="amount" type="text" class="validate" autocomplete="off"
+                <input id="amount" name="amount" type="number" class="validate" autocomplete="off"
                   ng-model="vm.weekObj.amount" required>
               </div>
             </div>
@@ -246,7 +246,7 @@
             </div>
             <div class="col s9" style="margin-top: 20px;">
               <label>Buscar usuario</label>
-              <input type="search" autocomplete="off" ng-model="buscarU"  ng-blur="buscarU=''">
+              <input type="search" autocomplete="off" ng-model="buscarU">
             </div>
           </div>
           <div style="height: 70vh; overflow: auto !important;">
@@ -267,7 +267,7 @@
                   <td> {{item.user_name}}</td>
                   <td>
                     <div class="input-field" ng-show="item.status == 1">
-                      <input id="icon_prefix" type="text" class="validate" onkeypress="return justNumbers(event);" style="width: 100px;" ng-model="item.amount"
+                      <input id="icon_prefix" type="number" class="validate" style="width: 100px;" ng-model="item.amount"
                         autocomplete="off">
                     </div>
                     <p ng-show="item.status == 2 || item.status == 0">
@@ -319,7 +319,8 @@
     <div id="inicioEvent" class="modal modalSiNo modal-fixed-footer">
       <div class="modal-content container">
         <label for="icon_telephone">Telephone</label>
-        <input id="icon_telephone" onkeypress="return justNumbers(event);" type="tel" class="validate" ng-model="vm.ride.emergency_number">
+        <!-- <input id="icon_telephone" onkeypress="return justNumbers(event);" type="tel" class="validate" ng-model="vm.ride.emergency_number"> -->
+        <input id="icon_telephone" type="number" class="validate" ng-model="vm.ride.emergency_number">
       </div>
       <div class="modal-footer">
         <a style="background: #FF3800;" class="btn modal-close">

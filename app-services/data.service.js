@@ -58,11 +58,27 @@
         service.sendPushNotification = sendPushNotification;
         service.getCodeList = getCodeList;
         service.sendCupon = sendCupon;
+        service.getUserConfirmList = getUserConfirmList;
 
-        service.url2 = "https://s692755340.onlinehome.mx:8743";
-        service.url = 'http://74.208.103.93:8780';
+        service.url = "https://noohwicycling.com:8743";
+        service.url2 = 'http://s692755340.onlinehome.mx:8780';
 
         return service;
+
+        function getUserConfirmList(userId, token, id_weekend) {
+            return $http.get(service.url + `/noohwi/Sevents/v2/special/details/users?id_user=${userId}&token=${token}&id_weekend=${id_weekend}`,
+                {}, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
+                .then(function successCallback(response) {
+                    if (response.data.message == "successful") {
+                        return response.data.data;
+                    } else {
+                        return false;
+                    }
+                }, function errorCallback(response) {
+                    return response;
+                });
+        }
+
 
         function getCodeList(userId, token) {
             return $http.get(service.url + `/noohwi/promotional?id_user=${userId}&token=${token}`,

@@ -16,7 +16,8 @@
     '$routeParams',
     '$scope',
     '$timeout',
-    '$filter'
+    '$filter',
+    'AuthenticationService'
   ];
 
   function pagosPController(
@@ -30,9 +31,12 @@
     $routeParams,
     $scope,
     $timeout,
-    $filter
+    $filter,
+    AuthenticationService
   ) {
     var vm = this;
+
+    vm.timeConfig = 18000000; //25200000
     vm.esperar = true;
     vm.itemFecha;
     vm.id = vm.eventSelected = $rootScope.globals.id.id_package;
@@ -115,7 +119,7 @@
       vm.objConfirm['id_user'] = aux[0];
       vm.objConfirm['token'] = aux[1];
       vm.objConfirm['id_service'] = vm.itemFecha.id_service;
-      vm.objConfirm.service_date = new Date(vm.itemFecha.service_date).getTime()-25200000;
+      vm.objConfirm.service_date = new Date(vm.itemFecha.service_date).getTime() - vm.timeConfig;
       vm.esperar = true;
       DataServiceServer.confirmar(vm.objConfirm).then(function successCallback(response) {
         initComponents();
@@ -143,7 +147,7 @@
           vm.objConfirmEdit['id_user'] = aux[0];
           vm.objConfirmEdit['token'] = aux[1];
           vm.objConfirmEdit['id_service'] = vm.itemEdit.id_service;
-          vm.objConfirmEdit['service_date'] = dt-25200000;
+          vm.objConfirmEdit['service_date'] = dt - vm.timeConfig;
 
           vm.esperar = true;
           DataServiceServer.confirmar(vm.objConfirmEdit).then(function successCallback(response) {
@@ -249,7 +253,7 @@
         });
     }
 
-    vm.setImage = function(item){
+    vm.setImage = function (item) {
       if (item.bike == null) {
         Materialize.toast('NO HAY BICI REGISTRADA !!!', 4000);
         return;

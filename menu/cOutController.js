@@ -12,7 +12,8 @@
     "$sce",
     "$parse",
     '$location',
-    '$routeParams'
+    '$routeParams',
+    'AuthenticationService'
   ];
 
   function checkOutController2(
@@ -23,7 +24,8 @@
     $sce,
     $parse,
     $location,
-    $routeParams
+    $routeParams,
+    AuthenticationService
   ) {
     var vm = this;
     vm.eventSelected = $rootScope.globals.id;
@@ -69,6 +71,8 @@
           vm.objCI = {};
           if (response.status == -3) {
             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+            AuthenticationService.ClearCredentials();
+            DataService.Delete();
             $location.path("/login");
             return;
           }

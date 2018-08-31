@@ -1,4 +1,4 @@
-<div ng-controller="HomeController as vm">
+<div ng-controller="HomeController as vm" class="todo">
   <nav class="nav-extended">
     <div class="nav-wrapper">
       <a href="#!" data-activates="mobile" style="color: #FF3800; font-size: 9px important!;" class="button-collapse left">
@@ -16,9 +16,13 @@
             <a href ng-click="vm.showMenuActive(vm.menu[vm.menu.length -1]);">Change Password</a>
           </li>
           <li>
-            <a class="Asap-Bold grey darken-2" href="#!/login" class="btn btn-primary blue" id="logout">
+            <!-- <a class="Asap-Bold grey darken-2" href="#!/login" class="btn btn-primary blue" id="logout">
               Sign Out
+            </a> -->
+            <a class="Asap-Bold grey darken-2" href ng-click="vm.cerrarMisesion('salir')" class="btn btn-primary blue" id="logout">
+              salir
             </a>
+            
           </li>
         </ul>
       </div>
@@ -30,7 +34,7 @@
             </a>
           </li>
           <li>
-            <a class="Asap-Bold grey darken-2" href="#!/login" class="btn btn-primary blue" id="logout">
+            <a class="Asap-Bold grey darken-2" href ng-click="vm.cerrarMisesion('salir')" class="btn btn-primary blue" id="logout">
               <i class="material-icons">exit_to_app</i>
             </a>
           </li>
@@ -44,10 +48,12 @@
   $(document).ready(function () {
     $(".button-collapse").sideNav();
     $(".button-collapse").show();
+    
   });
 
   $("#logout").click(function () {
     $('.button-collapse').hide();
     $('.button-collapse').sideNav('hide');
   });
+  
 </script>

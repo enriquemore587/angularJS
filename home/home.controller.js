@@ -22,7 +22,8 @@ function justNumbers(e) {
     "$parse",
     '$location',
     '$cookies',
-    '$filter'
+    '$filter',
+    'AuthenticationService'
   ];
 
   function HomeController(
@@ -34,13 +35,16 @@ function justNumbers(e) {
     $parse,
     $location,
     $cookies,
-    $filter
+    $filter,
+    AuthenticationService
   ) {
     var vm = this;
     vm.esperar = false;
     vm.namePosition = "Admin Noohwi";
     vm.confirmacion = false;
     vm.menu = [];
+
+   $('.modal-overlay').css('display', 'none');
 
     vm.eventos = [];
     vm.packages = [];
@@ -59,6 +63,18 @@ function justNumbers(e) {
       lat: 19.3155927,
       lng: -99.1601487
     };
+
+    vm.cerrarMisesion = (value) => {
+      // $rootScope.globals['id'] = value;
+      // var cookieExp = new Date();
+      // cookieExp.setDate(cookieExp.getDate() + 1);
+      // $cookies.putObject('globals', $rootScope.globals, {
+      //   expires: cookieExp
+      // });
+      AuthenticationService.ClearCredentials();
+      DataService.Delete();
+      $location.path("/login");
+    }
 
     vm.styleMap = [{
       elementType: 'geometry',
@@ -952,6 +968,8 @@ function justNumbers(e) {
           var list = response.events;
           if (response == -3) {
             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+            AuthenticationService.ClearCredentials();
+            DataService.Delete();
             $location.path("/login");
             return;
           }
@@ -993,6 +1011,8 @@ function justNumbers(e) {
           DataServiceServer.getPackage(aux[0], aux[1]).then(function (response) {
             if (response == -3) {
               Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+              AuthenticationService.ClearCredentials();
+              DataService.Delete();
               $location.path("/login");
               return;
             }
@@ -1087,7 +1107,7 @@ function justNumbers(e) {
         var temp = $rootScope.globals.currentUser;
         var aux = Base64.decode(temp.authdata).split(":");
         vm.esperar = true;
-        
+
         DataServiceServer.saveUpdatePackage(
           aux[0],
           aux[1],

@@ -14,7 +14,8 @@
     '$location',
     '$routeParams',
     '$scope',
-    '$timeout'
+    '$timeout',
+    'AuthenticationService'
   ];
 
   function cuponesController(
@@ -27,7 +28,8 @@
     $location,
     $routeParams,
     $scope,
-    $timeout
+    $timeout,
+    AuthenticationService
   ) {
     var vm = this;
     vm.title = 'CUPONES';
@@ -35,7 +37,7 @@
     vm.cuponToSave = {};
     vm.typeServices = [{
       value: 1,
-      name: 'Weeken rides'
+      name: 'Transportation Service'
     }, {
       value: 2,
       name: 'Mobile Service'
@@ -51,17 +53,20 @@
       vm.cuponToSave.id_user = aux[0];
       vm.cuponToSave.token = aux[1];
       vm.cuponToSave.cost_des = vm.cuponToSave.percentage_des;
-      console.log(vm.cuponToSave);
 
       DataServiceServer.sendCupon(vm.cuponToSave)
         .then(function successCallback(cupones) {
           if (cupones.data.status == -3) {
             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+            AuthenticationService.ClearCredentials();
+            DataService.Delete();
             $location.path("/login");
             return;
           }
+          vm.cuponToSave = {};
           console.log('cupones.data.status', cupones.data.status);
           if (cupones.data.message == "Codigo Existente") console.log("Codigo Existente");
+          Materialize.toast('Cupón guardado', 4000);
           vm.initComponents();
         }, function errorCallback(response) {
           Materialize.toast('Falla de conexión', 1000);
@@ -106,7 +111,7 @@
       let aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
       DataServiceServer.getCodeList(aux[0], aux[1])
         .then(function successCallback(cupones) {
-          if (cupones.status == -3) {
+          if (cupones == -3) {
             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
             $location.path("/login");
             return;

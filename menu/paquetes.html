@@ -15,7 +15,7 @@
     <div>
       <div class="blanco lblanco" style="padding: 20px !important; position: relative;">
         <label>Buscar paquete</label>
-        <input type="search" ng-model="buscar" autocomplete="off" ng-blur="buscar=''">
+        <input type="search" ng-model="buscar" autocomplete="off">
         <div class="switch" style="position: absolute; top: 0; right: 0;">
           <label>
             Show All
@@ -71,7 +71,7 @@
             </div>
             <div input-field>
               <label for="costPackage">* Precio</label>
-              <input id="costPackage" onkeypress="return justNumbers(event);" name="costPackage" type="text" class="validate" autocomplete="off" ng-model="vm.costPackage"
+              <input id="costPackage" name="costPackage" type="number" class="validate" autocomplete="off" ng-model="vm.costPackage"
                 required>
             </div>
             <div input-field>

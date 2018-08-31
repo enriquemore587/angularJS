@@ -13,7 +13,8 @@
     '$routeParams',
     '$scope',
     '$timeout',
-    '$filter'
+    '$filter',
+    'AuthenticationService'
   ];
 
   function weekendController(
@@ -27,10 +28,11 @@
     $routeParams,
     $scope,
     $timeout,
-    $filter
+    $filter,
+    AuthenticationService
   ) {
-
     var vm = this;
+    vm.timeConfig = 18000000; //25200000
     vm.verTodosWeek = false;
     vm.mapWeek;
     vm.verUser = item => {
@@ -199,6 +201,8 @@
         .then(function successCallback(response) {
           if (response == undefined) {
             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+            AuthenticationService.ClearCredentials();
+            DataService.Delete();
             $location.path("/login");
             return;
           }
@@ -217,9 +221,8 @@
       var vari = String(vm.fecha).split("/");
       vm.hora = vm.hora.replace(" AM", "").replace(" PM", "");
       vm.hora = vm.hora.length == 4 ? "0" + vm.hora : vm.hora;
-      //var dt = new Date(vari[2] + "-" + vari[0] + "-" + vari[1] + " " + vm.hora + ":12").getTime() - 28800000;
 
-      var dt = new Date(vm.fecha + " " + vm.hora + ":00").getTime() - 25200000;
+      var dt = new Date(vm.fecha + " " + vm.hora + ":00").getTime() - vm.timeConfig;
 
       vm.weekObj.date = dt;
       var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
@@ -251,6 +254,8 @@
         .then(function successCallback(response) {
           if (response == -3) {
             Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+            AuthenticationService.ClearCredentials();
+            DataService.Delete();
             $location.path("/login");
             return;
           }
@@ -423,6 +428,8 @@
                   .then(function successCallback(response) {
                     if (response == -3) {
                       Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                      AuthenticationService.ClearCredentials();
+                      DataService.Delete();
                       $location.path("/login");
                       return;
                     }

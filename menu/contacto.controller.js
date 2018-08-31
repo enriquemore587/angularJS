@@ -14,7 +14,8 @@
     '$location',
     '$routeParams',
     '$scope',
-    '$timeout'
+    '$timeout',
+    'AuthenticationService'
   ];
 
   function contactController(
@@ -27,7 +28,8 @@
     $location,
     $routeParams,
     $scope,
-    $timeout
+    $timeout,
+    AuthenticationService
   ) {
 
     var vm = this;
@@ -123,6 +125,8 @@
       DataServiceServer.contact().then(function (response) {
         if (response == -3) {
           Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+          AuthenticationService.ClearCredentials();
+          DataService.Delete();
           $location.path("/login");
           return;
         }

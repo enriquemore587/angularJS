@@ -1,5 +1,5 @@
 <div ng-controller="SpecialEventsController as vm" class="container">
-    <audio src="/noohwi/components/sound/alert.mp3" id="sound"></audio>
+    <audio src="../components/sound/alert.mp3" id="sound"></audio>
     <div class="container" ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
         <h5 class="letersLength" style="color: #FF3800"> Loading . . . .</h5>
         <div class="progress">
@@ -8,13 +8,13 @@
     </div>
     <div class="row" ng-show="!vm.esperar">
         <div class="center" style="margin-top: 25px;">
-            <a ng-click="vm.new(0);" style="background: #FF3800;" data-position="right" data-tooltip="NUEVO EVENTO" class="tooltipped btn-floating btn-large">
+            <a ng-click="vm.new(0);" style="background: #FF3800;" data-position="right" data-tooltip="NUEVO NOOHWI RIDE" class="tooltipped btn-floating btn-large">
                 <i class="material-icons">add</i>
             </a>
         </div>
         <div style="position: relative;">
             <label>Buscar</label>
-            <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off" ng-blur="buscar=''">
+            <input type="search" ng-model="buscar" style="color: #fff" autocomplete="off">
             <div class="switch" style="position: absolute; top: 0; right: 0;">
                 <label>
                     Show All
@@ -75,11 +75,11 @@
         <!--Comienza modal-->
         <div id="modal_new" class="modal modalG bottom-sheet">
             <div ng-show="!vm.ver_new_week && vm.div_tracking == false">
-                <div class="col s6 m6 l6" style="overflow: auto !important; margin-top: 25px;">
+                <div class="col s6 m6 l6" ng-if="!vm.verUsuarios" style="overflow: auto !important; margin-top: 25px;">
                     <form class="container" name="form_main" role="form" novalidate>
                         <div class="row">
                             <div input-field class="col s12">
-                                <label>* Nombre del evento especial</label>
+                                <label>* Nombre del noohwi ride</label>
                                 <input name="name" class="validate" type="text" ng-model="vm.obj.name" autocomplete="off" required>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col s6 m6 l6">
+                <div class="col s6 m6 l6" ng-if="!vm.verUsuarios">
                     <div class="row">
                         <div class="col s3 naranja left" style="margin-top: 20px;">
                             <label>Rodadas</label>
@@ -116,7 +116,7 @@
                             <p class="right">Buscar</p>
                         </div>
                         <div class="col s7" style="margin-top: 10px;">
-                            <input type="search" autocomplete="off" ng-model="buscarU" ng-blur="buscarU=''">
+                            <input type="search" autocomplete="off" ng-model="buscarU">
                         </div>
                     </div>
                     <div class="center" style="margin-top: 25px; position: relative;">
@@ -146,6 +146,11 @@
                                 </p>
                                 <p style="color: white;">
                                     <i class="tiny material-icons">local_play</i> {{x.code}}
+                                </p>
+                                <p style="color: white;">
+                                    <a class="Ncolor" href style="color: white;" ng-click="vm.showUserList(x.id_weekend_rides)"><i
+                                            class="tiny material-icons">people</i>
+                                        {{x.count_cof}} / {{x.amount_use}}</a>
                                 </p>
                             </div>
                             <div ng-if="x.active" class="card-reveal gris">
@@ -200,13 +205,56 @@
                         </a-->
                     </div>
                 </div>
+                <div class="col s12 m12 l12" ng-if="vm.verUsuarios">
+                    <div class="row" style="height: 110%; width: 110%; background-color: #1a1a19;">
+                        <a class="btn-flat btn-large Ncolor" ng-click="vm.showUserList(0)" style="background-color: #1a1a19; color : white;"><i
+                                class="material-icons left">navigate_before</i>Regresar</a>
+                        <!-- <a href ng-click="vm.showUserList()" style="color: white;"><i class="tiny material-icons">close</i></a> -->
+                    </div>
+                    <div class="row center" style="height: 100%">
+                        <h4>Usuarios confirmados</h4>
+                    </div>
+                    <table class="centered striped responsive-table">
+                        <thead>
+                            <tr>
+                                <th>User name</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone number</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in vm.usuariosConfirmados">
+                                    <td>{{item.nickname}}</td>
+                                    <td>{{item.user_name}}</td>
+                                    <td>{{item.mail}}</td>
+                                    <td>{{item.phone}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <div class="row center" style="width: 100%;">
+                        <div class="col s1 m1 l1"></div>
+                        <div class="col s5 m5 l5">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis voluptas ipsam commodi provident
+                                ipsum ex est alias qui, earum expedita reiciendis fugit, vero iste dolores, quia excepturi
+                                deserunt laborum modi!</p>
+                        </div>
+                        <div class="col s5 m5 l5">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis voluptas ipsam commodi provident
+                                ipsum ex est alias qui, earum expedita reiciendis fugit, vero iste dolores, quia excepturi
+                                deserunt laborum modi!</p>
+                        </div>
+                        <div class="col s1 m1 l1"></div>
+                    </div> -->
+                </div>
             </div>
             <div ng-show="vm.ver_new_week && vm.div_tracking == false">
                 <div style="overflow: auto !important; margin-top: 25px;">
                     <form class="container" name="form_Weekend" role="form" novalidate>
                         <div class="row">
                             <div input-field class="col s6">
-                                <label>* Nombre de Weekend Ride</label>
+                                <label>* Nombre de rodada</label>
                                 <input name="name" class="validate" type="text" ng-model="vm.newWeekObj.name" autocomplete="off" required>
                             </div>
                             <div input-field class="col s6">
@@ -227,8 +275,7 @@
                         </div>
                         <div class="row">
                             <div input-field class="col s6">
-                                <label>* Precio
-                                </label>
+                                <label>* Precio</label>
                                 <input name="precio" class="validate" type="number" ng-disabled="vm.inputsToBlock.amount" ng-model="vm.newWeekObj.amount"
                                     autocomplete="off" required>
                             </div>
@@ -264,11 +311,11 @@
                                 <label>* Código promocional</label>
                                 <input name="name" class="validate" ng-disabled="vm.inputsToBlock.code" type="text" ng-model="vm.newWeekObj.code" autocomplete="off">
                             </div>
-                            <div ng-show="!vm.inputsToBlock.isAutoGe" input-field class="col s3">
+                            <div ng-show="!vm.inputsToBlock.haveACode" input-field class="col s3">
                                 <input type="checkbox" ng-checked="vm.newWeekObj.isAutoGe" />
                                 <label ng-click="vm.newWeekObj.isAutoGe = !vm.newWeekObj.isAutoGe">Autogenerar</label>
                             </div>
-                            <div ng-show="vm.inputsToBlock.isAutoGe" input-field class="col s3">
+                            <div ng-show="vm.inputsToBlock.haveACode" input-field class="col s3">
                                 <input type="checkbox" ng-checked="vm.newWeekObj.isAutoGe" />
                                 <label>Autogenerar</label>
                             </div>
@@ -287,13 +334,15 @@
                                 <label>* Cuantas veces será utilizado el código</label>
                                 <input name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cantidad">
                             </div>
-                            <div input-field class="col s2">
+                            <!-- lo oculto por que ya hay personas registradas -->
+                            <div ng-show="!vm.inputsToBlock.type_code" input-field class="col s2">
                                 <p>
                                     <input name="group1" type="radio" id="test1" ng-model="vm.newWeekObj.type_code" ng-value="1" />
                                     <label for="test1">* Porcentaje</label>
                                 </p>
                             </div>
-                            <div input-field class="col s2">
+                            <!-- lo oculto por que ya hay personas registradas -->
+                            <div ng-show="!vm.inputsToBlock.type_code" input-field class="col s2">
                                 <p>
                                     <input name="group1" type="radio" id="test2" ng-model="vm.newWeekObj.type_code" ng-value="2" />
                                     <label for="test2">* Cantidad</label>
@@ -301,8 +350,10 @@
                             </div>
                             <div input-field class="col s4" style="position: relative;">
                                 <label>Descuento por {{ vm.newWeekObj.type_code == 1 ? 'porcentaje' : 'cantidad en efectivo'}}</label>
-                                <input ng-show="vm.newWeekObj.type_code == 1" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.percentage_des">
-                                <input ng-show="vm.newWeekObj.type_code == 2" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.newWeekObj.cost_des">
+                                <input ng-disabled="vm.inputsToBlock.amount" ng-show="vm.newWeekObj.type_code == 1" name="amount" type="number" class="validate"
+                                    autocomplete="off" ng-model="vm.newWeekObj.percentage_des">
+                                <input ng-disabled="vm.inputsToBlock.amount" ng-show="vm.newWeekObj.type_code == 2" name="amount" type="number" class="validate"
+                                    autocomplete="off" ng-model="vm.newWeekObj.cost_des">
                             </div>
                         </div>
                         <div class="row" style=" margin-right: 15px;  margin-top: 15px;">
@@ -361,11 +412,11 @@
                                 </a>
                             </li>
                             <li ng-show="vm.ride.active && !vm.confirmacion">
-                                <a ng-click="vm.pregCerrarTrack(true);">
+                                <a ng-click="vm.pregCerrarTrack(true);" class="Ncolor">
                                     <i class="material-icons left">stop</i>Parar</a>
                             </li>
                             <li ng-show="vm.ride.active && !vm.confirmacion">
-                                <a ng-click="vm.centrar(true);">
+                                <a ng-click="vm.centrar(true);" class="Ncolor">
                                     <i class="material-icons left">center_focus_weak</i>Centrar</a>
                             </li>
                             <li ng-show="!vm.confirmacion">

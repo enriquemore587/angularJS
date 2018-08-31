@@ -14,7 +14,8 @@
         '$location',
         '$routeParams',
         '$scope',
-        '$timeout'
+        '$timeout',
+        'AuthenticationService'
     ];
     function usuariosController(
         $rootScope,
@@ -26,7 +27,8 @@
         $location,
         $routeParams,
         $scope,
-        $timeout
+        $timeout,
+        AuthenticationService
     ) {
 
         var vm = this;
@@ -96,6 +98,8 @@
                 .then(function successCallback(response) {
                     if (response == undefined) {
                         Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                        AuthenticationService.ClearCredentials();
+                        DataService.Delete();
                         $location.path("/login");
                         return;
                       }

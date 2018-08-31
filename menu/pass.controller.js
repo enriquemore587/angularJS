@@ -14,7 +14,8 @@
     '$location',
     '$routeParams',
     '$scope',
-    '$timeout'
+    '$timeout',
+    'AuthenticationService'
   ];
 
   function passController(
@@ -27,7 +28,8 @@
     $location,
     $routeParams,
     $scope,
-    $timeout
+    $timeout,
+    AuthenticationService
   ) {
 
     var vm = this;

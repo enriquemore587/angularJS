@@ -94,13 +94,15 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s12">
+                            <div class=" col s12">
+                                <label>Valor de descuento</label>
                                 <label ng-show="vm.cuponToSave.percentage_des > 100 && vm.cuponToSave.type_code == 1">El porcentaje no puede superar el valor 100%</label>
                                 <input name="porc" type="number" class="validate" ng-model="vm.cuponToSave.percentage_des" placeholder="Valor de descuento">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s12">
+                            <div class="col s12">
+                                <label>Cantidad de veces a utilizar</label>
                                 <input type="number" placeholder="Cantidad de veces a utilizar" class="validate" ng-model="vm.cuponToSave.amount_use" required>
                             </div>
                         </div>
@@ -122,8 +124,8 @@
                                 </a>
                             </div>
                             <div class="col s6">
-                                <a type="submit" ng-disabled="!formCupon.$valid||(vm.cuponToSave.type_code==1 && vm.cuponToSave.percentage_des >100)" style=" display: block" class=" btn green darken-3"
-                                    ng-click="vm.saveCupon()">
+                                <a type="submit" ng-disabled="!formCupon.$valid||(vm.cuponToSave.type_code==1 && vm.cuponToSave.percentage_des >100)" style=" display: block"
+                                    class=" btn green darken-3" ng-click="vm.saveCupon()">
                                     Guardar
                                 </a>
                             </div>

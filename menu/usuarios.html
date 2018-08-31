@@ -200,7 +200,7 @@
   <div class="container" ng-show="!vm.ver">
     <div>
       <label>Buscar usuario</label>
-      <input type="search" ng-model="buscar" style="color: #fff"  ng-blur="buscar=''">
+      <input type="search" ng-model="buscar" style="color: #fff">
     </div>
     <ul class="collection" dir-paginate="item in vm.listaUsers | filter: buscar |itemsPerPage:100">
       <li class="collection-item avatar" style="min-height: 50px !important;">

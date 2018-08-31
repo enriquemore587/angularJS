@@ -1,24 +1,29 @@
-(function() {
+(function () {
   'use strict';
   angular
     .module('app')
     .controller('LoginController', LoginController);
 
-  LoginController.inject = ['$location', 'AuthenticationService', 'FlashService', '$rootScope', '$timeout', 'DataService'];
+  LoginController.inject = ['$location', 'AuthenticationService', 'FlashService', '$rootScope', '$timeout', 'DataService', '$cookies'];
 
-  function LoginController($location, AuthenticationService, FlashService, $rootScope, $timeout, DataService) {
+  function LoginController($location, AuthenticationService, FlashService, $rootScope, $timeout, DataService, $cookies) {
 
     var vm = this;
     vm.login = login;
     vm.forgot = false;
     vm.contact = [];
     (function initController() {
-      
+
       $('.modal').modal('close');
       vm.forgot = true;
       vm.form = true;
-      AuthenticationService.ClearCredentials();
-      DataService.Delete();
+      
+
+      DataService.GetAll().then(function (response) {
+        if (response) {
+          $location.path("/");
+        }
+      });
     })();
 
     vm.pass = () => {
@@ -36,7 +41,7 @@
             if (response.success == -9) {
               swal("App in Maintenance", "Favor de reportar!", "warning");
               $timeout(function () {
-                  $rootScope.flash = false;
+                $rootScope.flash = false;
               }, 3500);
             } else if (response.success) {
               swal({
@@ -44,9 +49,9 @@
                 title: 'Contraseña enviada!',
                 html: 'email: ' + result.value
               })
-              } else {
-                swal("Correo No Registrado", "Correo No Registrado", "warning");
-              }
+            } else {
+              swal("Correo No Registrado", "Correo No Registrado", "warning");
+            }
           });
 
         }
@@ -57,14 +62,14 @@
 
       vm.dataLoading = true;
       vm.form = false;
-      AuthenticationService.Login(vm.usermail, vm.password, function(response) {
-        
+      AuthenticationService.Login(vm.usermail, vm.password, function (response) {
+
         if (response.success == -9) {
           FlashService.Error(response.message);
           vm.form = true;
           vm.dataLoading = false;
           swal("Servicio no disponible", "Favor de reportar!", "warning");
-          $timeout(function() {
+          $timeout(function () {
             $rootScope.flash = false;
           }, 3500);
         } else if (response.success) {
@@ -73,7 +78,7 @@
           FlashService.Error(response.message);
           vm.form = true;
           vm.dataLoading = false;
-          $timeout(function() {
+          $timeout(function () {
             $rootScope.flash = false;
           }, 3500);
         }
