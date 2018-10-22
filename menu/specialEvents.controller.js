@@ -55,7 +55,7 @@
         //  SWITCH PARA LISTADO DE DESHABILITADOS Y HABILITADOS
         vm.verTodosEventosSpeciales = false;
 
-        /** 
+        /**
          * 0 => new obj
          * 1 => edit obj
          * -1 => edit obj - child
@@ -86,7 +86,7 @@
                         }
                         vm.usuariosConfirmados = response.users;
                         console.log(vm.usuariosConfirmados);
-                        
+
                     }, function errorCallback(response) {
                         vm.esperar = false;
                         Materialize.toast('ERROR POR CONEXION', 4000);
@@ -99,6 +99,18 @@
         vm.haveACode = false;
         vm.indexWhenEditing = -1;
         vm.newWeek = (value, regresar) => {
+
+          $('.datepicker').pickadate({
+              selectMonths: true, // Creates a dropdown to control month
+              selectYears: 70, // Creates a dropdown of 15 years to control year,
+              today: 'Hoy',
+              clear: 'Limpiar',
+              close: 'Ok',
+              format: 'mm/dd/yyyy',
+              formatSubmit: 'mm/dd/yyyy',
+              closeOnSelect: false // Close upon selecting a date,
+          });
+
             vm.inputsToBlock = {};  //  libera los input condicionados
             // cuando value es false quiere decir que se cierra ventana
             if (!value && vm.action != 0) vm.action = 1;    //  se edita package y al agregar una rodada preciona regresar
@@ -312,6 +324,17 @@
         }
 
         vm.new = (action) => {
+
+                    $('.datepicker').pickadate({
+                        selectMonths: true, // Creates a dropdown to control month
+                        selectYears: 70, // Creates a dropdown of 15 years to control year,
+                        today: 'Hoy',
+                        clear: 'Limpiar',
+                        close: 'Ok',
+                        format: 'mm/dd/yyyy',
+                        formatSubmit: 'mm/dd/yyyy',
+                        closeOnSelect: false // Close upon selecting a date,
+                    });
             if (action == 0) vm.rodadas = [];
             vm.action = action;
             vm.obj.id_special_events = action;
@@ -456,9 +479,10 @@
                         );
 
                     });
-                    let varTemp = {};
+                    var varTemp = {};
                     varTemp = vm.fynallyOBJ;
 
+                    vm.fynallyOBJ = {};
                     DataServiceServer.setSpecialEventsAdminMassive(vm.fynallyOBJ)
                         .then(function successCallback(response) {
                             if (response == -3) {
@@ -480,6 +504,8 @@
                             )
                             $('#modal_new').modal('close');
                         }, function errorCallback(response) {
+
+                          vm.fynallyOBJ = varTemp;
                             Materialize.toast('ERROR POR CONEXION', 4000);
                         });
                 }
@@ -624,6 +650,16 @@
         }
 
         vm.editWP = seD => {
+          $('.datepicker').pickadate({
+              selectMonths: true, // Creates a dropdown to control month
+              selectYears: 70, // Creates a dropdown of 15 years to control year,
+              today: 'Hoy',
+              clear: 'Limpiar',
+              close: 'Ok',
+              format: 'mm/dd/yyyy',
+              formatSubmit: 'mm/dd/yyyy',
+              closeOnSelect: false // Close upon selecting a date,
+          });
             vm.action = 1;
             vm.obj = seD;
             if (seD.start_date.includes("-")) {
@@ -812,9 +848,9 @@
                 vm.ride.token = aux[1];
                 vm.esperarTracking = true;
                 /**
-                 *  
+                 *
                      console.log('vm.ride', vm.ride);
-                
+
                      active: true
 ​
                     emergency_number: "1234567899"
@@ -889,8 +925,8 @@
                             lng: position.coords.longitude,
                         };
                         vm.camioneta.setPosition(pos);
-                    }, function (er) { //ERROR DE GEOLOCALIZACION
-                        Materialize.toast(er.message, 2200);
+                    }, function (er) { 
+                        Materialize.toast("Dar permiso de ubicación", 4200);
                     });
                 } else {
                     console.log("else => navigator.geolocation");

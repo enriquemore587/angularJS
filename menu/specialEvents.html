@@ -1,5 +1,5 @@
 <div ng-controller="SpecialEventsController as vm" class="container">
-    <audio src="../components/sound/alert.mp3" id="sound"></audio>
+    <audio src="components/sound/alert.mp3" id="sound"></audio>
     <div class="container" ng-show="vm.esperar" style="margin: 20vh auto 0px auto !important;">
         <h5 class="letersLength" style="color: #FF3800"> Loading . . . .</h5>
         <div class="progress">
@@ -85,12 +85,12 @@
                         </div>
                         <div class="row">
                             <div input-field class="col s6">
-                                <label for="date">* Fecha inicio</label>
-                                <input id="date" name="date" type="text" class="datepicker" autocomplete="off" ng-model="vm.obj.start_date" required>
+                                <label for="date_inicio">* Fecha inicio</label>
+                                <input id="date_inicio" name="date_inicio" type="text" class="datepicker" autocomplete="off" ng-model="vm.obj.start_date">
                             </div>
                             <div input-field class="col s6">
-                                <label for="date">* Fecha fin</label>
-                                <input id="date" name="date" type="text" class="datepicker" autocomplete="off" ng-model="vm.obj.end_date" required>
+                                <label for="date_fin">* Fecha fin</label>
+                                <input id="date_fin" name="date_fin" type="text" class="datepicker" autocomplete="off" ng-model="vm.obj.end_date">
                             </div>
                         </div>
                         <div class="row">
@@ -193,7 +193,7 @@
                         </div>
                     </div>
                     <div class="row" style=" margin-right: 15px;  margin-top: 15px;">
-                        <a type="submit" ng-click="vm.saveUpdate();" ng-disabled="!form_main.$valid" class="btn green darken-3" style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;">
+                        <a type="submit" ng-click="vm.saveUpdate();" class="btn green darken-3" style="width: 120px; font-size: 12px;  float: right; margin-right: 5px;">
                             GUARDAR
                         </a>
                         <a style="background: #FF3800; width: 120px; font-size: 12px;  float: right; margin-right: 5px;" ng-click="vm.clearData()"
@@ -400,7 +400,7 @@
                                 <form>
                                     <div class="row">
                                         <div class="input-field col s12">
-                                            <input autocomplete="off" placeholder="Número de emergencia" ng-change="vm.isOk()" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 12px;"
+                                            <input type="number" placeholder="Número de emergencia" ng-change="vm.isOk()" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 12px;"
                                                 id="numm" type="text" class="validate">
                                         </div>
                                     </div>
@@ -430,7 +430,7 @@
                                 <form>
                                     <div class="row">
                                         <div class="input-field col s12">
-                                            <input autocomplete="off" placeholder="Número de emergencia" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 10px;"
+                                            <input type="number" placeholder="Número de emergencia" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 10px;"
                                                 type="text" class="validate" ng-change="vm.isOk()">
                                         </div>
                                     </div>

@@ -1,10 +1,10 @@
 <div ng-controller="weekendController as vm">
-  <audio src="../components/sound/alert.mp3" id="sound"></audio>
+  <audio src="components/sound/alert.mp3" id="sound"></audio>
   <div>
     <br>
     <div class="center">
-      <a style="background: #FF3800;" data-position="right" data-tooltip="NUEVO WEEKEND RIDE" ng-click="vm.creatingNew();" class="tooltipped btn-floating btn-large modal-trigger"
-        href="#modal_newWeekend">
+      <a style="background: #FF3800;" data-position="right" data-tooltip="NUEVO WEEKEND RIDE" ng-click="vm.creatingNew();"
+        class="tooltipped btn-floating btn-large modal-trigger" href="#modal_newWeekend">
         <i class="material-icons">add</i>
       </a>
     </div>
@@ -21,7 +21,8 @@
       </div>
     </div>
     <div class="container row">
-      <div class="card col s12 m6 l4 gris" ng-repeat="x in vm.weeks | filter: buscar" ng-if="x.active || vm.verTodosWeek" style="padding: 15px !important;" ng-class="{week: x.active == true, Noweek: x.active == false}">
+      <div class="card col s12 m6 l4 gris" ng-repeat="x in vm.weeks | filter: buscar" ng-if="x.active || vm.verTodosWeek"
+        style="padding: 15px !important;" ng-class="{week: x.active == true, Noweek: x.active == false}">
         <a class="activator naranja" href>{{x.name}}
           <i class="material-icons right">more_vert</i>
         </a>
@@ -54,7 +55,8 @@
               <a style="margin-right: 9px !important;" class="Asap-Bold" href ng-click="vm.deleteWeekend(x, false)">
                 <i class="material-icons Ncolor" style="color:white">delete</i>
               </a>
-              <a style="margin-right: 9px !important;" class="Asap-Bold modal-trigger" href="#modal_newWeekend" ng-click="vm.edit(x)">
+              <a style="margin-right: 9px !important;" class="Asap-Bold modal-trigger" href="#modal_newWeekend"
+                ng-click="vm.edit(x)">
                 <i class="material-icons Ncolor" style="color:white">edit
                 </i>
               </a>
@@ -71,7 +73,8 @@
           </a>
           <div class="card-action center">
             <div style="margin-top: 40px;">
-              <a style="margin-right: 9px !important; text-decoration: underline; color: #FF3800;" class="Asap-Bold" href ng-click="vm.deleteWeekend(x, true)">
+              <a style="margin-right: 9px !important; text-decoration: underline; color: #FF3800;" class="Asap-Bold"
+                href ng-click="vm.deleteWeekend(x, true)">
                 Habilitar
               </a>
             </div>
@@ -106,8 +109,8 @@
               <form>
                 <div class="row">
                   <div class="input-field col s12">
-                    <input autocomplete="off" placeholder="Número de emergencia" ng-change="vm.isOk()" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 12px;"
-                      id="numm" type="text" class="validate">
+                    <input type="number" placeholder="Número de emergencia" ng-change="vm.isOk()" ng-model="vm.ride.emergency_number"
+                      style="color: #fff; font-size: 12px;" id="numm" type="text" class="validate">
                   </div>
                 </div>
               </form>
@@ -136,7 +139,7 @@
               <form>
                 <div class="row">
                   <div class="input-field col s12">
-                    <input autocomplete="off" placeholder="Número de emergencia" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 10px;"
+                    <input type="number" placeholder="Número de emergencia" ng-model="vm.ride.emergency_number" style="color: #fff; font-size: 10px;"
                       type="text" class="validate" ng-change="vm.isOk()">
                   </div>
                 </div>
@@ -163,7 +166,7 @@
               </a>
             </li>
           </ul>
-        </div>
+        </div> 
       </nav>
       <div class="modal-content">
         <div ng-show="vm.esperarTracking" style="margin: 20vh auto 0px auto !important;">
@@ -174,6 +177,8 @@
         </div>
         <div class="row" ng-show="!vm.esperarTracking" style="position: relative;">
           <div id="mapWeek"></div>
+          <div style="overflow: auto; background: #1a1a19; opacity:0.9; width: 20%; height: 87vh; position: absolute; top: 0; color: #fff; text-align: center;">
+          </div>
           <div ng-show="vm.ride.active && !vm.confirmacion" style="overflow: auto; background: #1a1a19; opacity:0.9; width: 20%; height: 87vh; position: absolute; top: 0;">
             <ul>
               <li ng-repeat="x in vm.participantes">
@@ -198,13 +203,15 @@
             <div class="row">
               <div input-field class="col s12">
                 <label>* Nombre de Weekend Ride</label>
-                <input name="nameWeekend" class="validate" type="text" ng-model="vm.weekObj.name" autocomplete="off" required>
+                <input name="nameWeekend" class="validate" type="text" ng-model="vm.weekObj.name" autocomplete="off"
+                  required>
               </div>
             </div>
             <div class="row">
               <div input-field class="col s12">
                 <label for="place">* Lugar</label>
-                <input id="place" name="place" type="text" class="validate" ng-model="vm.weekObj.place" autocomplete="off" required>
+                <input id="place" name="place" type="text" class="validate" ng-model="vm.weekObj.place" autocomplete="off"
+                  required>
               </div>
             </div>
             <div class="row">
@@ -218,8 +225,8 @@
               </div>
               <div input-field class="col s4">
                 <label>* Precio</label>
-                <input id="amount" name="amount" type="number" class="validate" autocomplete="off"
-                  ng-model="vm.weekObj.amount" required>
+                <input id="amount" name="amount" type="number" class="validate" autocomplete="off" ng-model="vm.weekObj.amount"
+                  required>
               </div>
             </div>
 

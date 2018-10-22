@@ -823,6 +823,10 @@ function justNumbers(e) {
               nombre = 'Coupons';
               urlMenu = "cupones.html";
               break;
+            case "mod_web_hours":
+              nombre = 'HOURS';
+              urlMenu = "hours.html";
+              break;
             case "mod_web_pass":
               continue;
               nombre = response[i].name_module;

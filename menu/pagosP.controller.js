@@ -242,7 +242,7 @@
         .then(function successCallback(response) {
           response.DataUsersReservationPaidPackages.forEach(element => {
             if (element.id_package == vm.id) {
-              element.service_date = $filter('date')(element.service_date, "MM/dd/yyyy HH:mm:ss");
+              element.service_date = $filter('date')(element.service_date, "dd/MM/yyyy, h:mm a");
               vm.data.push(element);
             }
           });

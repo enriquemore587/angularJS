@@ -34,6 +34,7 @@
     var vm = this;
     vm.title = 'CUPONES';
     vm.cuponesList = [];
+    vm.verTodosCupones = false;
     vm.cuponToSave = {};
     vm.typeServices = [{
       value: 1,
@@ -45,8 +46,6 @@
       value: 3,
       name: 'Weeken rides'
     }];
-    console.log(vm.typeServices);
-
 
     vm.saveCupon = () => {
       let aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
@@ -64,7 +63,6 @@
             return;
           }
           vm.cuponToSave = {};
-          console.log('cupones.data.status', cupones.data.status);
           if (cupones.data.message == "Codigo Existente") console.log("Codigo Existente");
           Materialize.toast('Cupón guardado', 4000);
           vm.initComponents();
@@ -91,6 +89,94 @@
 
     vm.editCupon = elemetToEdit => vm.cuponToSave = elemetToEdit;
 
+        vm.deleteCupon = (cuponToDelete, index) => {
+          swal({
+            title: '¿ Estás seguro ?',
+            text: `¡ Se pausará ${cuponToDelete.code} !`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#C0C0C0',
+            cancelButtonColor: '#FF3800',
+            cancelarButtonText: 'Cancelar',
+            showCloseButton: true,
+            confirmButtonText: `Si, pausar`,
+            focusConfirm: false
+          }).then((result) => {
+            if (result.value) {
+              var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
+              var temporalCupon = {
+                id_user : aux[0],
+                token : aux[1],
+                id_code : cuponToDelete.id_code,
+                active : false
+              };
+              DataServiceServer.sendCuponActive(temporalCupon)
+                .then(function successCallback(response) {
+                  if (response == undefined) {
+                    Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                    AuthenticationService.ClearCredentials();
+                    DataService.Delete();
+                    $location.path("/login");
+                    return;
+                  }
+                  cuponToDelete.active = !cuponToDelete.active;
+                  vm.cuponesList = [
+                    ...vm.cuponesList.slice(0, index),
+                    cuponToDelete,
+                    ...vm.cuponesList.slice(index+1)
+                  ];
+                  //vm.cuponesList[temporalIndex].active = !vm.cuponesList[temporalIndex].active;
+                  Materialize.toast('Cupón pausado', 5000);
+                }, function errorCallback(response) {
+                  Materialize.toast('Falla de conexión', 1000);
+                });
+            }
+          })
+        }
+            vm.upCupon = (cuponToUp, index) => {
+              swal({
+                title: '¿ Estás seguro ?',
+                text: `¡ Se habilitará ${cuponToUp.code} !`,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#C0C0C0',
+                cancelButtonColor: '#FF3800',
+                cancelarButtonText: 'Cancelar',
+                showCloseButton: true,
+                confirmButtonText: `Si, habilitar`,
+                focusConfirm: false
+              }).then((result) => {
+                if (result.value) {
+                  var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
+                  var temporalCupon = {
+                    id_user : aux[0],
+                    token : aux[1],
+                    id_code : cuponToUp.id_code,
+                    active : true
+                  };
+                  DataServiceServer.sendCuponActive(temporalCupon)
+                    .then(function successCallback(response) {
+                      if (response == undefined) {
+                        Materialize.toast('SE A INICIADO SESION EN OTRO DISPOSITIVO', 5000);
+                        AuthenticationService.ClearCredentials();
+                        DataService.Delete();
+                        $location.path("/login");
+                        return;
+                      }
+                      cuponToUp.active = !cuponToUp.active;
+                      vm.cuponesList = [
+                        ...vm.cuponesList.slice(0, index),
+                        cuponToUp,
+                        ...vm.cuponesList.slice(index+1)
+                      ];
+                      Materialize.toast('Cupón habilitado', 5000);
+                    }, function errorCallback(response) {
+                      Materialize.toast('Falla de conexión', 1000);
+                    });
+                }
+              })
+            }
+
     vm.cancel = () => {
       vm.cuponToSave = {
         id_user: '',
@@ -106,7 +192,7 @@
         cost_des: 0
       };
     }
-    
+
     vm.initComponents = () => {
       let aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
       DataServiceServer.getCodeList(aux[0], aux[1])

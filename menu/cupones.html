@@ -14,7 +14,7 @@
     .myC .formCupones {
         margin-top: 15%;
         width: 100% !important;
-        background-color: #1a1a19;
+        background-color: #1a1a19
     }
 
     input {
@@ -32,12 +32,25 @@
     }
 </style>
 <div ng-controller="cuponesController as vm">
+  <div class="row">
+    <div class="col s8" style="position: relative;">
+        <div class="switch" style="position: absolute; top: 0; right: 0;">
+          <label>
+            Show All
+            <input type="checkbox" ng-model="vm.verTodosCupones" ng-true-value="true" ng-false-value="false" class="deep-orange lighten-5">
+            <span class="lever deep-orange accent-3"></span>
+          </label>
+        </div>
+    </div>
+    <div class="col s4"></div>
+  </div>
     <div class="row" style="width: 100%; height: 80vh; position: relative;">
         <!-- style="height: 100%; overflow: auto;" -->
         <div class="col s8" style="margin-left: -10px; height: 80vh; overflow: auto;">
-            <table class="centered responsive-table" style="margin-top: 10%; color: #fff;">
+            <table class="centered responsive-table" style="color: #fff;">
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Cupón</th>
                         <th>Servicio</th>
                         <th>Veces a utilziar</th>
@@ -45,10 +58,12 @@
                         <th>Valor</th>
                         <th>Vigencia</th>
                         <th>Editar</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="cupon in vm.cuponesList">
+                    <tr ng-repeat="cupon in vm.cuponesList" ng-show="cupon.active || vm.verTodosCupones"  ng-style="cupon.active && {'color':'#fff'} || {'color': '#FF3800'}">
+                        <td class="items">{{cupon.id_code}}</td>
                         <td class="items">{{cupon.code}}</td>
                         <td class="items">
                             <span>{{vm.getTypeService(cupon.type_service)}}</span>
@@ -59,6 +74,10 @@
                         <td class="items">{{cupon.start_date}} - {{cupon.end_date}}</td>
                         <td>
                             <i class="editVariable tiny material-icons" ng-click="vm.editCupon(cupon)">edit</i>
+                        </td>
+                        <td>
+                            <i ng-show="cupon.active" style="color: #00FF00;" class="editVariable Small material-icons" ng-click="vm.deleteCupon(cupon, $index)">play_circle_filled</i>
+                            <i ng-show="!cupon.active" class="editVariable Small material-icons" ng-click="vm.upCupon(cupon, $index)">pause_circle_filled</i>
                         </td>
                     </tr>
                 </tbody>

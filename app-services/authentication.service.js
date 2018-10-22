@@ -13,8 +13,8 @@
         service.SetCredentials = SetCredentials;
         service.ClearCredentials = ClearCredentials;
         service.contact = contact;
-        service.url = 'https://noohwicycling.com:8743/noohwi';
-        service.url2 = 'http://s692755340.onlinehome.mx:8780/noohwi';
+        service.url2 = 'https://noohwicycling.com:8743/noohwi';
+        service.url = 'http://s692755340.onlinehome.mx:8780/noohwi';
         return service;
 
 

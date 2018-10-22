@@ -39,6 +39,9 @@
       </div>
       <ul class="collection blanco lblanco" ng-show="vm.biciVisible">
         <li>
+          <a href ng-click="vm.biciVisible=null;" class="secondary-content naranja">
+            <i class="material-icons">close</i>
+          </a>
           <div class="row center">
             <div class="col s12 m12 ">
               <p>
@@ -119,9 +122,9 @@
               </tbody>
             </table>
           </div>
-          <a href ng-click="vm.biciVisible=null;" class="secondary-content naranja">
+          <!-- <a href ng-click="vm.biciVisible=null;" class="secondary-content naranja">
             <i class="material-icons">close</i>
-          </a>
+          </a> -->
         </li>
       </ul>
 
@@ -147,16 +150,16 @@
               != 'undefined' ? 'interior ' +vm.addressVisible.number_int : '' }}
             </address>
             <address>
-              {{ vm.addressVisible.colony}}
+              {{ vm.addressVisible.colony ? vm.addressVisible.colony : "SIN COLONIA"}}
             </address>
             <address>
-              {{ vm.addressVisible.municipality}}
+              {{ vm.addressVisible.municipality ? vm.addressVisible.municipality : "SIN MUNICIPIO"}}
             </address>
             <address>
-              C.P. {{ vm.addressVisible.state}}
+              {{ vm.addressVisible.state ? vm.addressVisible.state : "SIN ESTADO"}}
             </address>
             <address>
-              C.P. {{ vm.addressVisible.cp}}
+              C.P. {{ vm.addressVisible.cp ? vm.addressVisible.cp : "SIN C.P."}}
             </address>
             <p>
               <address>REFERENCIA ADICIONAL {{ vm.addressVisible.additional_reference | uppercase}}</address>

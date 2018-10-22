@@ -98,8 +98,8 @@
               lng: position.coords.longitude,
             };
             vm.camioneta.setPosition(pos);
-          }, function (er) { //ERROR DE GEOLOCALIZACION
-            Materialize.toast("ERROR DE GEOLOCALIZACION"+er.message, 2200);
+          }, function (er) {
+            Materialize.toast("Dar permiso de ubicación", 4200);
           });
         } else {
           console.log("else => navigator.geolocation");
@@ -157,6 +157,7 @@
           Materialize.toast('Falla de conexión', 4000);
         });
     }
+
     vm.update_list = () => {
       var aux = Base64.decode($rootScope.globals.currentUser.authdata).split(":");
       DataServiceServer.getWeekById(aux[0], aux[1], vm.id_to_update)
@@ -290,7 +291,6 @@
     vm.repeat = 0;
 
     vm.tracking = x => {
-
       vm.nameTracking = x.name;
       vm.repeat = x.repeat_time;
 
@@ -304,9 +304,7 @@
 
     vm.msg;
     vm.confirmacion = false;
-
-
-
+    
     vm.pregCerrarTrack = x => {
       swal({
         title: '¿ Estás seguro ?',
@@ -473,7 +471,6 @@
                 getMyPosition();
                 vm.iterar++;
 
-                
                 let flag = {};
 
                 vm.alertaParticipantes = [];
@@ -505,7 +502,7 @@
                               position: new google.maps.LatLng(vm.participantes[i].l.split(",")[0], vm.participantes[i].l.split(",")[1]),
                               map: vm.mapWeek,
                               labelContent: vm.participantes[i].un.split(" ")[0][0] + vm.participantes[i].un.split(" ")[1][0],
-                              icon: "components\\image\\iconoNegro.png",
+                              icon: "components\\image\\bicycle-rider-negra.png",
                               labelAnchor: new google.maps.Point(51, 4),
                               labelClass: "labels",
                               labelStyle: {
@@ -514,9 +511,9 @@
                             });
 
                             if (!vm.participantes[i].ec && !vm.participantes[i].ed) {
-                              vm.participantes[i].tag.setIcon('components\\image\\iconoNegro.png');
+                              vm.participantes[i].tag.setIcon('components\\image\\bicycle-rider-negra.png');
                             } else {
-                              vm.participantes[i].tag.setIcon('components\\image\\iconoRojo.png');
+                              vm.participantes[i].tag.setIcon('components\\image\\bicycle-rider-roja.png');
                             }
                           } catch (e) {
                             console.log('Participante sin señal');
@@ -531,6 +528,7 @@
 
                       vm.esperarTracking = false;
                       alertasF();
+                      vm.centrar();
                       if (vm.iterar == 1) { vm.centrar(); loadData(); }
                       else setTimeout(loadData, 10000);
                       return;

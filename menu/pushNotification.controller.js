@@ -87,7 +87,7 @@
       });
     }
 
-    vm.sendAll = true;
+    vm.sendAll = false;
     vm.send = function (item) {
       item.send = !item.send;
       vm.listaUsers.forEach(user => { vm.sendAll = item.send ? vm.sendAll : false; });
@@ -106,7 +106,7 @@
           }
           vm.listaUsers = response.users;
           vm.listaUsers.forEach(element => {
-            element.send = true;
+            element.send = false;
           });
         }, function errorCallback(response) {
           Materialize.toast('Falla de conexión', 1000);

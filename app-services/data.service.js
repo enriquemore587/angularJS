@@ -59,12 +59,60 @@
         service.getCodeList = getCodeList;
         service.sendCupon = sendCupon;
         service.getUserConfirmList = getUserConfirmList;
+        service.sendCuponActive = sendCuponActive;
+        service.getdays = getdays;
+        service.getServicesHollidaysAdmin = getServicesHollidaysAdmin;
+        service.getServicesHoursByDay = getServicesHoursByDay;
 
-        service.url = "https://noohwicycling.com:8743";
-        service.url2 = 'http://s692755340.onlinehome.mx:8780';
+        service.url2 = "https://noohwicycling.com:8743";
+        service.url = 'http://s692755340.onlinehome.mx:8780';
 
         return service;
 
+
+        
+        function getServicesHoursByDay(userId, token, date) {
+            return $http.get(`${service.url}/noohwi/packages/getServicesHoursByDay?id_user=${userId}&token=${token}&date=${date}`,
+                {}, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
+                .then(function successCallback(response) {
+                    if (response.data.status == 0) {
+                        return response.data.data.horarios;
+                    } else {
+                        return false;
+                    }
+                }, function errorCallback(response) {
+                    return response;
+                });
+        }
+
+        function getServicesHollidaysAdmin(userId, token) {
+            return $http.get(`${service.url}/noohwi/services-admin/getServicesHollidaysAdmin?id_user=${userId}&token=${token}`,
+                {}, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
+                .then(function successCallback(response) {
+                    if (response.data.status == 0) {
+                        return response.data.data.days;
+                    } else {
+                        return false;
+                    }
+                }, function errorCallback(response) {
+                    return response;
+                });
+        }
+
+        function getdays(userId, token) {
+            return $http.get(`${service.url}/noohwi/services-admin/get-days?id_user=${userId}&token=${token}`,
+                {}, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
+                .then(function successCallback(response) {
+                    if (response.data.status == 0) {
+                        return response.data.data.days;
+                    } else {
+                        return false;
+                    }
+                }, function errorCallback(response) {
+                    return response;
+                });
+        }
+        
         function getUserConfirmList(userId, token, id_weekend) {
             return $http.get(service.url + `/noohwi/Sevents/v2/special/details/users?id_user=${userId}&token=${token}&id_weekend=${id_weekend}`,
                 {}, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
@@ -87,6 +135,15 @@
                     if (response.data.message == "successful") {
                         return response.data.data;
                     }
+                }, function errorCallback(response) {
+                    return response;
+                });
+        }
+
+        function sendCuponActive(obj) {
+            return $http.post(service.url + '/noohwi/promotional/active', obj, { headers: { 'Content-Type': 'application/json; charset=UTF-8' } })
+                .then(function successCallback(response) {
+                    return response;
                 }, function errorCallback(response) {
                     return response;
                 });

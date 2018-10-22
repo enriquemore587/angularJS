@@ -3,10 +3,18 @@
         <div class="row" style="position: relative;">
             <div class="col s5">
                 <div>
-                    <div>
-                        <label>Buscar usuario</label>
-                        <input type="search" ng-model="buscar" style="color: #000000">
+                    <div class="row">
+                        <div class="col s10">
+                          <label>Buscar usuario</label>
+                          <input type="search" ng-model="buscar" style="color: #000000">
+                        </div>
+                        <div class="col s2" style="padding-top: 20px;">
+                          <button class="btn-flat" ng-click="buscar=''" style="color: #FF3800 !important; background-color: transparent !important;"  name="action">
+                            Limpiar
+                          </button>
+                        </div>
                     </div>
+
                     <div class="col s12">
                         <div style="width: 100%; height: 50px;">
                             <input type="checkbox" ng-checked="vm.sendAll" />
@@ -17,14 +25,22 @@
                     </div>
                     <hr>
                     <div>
-                        <div class="col s12" ng-repeat="item in vm.listaUsers | filter: buscar">
-                            <div style="width: 100%; height: 50px;">
-                                <input type="checkbox" ng-checked="item.send" />
-                                <label ng-click="vm.send(item)">
-                                    <span>{{item.name}}</span>
-                                </label>
-                            </div>
-                        </div>
+                      <div class="col s12" ng-repeat="item in vm.listaUsers | filter: buscar" ng-show="item.send==true">
+                          <div style="width: 100%; height: 50px;">
+                              <input type="checkbox" ng-checked="item.send" />
+                              <label ng-click="vm.send(item)">
+                                  <span>{{item.name}}</span>
+                              </label>
+                          </div>
+                      </div>
+                      <div class="col s12" ng-repeat="item in vm.listaUsers | filter: buscar" ng-show="item.send==false">
+                          <div style="width: 100%; height: 50px;">
+                              <input type="checkbox" ng-checked="item.send" />
+                              <label ng-click="vm.send(item)">
+                                  <span>{{item.name}}</span>
+                              </label>
+                          </div>
+                      </div>
                     </div>
                 </div>
             </div>

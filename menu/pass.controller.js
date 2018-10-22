@@ -15,7 +15,8 @@
     '$routeParams',
     '$scope',
     '$timeout',
-    'AuthenticationService'
+    'AuthenticationService',
+    '$window'
   ];
 
   function passController(
@@ -29,7 +30,8 @@
     $routeParams,
     $scope,
     $timeout,
-    AuthenticationService
+    AuthenticationService,
+    $window
   ) {
 
     var vm = this;
@@ -49,5 +51,10 @@
           }
       });
     }
+
+    vm.adios = () => {
+      $window.close();
+    }
+
   }
 })();

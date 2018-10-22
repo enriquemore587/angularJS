@@ -68,8 +68,8 @@ div.rodadas_style_disable {
     height: 120px; border-style: solid; border-color: #FF3800;
 }
 img.bici{
-    
-    
+
+
 }
 
 div.rodadas_style_child {
@@ -89,6 +89,10 @@ body{
   background-repeat: repeat-y;*/
 }
 
+.clear-btn{
+  color: #FF3800 !important;
+}
+
 #mapPackage{
     height: 80vh;
     width: 100%;
@@ -102,10 +106,11 @@ body{
 
 #mapWeek{
     height: 87vh !important;
-    width: 100% !important;
+    width: 80% !important;
     box-shadow: 3px 3px 10px gray;
     position: absolute;
-    top: 0 !important;
+    /* top: 0 !important;*/
+    right: 0 !important;
 }
 
 #map{

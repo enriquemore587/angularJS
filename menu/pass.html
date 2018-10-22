@@ -1,44 +1,53 @@
 <style>
-    .myC {
-      width: 20%;
-      height: 500px;
-      display: grid;
-      flex-direction: column;
-      margin-left: 40%;
-    }
-  </style>
-  <div ng-controller="passController as vm" class=" myC">
-    <div class="row blanco" style="width: 100%; margin-top: 25%;">
-      <form class="col s12 m12 l12">
-        <div class="row">
-          <div class="input-field col s12">
-            <label style="color: #FF3800">* Escribe tu contraseña</label>
-            <input type="password" ng-model="vm.pass" class="validate naranja" autocomplete="off">
-          </div>
+  .myC {
+    width: 20%;
+    height: 500px;
+    display: grid;
+    flex-direction: column;
+    margin-left: 40%;
+  }
+</style>
+<div ng-controller="passController as vm" class=" myC">
+  <div class="row blanco" style="width: 100%; margin-top: 25%;">
+    <form class="col s12 m12 l12">
+      <div class="row">
+        <div class="input-field col s12">
+          <label style="color: #FF3800">* Escribe tu contraseña</label>
+          <input type="password" ng-model="vm.pass" class="validate naranja" autocomplete="off">
         </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <label style="color: #FF3800">* Nueva contraseña</label>
-            <input type="password" ng-model="vm.pass1" class="validate naranja" autocomplete="off">
-            <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass1.length < 8" data-success="right">La contraseña debe contener 8 caracteres como minimo
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <label style="color: #FF3800">* Confirmar nueva contraseña</label>
-            <input type="password" ng-model="vm.pass2" class="validate naranja" autocomplete="off">
-            <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass1 && vm.pass2 && vm.pass1 != vm.pass2" data-success="right">No coincide.</span>
-            <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass2.length < 8" data-success="right">La contraseña debe contener 8 caracteres como minimo</span>
-          </div>
-        </div>
-      </form>
-  
-      <div class="center">
-        <a class="btn-flat lblanco" style="background-color: #FF3800; margin-bottom: 10px !important;" ng-disabled="!(vm.pass1 && vm.pass2 && vm.pass1 == vm.pass2)"
-          ng-click="vm.cambiar()">Cambiar contraseña</a>
       </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <label style="color: #FF3800">* Nueva contraseña</label>
+          <input type="password" ng-model="vm.pass1" class="validate naranja" autocomplete="off">
+          <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass1.length < 8" data-success="right">La contraseña
+            debe contener 8 caracteres como minimo
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <label style="color: #FF3800">* Confirmar nueva contraseña</label>
+          <input type="password" ng-model="vm.pass2" class="validate naranja" autocomplete="off">
+          <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass1 && vm.pass2 && vm.pass1 != vm.pass2" data-success="right">No
+            coincide.
+          </span>
+          <span class="helper-text naranja" data-error="wrong" ng-show="vm.pass2.length < 8" data-success="right">La contraseña
+            debe contener 8 caracteres como minimo</span>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <a href="http://74.208.103.93:8780/noohwiReport/noohwi/index4">descargar prueba uno</a>
+      </div> -->
+    </form>
+<div>
+  <a href ng-click="vm.adios();">adios</a>
+</div>
+    <div class="center">
+      <a class="btn-flat lblanco" style="background-color: #FF3800; margin-bottom: 10px !important;" ng-disabled="!(vm.pass1 && vm.pass2 && vm.pass1 == vm.pass2)"
+        ng-click="vm.cambiar()">Cambiar contraseña</a>
     </div>
   </div>
+</div>
 <!-- *******
 <div ng-controller="passController as vm" class="container">
   <br>
